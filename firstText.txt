@@ -1,3 +1,4 @@
 test text file
 new edit
-new editxxx yyyy xzzzz
+new edit
+xxx yyyy xzzzz
