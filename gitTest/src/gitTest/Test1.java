@@ -8,5 +8,6 @@ public class Test1 {
 		System.out.println("dbimpl change2");
 		
 		System.out.println("db change1");
+		System.out.println("db change2");
 	}
 }
