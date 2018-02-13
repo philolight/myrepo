@@ -1,0 +1,47 @@
+"PACKAGE_DECLARE"
+
+/**
+  * <<<<<<<< Automatically Generated Code >>>>>>>>
+  * If you want to modify this file, use Inherited class in ".entity" package.
+  */
+
+import java.util.List;
+
+import com.lge.framework.ceasar.entity.MapKey;
+import com.lge.framework.ceasar.entity.Entity;
+import com.lge.framework.ceasar.repository.Repos;
+
+"FOREIGN_ET_IMPORT"
+"FOREIGN_REPOSITORY_IMPORT"
+import "CONCRETE_ROOT_PACKAGE_NAME".entity."Table"Entity;
+import "CONCRETE_ROOT_PACKAGE_NAME".dto."Table"Dto;
+
+abstract public class A"Table"Entity extends Entity<"Table"Dto>{
+"FOREIGN_USED_GET"
+"FOREIGN_ET_GET"
+
+    protected A"Table"Entity() {} // for Serialize
+  
+    public A"Table"Entity("Table"Dto dto) {
+        super(dto);
+        mapKey = newMapKey(dto);
+    }
+  
+    public static MapKey newMapKey("ForPk,"<"PkType" "tablePk">) { return new MapKey("ForPk,"<"tablePk">); }
+    public static MapKey newMapKey("Table"Dto dto)   { return newMapKey("ForPk,"<dto.get"TablePk"()> ); }  
+"GETTERS"
+"SETTERS"
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof "Table"Entity && 
+            this.mapKey().equals((("Table"Entity) obj).mapKey());
+    }  
+    @Override public int hashCode() { return mapKey().hashCode(); }
+  
+    abstract public boolean flush();
+    
+    public static String skinType(){
+        return ""Table"";
+    } 
+}

@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://types.pointaccess.soapws.service.lighting.mobileleader.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://types.pointaccess.soapws.service.lighting.mobileleader.com" xmlns:intf="http://types.pointaccess.soapws.service.lighting.mobileleader.com" xmlns:tns1="http://lang.java" xmlns:tns2="http://encoding.axis.apache.org" xmlns:tns3="http://description.axis.apache.org" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://types.pointaccess.soapws.service.lighting.mobileleader.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <import namespace="http://encoding.axis.apache.org"/>
+   <import namespace="http://lang.java"/>
+   <import namespace="http://description.axis.apache.org"/>
+   <element name="equals">
+    <complexType>
+     <sequence>
+      <element name="obj" type="xsd:anyType"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="equalsResponse">
+    <complexType>
+     <sequence>
+      <element name="equalsReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="hashCode">
+    <complexType/>
+   </element>
+   <element name="hashCodeResponse">
+    <complexType>
+     <sequence>
+      <element name="hashCodeReturn" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getName">
+    <complexType/>
+   </element>
+   <element name="getNameResponse">
+    <complexType>
+     <sequence>
+      <element name="getNameReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setName">
+    <complexType>
+     <sequence>
+      <element name="name" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setNameResponse">
+    <complexType/>
+   </element>
+   <element name="getPath">
+    <complexType/>
+   </element>
+   <element name="getPathResponse">
+    <complexType>
+     <sequence>
+      <element name="getPathReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setWritable">
+    <complexType>
+     <sequence>
+      <element name="writable" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setWritableResponse">
+    <complexType/>
+   </element>
+   <element name="setPath">
+    <complexType>
+     <sequence>
+      <element name="path" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setPathResponse">
+    <complexType/>
+   </element>
+   <element name="setDataType">
+    <complexType>
+     <sequence>
+      <element name="dataType" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setDataTypeResponse">
+    <complexType/>
+   </element>
+   <element name="getDataType">
+    <complexType/>
+   </element>
+   <element name="getDataTypeResponse">
+    <complexType>
+     <sequence>
+      <element name="getDataTypeReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getSerializer">
+    <complexType>
+     <sequence>
+      <element name="mechType" type="xsd:string"/>
+      <element name="_javaType" type="xsd:anyType"/>
+      <element name="_xmlType" type="xsd:QName"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getSerializerResponse">
+    <complexType>
+     <sequence>
+      <element name="getSerializerReturn" type="xsd:anyType"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getDeserializer">
+    <complexType>
+     <sequence>
+      <element name="mechType" type="xsd:string"/>
+      <element name="_javaType" type="tns1:Class"/>
+      <element name="_xmlType" type="xsd:QName"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getDeserializerResponse">
+    <complexType>
+     <sequence>
+      <element name="getDeserializerReturn" type="xsd:anyType"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getTypeDesc">
+    <complexType/>
+   </element>
+   <element name="getTypeDescResponse">
+    <complexType>
+     <sequence>
+      <element name="getTypeDescReturn" type="xsd:anyType"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getWritable">
+    <complexType/>
+   </element>
+   <element name="getWritableResponse">
+    <complexType>
+     <sequence>
+      <element name="getWritableReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="getWritableResponse">
+
+      <wsdl:part element="impl:getWritableResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDataTypeRequest">
+
+      <wsdl:part element="impl:getDataType" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDataTypeResponse">
+
+      <wsdl:part element="impl:getDataTypeResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getNameResponse">
+
+      <wsdl:part element="impl:getNameResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setNameResponse">
+
+      <wsdl:part element="impl:setNameResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getSerializerResponse">
+
+      <wsdl:part element="impl:getSerializerResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getNameRequest">
+
+      <wsdl:part element="impl:getName" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getWritableRequest">
+
+      <wsdl:part element="impl:getWritable" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="hashCodeRequest">
+
+      <wsdl:part element="impl:hashCode" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setWritableRequest">
+
+      <wsdl:part element="impl:setWritable" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getTypeDescRequest">
+
+      <wsdl:part element="impl:getTypeDesc" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getPathRequest">
+
+      <wsdl:part element="impl:getPath" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setPathRequest">
+
+      <wsdl:part element="impl:setPath" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setPathResponse">
+
+      <wsdl:part element="impl:setPathResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getSerializerRequest">
+
+      <wsdl:part element="impl:getSerializer" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setDataTypeResponse">
+
+      <wsdl:part element="impl:setDataTypeResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getPathResponse">
+
+      <wsdl:part element="impl:getPathResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDeserializerRequest">
+
+      <wsdl:part element="impl:getDeserializer" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDeserializerResponse">
+
+      <wsdl:part element="impl:getDeserializerResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setDataTypeRequest">
+
+      <wsdl:part element="impl:setDataType" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="equalsResponse">
+
+      <wsdl:part element="impl:equalsResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setWritableResponse">
+
+      <wsdl:part element="impl:setWritableResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="hashCodeResponse">
+
+      <wsdl:part element="impl:hashCodeResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setNameRequest">
+
+      <wsdl:part element="impl:setName" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="equalsRequest">
+
+      <wsdl:part element="impl:equals" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getTypeDescResponse">
+
+      <wsdl:part element="impl:getTypeDescResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="PointObject">
+
+      <wsdl:operation name="equals">
+
+         <wsdl:input message="impl:equalsRequest" name="equalsRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:equalsResponse" name="equalsResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="hashCode">
+
+         <wsdl:input message="impl:hashCodeRequest" name="hashCodeRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:hashCodeResponse" name="hashCodeResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getName">
+
+         <wsdl:input message="impl:getNameRequest" name="getNameRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getNameResponse" name="getNameResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setName">
+
+         <wsdl:input message="impl:setNameRequest" name="setNameRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:setNameResponse" name="setNameResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getPath">
+
+         <wsdl:input message="impl:getPathRequest" name="getPathRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getPathResponse" name="getPathResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setWritable">
+
+         <wsdl:input message="impl:setWritableRequest" name="setWritableRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:setWritableResponse" name="setWritableResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setPath">
+
+         <wsdl:input message="impl:setPathRequest" name="setPathRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:setPathResponse" name="setPathResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setDataType">
+
+         <wsdl:input message="impl:setDataTypeRequest" name="setDataTypeRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:setDataTypeResponse" name="setDataTypeResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDataType">
+
+         <wsdl:input message="impl:getDataTypeRequest" name="getDataTypeRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getDataTypeResponse" name="getDataTypeResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getSerializer">
+
+         <wsdl:input message="impl:getSerializerRequest" name="getSerializerRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getSerializerResponse" name="getSerializerResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDeserializer">
+
+         <wsdl:input message="impl:getDeserializerRequest" name="getDeserializerRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getDeserializerResponse" name="getDeserializerResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getTypeDesc">
+
+         <wsdl:input message="impl:getTypeDescRequest" name="getTypeDescRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getTypeDescResponse" name="getTypeDescResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getWritable">
+
+         <wsdl:input message="impl:getWritableRequest" name="getWritableRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getWritableResponse" name="getWritableResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="PointObjectSoapBinding" type="impl:PointObject">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="equals">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="equalsRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="equalsResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="hashCode">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="hashCodeRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="hashCodeResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getName">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getNameRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getNameResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setName">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setNameRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setNameResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getPath">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getPathRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getPathResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setWritable">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setWritableRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setWritableResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setPath">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setPathRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setPathResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setDataType">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setDataTypeRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setDataTypeResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDataType">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getDataTypeRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getDataTypeResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getSerializer">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getSerializerRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getSerializerResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getDeserializer">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getDeserializerRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getDeserializerResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getTypeDesc">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getTypeDescRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getTypeDescResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getWritable">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getWritableRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getWritableResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="PointObjectService">
+
+      <wsdl:port binding="impl:PointObjectSoapBinding" name="PointObject">
+
+         <wsdlsoap:address location="http://localhost:8080/lgAirconProtocol/services/PointObject"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

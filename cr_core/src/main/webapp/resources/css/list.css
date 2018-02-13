@@ -1,0 +1,37 @@
+.item {
+  cursor: pointer;
+}
+.bold {
+  font-weight: bold;
+}
+ul {
+  padding-left: 1em;
+  line-height: 1.5em;
+  list-style-type: none;
+  float:left;
+  background-color: #888888;
+}
+
+ul li span {
+    display: inline-block;  
+    vertical-align: middle;     
+}
+
+dl dt {
+    display: inline-block;  
+    vertical-align: middle;
+    float : left;     
+}
+
+dl dd {
+    display: inline-block;  
+    vertical-align: middle;
+    float : left;     
+}
+
+/* ul li:before{
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+} */

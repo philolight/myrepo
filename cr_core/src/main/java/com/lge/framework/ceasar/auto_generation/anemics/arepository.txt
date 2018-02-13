@@ -1,0 +1,374 @@
+"PACKAGE_DECLARE"
+
+/**
+  * <<<<<<<< Automatically Generated Code >>>>>>>>
+  * If you want to modify this file, use Inherited class in ".repository" package.
+  */
+
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.lge.framework.ceasar.repository.PermanenceRepository;
+import com.lge.framework.ceasar.repository.CacheableRepository;
+import com.lge.framework.ceasar.repository.MapSet;
+import com.lge.framework.ceasar.event.EventBroker;
+import com.lge.framework.ceasar.event.event_kind.LoadEvent;
+import com.lge.framework.ceasar.event.event_kind.CreateEvent;
+import com.lge.framework.ceasar.event.event_kind.DeleteEvent;
+import com.lge.framework.ceasar.event.event_kind.UpdateEvent;
+import com.lge.framework.ceasar.event.publisher.KindredEventPublisher;
+import com.lge.framework.ceasar.repository.Repos;
+import com.lge.framework.ceasar.util.ToString;
+import com.lge.framework.ceasar.util.CriteriaUtil;
+import com.lge.framework.ceasar.util.JsonUtil;
+import com.lge.framework.ceasar.service.view.Skin;
+
+import com.lge.framework.pacific.logger.Logger;
+import "CONCRETE_ROOT_PACKAGE_NAME".repository."Table"Repository;
+import "CONCRETE_ROOT_PACKAGE_NAME".dao."Table"Dao;
+"FOREIGN_IMPORT"
+import "CONCRETE_ROOT_PACKAGE_NAME".entity."Table"Entity;
+import "CONCRETE_ROOT_PACKAGE_NAME".dto."Table"Dto;
+import "CONCRETE_ROOT_PACKAGE_NAME".dto."Table"DtoExample;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import "CONCRETE_ROOT_PACKAGE_NAME".repository.SkinRepository;
+import "CONCRETE_ROOT_PACKAGE_NAME".entity.SkinEntity;
+
+abstract public class A"Table"Repository extends "TableType"Repository<"Table"Entity, "Table"Dao, "Table"Dto, "Table"DtoExample>{
+    @SuppressWarnings("unchecked")  
+    private KindredEventPublisher<LoadEvent<"Table"Entity>> loadPublisher = (KindredEventPublisher<LoadEvent<"Table"Entity>>)EventBroker.getPublisher("Table"Entity.class, LoadEvent.class);
+    @SuppressWarnings("unchecked")  
+    private KindredEventPublisher<CreateEvent<"Table"Entity>> createPublisher = (KindredEventPublisher<CreateEvent<"Table"Entity>>)EventBroker.getPublisher("Table"Entity.class, CreateEvent.class);
+    @SuppressWarnings("unchecked")
+    private KindredEventPublisher<UpdateEvent<"Table"Entity>> updatePublisher = (KindredEventPublisher<UpdateEvent<"Table"Entity>>)EventBroker.getPublisher("Table"Entity.class, UpdateEvent.class);
+    @SuppressWarnings("unchecked")
+    private KindredEventPublisher<DeleteEvent<"Table"Entity>> deletePublisher = (KindredEventPublisher<DeleteEvent<"Table"Entity>>)EventBroker.getPublisher("Table"Entity.class, DeleteEvent.class);
+
+    @Autowired
+    public A"Table"Repository("Table"Dao dao) {
+        super(dao);
+    }
+    
+"GET_NEXT_ID"
+
+    @Override
+    public "Table"Entity create("Table"Dto dto) throws IllegalArgumentException {
+        if(checkCreated(dto) == true) throw new IllegalArgumentException("Already created : " + ToString.toLine(dto));    
+        if(checkForeignKeyEntityExist(dto) == false) throw new IllegalArgumentException("No record of foreign key when create : " + ToString.toLine(dto));
+        if(dao.insert(dto) == false) throw new IllegalArgumentException();
+            
+        "Table"Entity ret = load(dto);
+        createPublisher.publish(new CreateEvent<"Table"Entity>(cloneOf(ret)));
+        
+        return ret;
+    }
+  
+    protected boolean checkForeignKeyEntityExist("Table"Dto dto) {
+"CHECK_FOREIGN_KEY_ENTITY"
+        return true;
+    }
+        
+    public "Table"Entity cloneOf("Table"Entity entity) {
+        "Table"Entity ret = newEntity(entity.getDto());
+
+        return ret;
+    }
+  
+    protected "Table"Entity newEntity("Table"Dto dto){
+        return new "Table"Entity(dto);
+    }
+    
+    @Transactional
+    @Override
+    protected boolean deleteDao(List<"Table"Entity> entities) {
+        super.deleteDao(entities);
+"DELETE_FOREIGN_RECORDS" 
+        return dao.delete(Repos.repo("Table"Repository.class).getDtoList(entities));
+    }
+   
+    @Override
+    protected boolean initDescendent() {
+"INIT_LAST_ID"
+"INIT_PARENT_SKIN_TYPES"
+"INIT_KID_SKIN_TYPES"
+        return true;
+    }
+    
+    public "Table"DtoExample example(){
+        return new "Table"DtoExample();
+    }
+    
+    private "Table"DtoExample criteriaFactory = new "Table"DtoExample();
+    public "Table"DtoExample.Criteria criteria(){
+        return criteriaFactory.createCriteria();
+    }
+    
+    public List<"Table"Entity> getByCriteria("Table"DtoExample.Criteria c){
+        "Table"DtoExample newExample = new "Table"DtoExample();
+        newExample.or(c);
+        List<"Table"Dto> dtos = dao.selectByExample(newExample);
+        List<"Table"Entity> entities = new ArrayList<>();
+        if(dtos == null) return entities;
+        for("Table"Dto each : dtos) entities.add(load(each));
+      
+        return entities;
+    }
+    
+// As a Skinner ----------------------------------------------------------------------------------------------------------------------------------------  
+    private Set<String> parentSkinTypes = ConcurrentHashMap.newKeySet();
+    private Set<String> kidSkinTypes = ConcurrentHashMap.newKeySet();
+    
+    public List<String> getParentSkinTypes(){ return new ArrayList<>(parentSkinTypes); }
+    public List<String> getKidSkinTypes(){ return new ArrayList<>(kidSkinTypes); }
+    
+    public String skinized(JsonNode inputNode) {
+        ObjectMapper om = JsonUtil.objectMapper();
+        try {
+            "Table"Dto dto = om.treeToValue(inputNode, "Table"Dto.class);
+            "Table"Entity entity = get(dto);
+            if(entity == null) {
+                Logger.error(TAG, "Failed to find entity");
+                return "";
+            }
+            return skinize(entity);
+        } catch (JsonProcessingException e) {
+            Logger.error(TAG, "Failed to make Object by json");
+            return "";
+        }
+    }
+  
+    public String skinized("Table"Entity entity) {
+        return skinize(entity);
+    }
+    
+    protected String skinize("Table"Entity entity) {
+        return skinize(entity.getDto());
+    }
+  
+    protected String skinize("Table"Dto dto) {
+        ObjectMapper om = JsonUtil.objectMapper();
+        JsonNode node = om.valueToTree(dto);
+    
+        SkinEntity skinEntity = Repos.repo(SkinRepository.class).getByMapKey(SkinEntity.newMapKey(skinType()));
+        ((ObjectNode) node).put("skinType", skinType());
+        skinEntity.skinize(node);
+    
+        try {
+            return om.writeValueAsString(node);
+        } catch (JsonProcessingException e) {
+            // TODO : error handling
+        }
+        
+        return "";
+    }
+    
+    @Override
+    public String skinType() {
+        return "Table"Entity.skinType();
+    }
+
+    @Override
+    public Skin skin() {
+        SkinEntity entity = Repos.repo(SkinRepository.class).getByMapKey(SkinEntity.newMapKey(skinType()));
+        return entity.skin(getParentSkinTypes(), getKidSkinTypes());
+    }
+    
+    protected "Table"Dto jsonNodeToDto(JsonNode node) {
+        ObjectMapper om = JsonUtil.objectMapper();
+        try {
+            "Table"Dto dto = om.treeToValue(node, "Table"Dto.class);
+            return dto;
+        } catch (Exception e) {
+            try {
+              String json = om.writeValueAsString(node);
+        Logger.error(TAG, "Failed to create " + skinType() + " with jsonNode " + json);
+      } catch (JsonProcessingException e1) {
+        Logger.error(TAG, "Failed to create " + skinType());
+      }
+            return null;
+      }
+    }
+    
+    public String create(JsonNode inputNode) {
+        "Table"Dto dto = jsonNodeToDto(inputNode);
+        if(dto == null) return "";
+        "Table"Entity entity = create(dto);
+        if(entity != null) return skinized(entity);
+        return "";
+    }
+    
+    public String update(JsonNode inputNode) {
+        "Table"Dto dto = jsonNodeToDto(inputNode);
+        if(dto == null) return "";
+        "Table"Entity entity = get(dto);
+        if(entity != null){
+          boolean ret = update(newEntity(dto));
+          if(ret) return skinized(get(dto));
+        }
+        return "";
+    }
+    
+    public boolean delete(JsonNode inputNode) {
+        "Table"Dto dto = jsonNodeToDto(inputNode);
+        if(dto == null) return false;
+        "Table"Entity entity = get(dto);
+        return delete(entity);
+    }
+    
+    public String getSkinizedKids(JsonNode node, String kidSkinType) {
+        "Table"Dto dto = jsonNodeToDto(node);
+        if(dto == null) return "";
+        "Table"Entity entity = get(dto);
+"FOREIGN_USED_SKINIZED"
+        
+        return "";
+    }
+    
+    @Override
+    public String read(Map<String, String> from, Map<String, String> to, Map<String, List<String>> maps, int limit) {
+        List<"Table"Dto> dtos = new ArrayList<>();
+        Object[] keySet = maps.keySet().toArray();
+        int idx[] = new int[keySet.length];
+            
+        while(true){
+            "Table"DtoExample example = example();
+            example.setOrderByClause("cdate desc limit " + limit);
+            "Table"DtoExample.Criteria criteria = example.or();
+      
+            int row = 0;
+            while(row < keySet.length) {
+                List<String> columns = maps.get(keySet[row]);
+                if(columns.size() == 0) {
+                    row++;
+                    continue;
+                }
+
+                if(CriteriaUtil.setEqualCriteria(criteria, (String)keySet[row], columns.get(idx[row])) == false) {
+                    Logger.error(TAG, "Failed to make database read criteria " + (String)keySet[row] + " equal to " + columns.get(idx[row]));
+                    return "";
+                }
+          
+                row++;
+            }
+        
+            for(String key : from.keySet()) {
+                String fieldFrom = from.get(key);
+                if(fieldFrom == "") continue;
+                String fieldTo = to.get(key);
+                if(CriteriaUtil.setBetweenCriteria(criteria, (String)key, fieldFrom, fieldTo) == false) {
+                    Logger.error(TAG, "Failed to make database read criteria " + (String)keySet[row] + " bwtween " + fieldFrom + " to " + fieldTo);
+                    return "";
+                }
+            }
+        
+            List<"Table"Dto> selected = dao.selectByExample(example);
+            dtos.addAll(selected);
+        
+            int r = CriteriaUtil.calculateCriteriaCombination(idx, maps, keySet);
+            if(r == -1) break;
+        }
+      
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = dtos.size() - 1; i >= 0; i--) {
+            ret.append(skinize(dtos.get(i)));
+            if(i != 0) ret.append(",");
+        }
+        ret.append("]");
+
+        return ret.toString();
+    }
+     
+"PERMANENCE"
+    public String skinizedAll() {
+      return JsonUtil.toJsonString(new ArrayList<>());
+    }
+
+// ----------------------------------------------------------------------------------------------------------------------------------------
+
+    protected "Table"Entity load("Table"Dto dto) {
+        "Table"Entity entity = newEntity(dto);   
+        return entity;
+    }
+
+    protected boolean checkCreated("Table"Dto dto){ return false; }
+    
+    @Override
+    public "Table"Entity get("Table"Dto dto) {
+        "Table"Entity entity = newEntity(dao.select("ForPk,"<dto.get"TablePk"()>));
+        return entity;
+    }
+}
+
+"CACHEABLE"
+
+    public String skinizedAll() {
+        List<String> all = new ArrayList<String>();
+        for("Table"Entity entity : getAll()) {
+            all.add(skinized(entity));
+        }
+      
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < all.size(); i++) {
+            ret.append(all.get(i));
+            if(i != all.size()-1) ret.append(",");
+        }
+        ret.append("]");
+        return ret.toString();
+    }
+
+// ----------------------------------------------------------------------------------------------------------------------------------------
+
+"MAPSET_DECLARE"
+"MAPSET_GET"
+
+    @Override
+    public "Table"Entity get("Table"Dto dto) {
+        return map.get("Table"Entity.newMapKey(dto));
+    }
+       
+    protected boolean checkCreated("Table"Dto dto){
+        if(map.containsKey("Table"Entity.newMapKey(dto))) return true;
+        return false;
+    }
+    
+    protected "Table"Entity load("Table"Dto dto) {
+        "Table"Entity entity = newEntity(dto);
+        map.put(entity.mapKey(), entity);    
+"MAPSET_PUT"
+        
+        return entity;
+    }
+    
+    protected void loaded("Table"Entity entity){
+        loadPublisher.publish(new LoadEvent<"Table"Entity>(cloneOf(entity)));
+    }
+        
+    @Override
+    protected void updated(List<"Table"Entity> entities) {
+        for("Table"Entity entity : entities) updatePublisher.publish(new UpdateEvent<"Table"Entity>(cloneOf(entity)));
+    }
+  
+    @Override
+    protected void daoDeleted(List<"Table"Entity> entities) {
+        super.daoDeleted(entities);
+        for("Table"Entity entity : entities) deletePublisher.publish(new DeleteEvent<"Table"Entity>(cloneOf(entity)));
+"DELETE_FOREIGN_ENTITIES"
+    }
+    
+    @Override
+    protected List<"Table"Dto> dtoListToStart() {
+        return dao.selectAll();
+    }
+}

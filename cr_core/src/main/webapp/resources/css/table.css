@@ -1,0 +1,87 @@
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    width: 100%;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+table td, table th {
+    border: 0px solid #ddd;
+    padding: 4px;
+}
+
+table tr:nth-child(even){background-color: #eeeeee;}
+
+table tr:hover {background-color: #ddd;}
+
+table caption { /* table 제목 */
+    padding: 6px;
+    text-align: center;
+    background-color: #888888;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: 2px solid #dddddd;
+}
+
+table th { /* table 상단 */
+    padding: 6px;
+    text-align: center;
+    background-color: #4CAF50;
+    color: white;
+}
+
+table td input {
+ width: 100%;
+ height: 20px;
+ padding: 0px 0px;
+ border: 0px solid transparent;
+ box-sizing: border-box;
+ background-color: transparent;
+ font-size: 16px;
+ font-weight: normal;
+}
+
+table td input[type=text] {
+ width: 100%;
+ height: 20px;
+ padding: 0px 0px;
+ border: 0px solid transparent;
+ box-sizing: border-box;
+ background-color: transparent;
+ font-size: 16px;
+ font-weight: normal;
+}
+
+table td input[type="datetime-local"] {
+ width: 100%;
+ padding: 0px 0px;
+ border: 0px solid transparent;
+ background-color: transparent;
+ font-size: 16px;
+ font-weight: normal;
+}
+
+table td select, table th select {
+ width: 20;
+ padding: 0px 0px;
+ display: inline-block;
+ border: 1px solid transparent;
+ background-color: transparent;
+ border-radius: 4px; /* 둥근모서리 반경 */
+ box-sizing: border-box;
+ font-size: 16px;
+ font-weight: normal;
+}
+
+table td input[type="radio"]{
+ width: 20;
+ padding: 0px 0px;
+ display: inline-block;
+ border: 1px solid transparent;
+ background-color: transparent;
+ border-radius: 4px; /* 둥근모서리 반경 */
+ box-sizing: border-box;
+ font-size: 16px;
+ font-weight: normal;
+}

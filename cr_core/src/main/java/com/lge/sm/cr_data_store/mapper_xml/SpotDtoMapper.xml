@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lge.sm.cr_data_store.mapper.SpotDtoMapper">
+  <resultMap id="BaseResultMap" type="com.lge.sm.cr_data_store.dto.SpotDto">
+    <id column="spot_id" jdbcType="BIGINT" property="spotId" />
+    <result column="x" jdbcType="DOUBLE" property="x" />
+    <result column="y" jdbcType="DOUBLE" property="y" />
+    <result column="z" jdbcType="DOUBLE" property="z" />
+    <result column="cdate" jdbcType="VARCHAR" property="cdate" />
+    <result column="point_id" jdbcType="BIGINT" property="pointId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    spot_id, x, y, z, cdate, point_id, name
+  </sql>
+  <select id="selectByExample" parameterType="com.lge.sm.cr_data_store.dto.SpotDtoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from spot
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from spot
+    where spot_id = #{spotId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from spot
+    where spot_id = #{spotId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lge.sm.cr_data_store.dto.SpotDtoExample">
+    delete from spot
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lge.sm.cr_data_store.dto.SpotDto">
+    insert into spot (spot_id, x, y, z, 
+      cdate, point_id, name
+      )
+    values (#{spotId,jdbcType=BIGINT}, #{x,jdbcType=DOUBLE}, #{y,jdbcType=DOUBLE}, #{z,jdbcType=DOUBLE}, 
+      #{cdate,jdbcType=VARCHAR}, #{pointId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lge.sm.cr_data_store.dto.SpotDto">
+    insert into spot
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="spotId != null">
+        spot_id,
+      </if>
+      <if test="x != null">
+        x,
+      </if>
+      <if test="y != null">
+        y,
+      </if>
+      <if test="z != null">
+        z,
+      </if>
+      <if test="cdate != null">
+        cdate,
+      </if>
+      <if test="pointId != null">
+        point_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="spotId != null">
+        #{spotId,jdbcType=BIGINT},
+      </if>
+      <if test="x != null">
+        #{x,jdbcType=DOUBLE},
+      </if>
+      <if test="y != null">
+        #{y,jdbcType=DOUBLE},
+      </if>
+      <if test="z != null">
+        #{z,jdbcType=DOUBLE},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="pointId != null">
+        #{pointId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lge.sm.cr_data_store.dto.SpotDtoExample" resultType="java.lang.Long">
+    select count(*) from spot
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update spot
+    <set>
+      <if test="record.spotId != null">
+        spot_id = #{record.spotId,jdbcType=BIGINT},
+      </if>
+      <if test="record.x != null">
+        x = #{record.x,jdbcType=DOUBLE},
+      </if>
+      <if test="record.y != null">
+        y = #{record.y,jdbcType=DOUBLE},
+      </if>
+      <if test="record.z != null">
+        z = #{record.z,jdbcType=DOUBLE},
+      </if>
+      <if test="record.cdate != null">
+        cdate = #{record.cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pointId != null">
+        point_id = #{record.pointId,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update spot
+    set spot_id = #{record.spotId,jdbcType=BIGINT},
+      x = #{record.x,jdbcType=DOUBLE},
+      y = #{record.y,jdbcType=DOUBLE},
+      z = #{record.z,jdbcType=DOUBLE},
+      cdate = #{record.cdate,jdbcType=VARCHAR},
+      point_id = #{record.pointId,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lge.sm.cr_data_store.dto.SpotDto">
+    update spot
+    <set>
+      <if test="x != null">
+        x = #{x,jdbcType=DOUBLE},
+      </if>
+      <if test="y != null">
+        y = #{y,jdbcType=DOUBLE},
+      </if>
+      <if test="z != null">
+        z = #{z,jdbcType=DOUBLE},
+      </if>
+      <if test="cdate != null">
+        cdate = #{cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="pointId != null">
+        point_id = #{pointId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where spot_id = #{spotId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lge.sm.cr_data_store.dto.SpotDto">
+    update spot
+    set x = #{x,jdbcType=DOUBLE},
+      y = #{y,jdbcType=DOUBLE},
+      z = #{z,jdbcType=DOUBLE},
+      cdate = #{cdate,jdbcType=VARCHAR},
+      point_id = #{pointId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR}
+    where spot_id = #{spotId,jdbcType=BIGINT}
+  </update>
+</mapper>

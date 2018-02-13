@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lge.sm.cr_data_store.mapper.DriverHistoryDtoMapper">
+  <resultMap id="BaseResultMap" type="com.lge.sm.cr_data_store.dto.DriverHistoryDto">
+    <id column="cdate" jdbcType="VARCHAR" property="cdate" />
+    <id column="driver_id" jdbcType="BIGINT" property="driverId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="fault_cause" jdbcType="VARCHAR" property="faultCause" />
+    <result column="enable" jdbcType="INTEGER" property="enable" />
+    <result column="ping_enable" jdbcType="INTEGER" property="pingEnable" />
+    <result column="ping_frequency" jdbcType="BIGINT" property="pingFrequency" />
+    <result column="poll_enable" jdbcType="INTEGER" property="pollEnable" />
+    <result column="poll_frequency" jdbcType="BIGINT" property="pollFrequency" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    cdate, driver_id, status, fault_cause, enable, ping_enable, ping_frequency, poll_enable, 
+    poll_frequency
+  </sql>
+  <select id="selectByExample" parameterType="com.lge.sm.cr_data_store.dto.DriverHistoryDtoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from driver_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from driver_history
+    where cdate = #{cdate,jdbcType=VARCHAR}
+      and driver_id = #{driverId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from driver_history
+    where cdate = #{cdate,jdbcType=VARCHAR}
+      and driver_id = #{driverId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lge.sm.cr_data_store.dto.DriverHistoryDtoExample">
+    delete from driver_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lge.sm.cr_data_store.dto.DriverHistoryDto">
+    insert into driver_history (cdate, driver_id, status, 
+      fault_cause, enable, ping_enable, 
+      ping_frequency, poll_enable, poll_frequency
+      )
+    values (#{cdate,jdbcType=VARCHAR}, #{driverId,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, 
+      #{faultCause,jdbcType=VARCHAR}, #{enable,jdbcType=INTEGER}, #{pingEnable,jdbcType=INTEGER}, 
+      #{pingFrequency,jdbcType=BIGINT}, #{pollEnable,jdbcType=INTEGER}, #{pollFrequency,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lge.sm.cr_data_store.dto.DriverHistoryDto">
+    insert into driver_history
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cdate != null">
+        cdate,
+      </if>
+      <if test="driverId != null">
+        driver_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="faultCause != null">
+        fault_cause,
+      </if>
+      <if test="enable != null">
+        enable,
+      </if>
+      <if test="pingEnable != null">
+        ping_enable,
+      </if>
+      <if test="pingFrequency != null">
+        ping_frequency,
+      </if>
+      <if test="pollEnable != null">
+        poll_enable,
+      </if>
+      <if test="pollFrequency != null">
+        poll_frequency,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cdate != null">
+        #{cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="driverId != null">
+        #{driverId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="faultCause != null">
+        #{faultCause,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        #{enable,jdbcType=INTEGER},
+      </if>
+      <if test="pingEnable != null">
+        #{pingEnable,jdbcType=INTEGER},
+      </if>
+      <if test="pingFrequency != null">
+        #{pingFrequency,jdbcType=BIGINT},
+      </if>
+      <if test="pollEnable != null">
+        #{pollEnable,jdbcType=INTEGER},
+      </if>
+      <if test="pollFrequency != null">
+        #{pollFrequency,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lge.sm.cr_data_store.dto.DriverHistoryDtoExample" resultType="java.lang.Long">
+    select count(*) from driver_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update driver_history
+    <set>
+      <if test="record.cdate != null">
+        cdate = #{record.cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.driverId != null">
+        driver_id = #{record.driverId,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faultCause != null">
+        fault_cause = #{record.faultCause,jdbcType=VARCHAR},
+      </if>
+      <if test="record.enable != null">
+        enable = #{record.enable,jdbcType=INTEGER},
+      </if>
+      <if test="record.pingEnable != null">
+        ping_enable = #{record.pingEnable,jdbcType=INTEGER},
+      </if>
+      <if test="record.pingFrequency != null">
+        ping_frequency = #{record.pingFrequency,jdbcType=BIGINT},
+      </if>
+      <if test="record.pollEnable != null">
+        poll_enable = #{record.pollEnable,jdbcType=INTEGER},
+      </if>
+      <if test="record.pollFrequency != null">
+        poll_frequency = #{record.pollFrequency,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update driver_history
+    set cdate = #{record.cdate,jdbcType=VARCHAR},
+      driver_id = #{record.driverId,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=VARCHAR},
+      fault_cause = #{record.faultCause,jdbcType=VARCHAR},
+      enable = #{record.enable,jdbcType=INTEGER},
+      ping_enable = #{record.pingEnable,jdbcType=INTEGER},
+      ping_frequency = #{record.pingFrequency,jdbcType=BIGINT},
+      poll_enable = #{record.pollEnable,jdbcType=INTEGER},
+      poll_frequency = #{record.pollFrequency,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lge.sm.cr_data_store.dto.DriverHistoryDto">
+    update driver_history
+    <set>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="faultCause != null">
+        fault_cause = #{faultCause,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null">
+        enable = #{enable,jdbcType=INTEGER},
+      </if>
+      <if test="pingEnable != null">
+        ping_enable = #{pingEnable,jdbcType=INTEGER},
+      </if>
+      <if test="pingFrequency != null">
+        ping_frequency = #{pingFrequency,jdbcType=BIGINT},
+      </if>
+      <if test="pollEnable != null">
+        poll_enable = #{pollEnable,jdbcType=INTEGER},
+      </if>
+      <if test="pollFrequency != null">
+        poll_frequency = #{pollFrequency,jdbcType=BIGINT},
+      </if>
+    </set>
+    where cdate = #{cdate,jdbcType=VARCHAR}
+      and driver_id = #{driverId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lge.sm.cr_data_store.dto.DriverHistoryDto">
+    update driver_history
+    set status = #{status,jdbcType=VARCHAR},
+      fault_cause = #{faultCause,jdbcType=VARCHAR},
+      enable = #{enable,jdbcType=INTEGER},
+      ping_enable = #{pingEnable,jdbcType=INTEGER},
+      ping_frequency = #{pingFrequency,jdbcType=BIGINT},
+      poll_enable = #{pollEnable,jdbcType=INTEGER},
+      poll_frequency = #{pollFrequency,jdbcType=BIGINT}
+    where cdate = #{cdate,jdbcType=VARCHAR}
+      and driver_id = #{driverId,jdbcType=BIGINT}
+  </update>
+</mapper>

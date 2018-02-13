@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lge.sm.cr_data_store.mapper.ScheduleDtoMapper">
+  <resultMap id="BaseResultMap" type="com.lge.sm.cr_data_store.dto.ScheduleDto">
+    <id column="schedule_id" jdbcType="VARCHAR" property="scheduleId" />
+    <result column="room_id" jdbcType="VARCHAR" property="roomId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="sdate" jdbcType="VARCHAR" property="sdate" />
+    <result column="edate" jdbcType="VARCHAR" property="edate" />
+    <result column="local_year" jdbcType="INTEGER" property="localYear" />
+    <result column="local_month" jdbcType="INTEGER" property="localMonth" />
+    <result column="local_day" jdbcType="INTEGER" property="localDay" />
+    <result column="local_day_of_week" jdbcType="INTEGER" property="localDayOfWeek" />
+    <result column="local_shhmm" jdbcType="VARCHAR" property="localShhmm" />
+    <result column="local_ehhmm" jdbcType="VARCHAR" property="localEhhmm" />
+    <result column="local_duration" jdbcType="INTEGER" property="localDuration" />
+    <result column="sensor_cnt" jdbcType="INTEGER" property="sensorCnt" />
+    <result column="total_sensor" jdbcType="INTEGER" property="totalSensor" />
+    <result column="total_detect" jdbcType="INTEGER" property="totalDetect" />
+    <result column="chk_duration" jdbcType="INTEGER" property="chkDuration" />
+    <result column="result" jdbcType="INTEGER" property="result" />
+    <result column="cdate" jdbcType="VARCHAR" property="cdate" />
+    <result column="location_id" jdbcType="VARCHAR" property="locationId" />
+    <result column="error_cnt" jdbcType="INTEGER" property="errorCnt" />
+    <result column="result_date" jdbcType="VARCHAR" property="resultDate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    schedule_id, room_id, name, user_id, user_name, dept_name, sdate, edate, local_year, 
+    local_month, local_day, local_day_of_week, local_shhmm, local_ehhmm, local_duration, 
+    sensor_cnt, total_sensor, total_detect, chk_duration, result, cdate, location_id, 
+    error_cnt, result_date
+  </sql>
+  <select id="selectByExample" parameterType="com.lge.sm.cr_data_store.dto.ScheduleDtoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from schedule
+    where schedule_id = #{scheduleId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from schedule
+    where schedule_id = #{scheduleId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lge.sm.cr_data_store.dto.ScheduleDtoExample">
+    delete from schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lge.sm.cr_data_store.dto.ScheduleDto">
+    insert into schedule (schedule_id, room_id, name, 
+      user_id, user_name, dept_name, 
+      sdate, edate, local_year, 
+      local_month, local_day, local_day_of_week, 
+      local_shhmm, local_ehhmm, local_duration, 
+      sensor_cnt, total_sensor, total_detect, 
+      chk_duration, result, cdate, 
+      location_id, error_cnt, result_date
+      )
+    values (#{scheduleId,jdbcType=VARCHAR}, #{roomId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{deptName,jdbcType=VARCHAR}, 
+      #{sdate,jdbcType=VARCHAR}, #{edate,jdbcType=VARCHAR}, #{localYear,jdbcType=INTEGER}, 
+      #{localMonth,jdbcType=INTEGER}, #{localDay,jdbcType=INTEGER}, #{localDayOfWeek,jdbcType=INTEGER}, 
+      #{localShhmm,jdbcType=VARCHAR}, #{localEhhmm,jdbcType=VARCHAR}, #{localDuration,jdbcType=INTEGER}, 
+      #{sensorCnt,jdbcType=INTEGER}, #{totalSensor,jdbcType=INTEGER}, #{totalDetect,jdbcType=INTEGER}, 
+      #{chkDuration,jdbcType=INTEGER}, #{result,jdbcType=INTEGER}, #{cdate,jdbcType=VARCHAR}, 
+      #{locationId,jdbcType=VARCHAR}, #{errorCnt,jdbcType=INTEGER}, #{resultDate,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lge.sm.cr_data_store.dto.ScheduleDto">
+    insert into schedule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="scheduleId != null">
+        schedule_id,
+      </if>
+      <if test="roomId != null">
+        room_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="deptName != null">
+        dept_name,
+      </if>
+      <if test="sdate != null">
+        sdate,
+      </if>
+      <if test="edate != null">
+        edate,
+      </if>
+      <if test="localYear != null">
+        local_year,
+      </if>
+      <if test="localMonth != null">
+        local_month,
+      </if>
+      <if test="localDay != null">
+        local_day,
+      </if>
+      <if test="localDayOfWeek != null">
+        local_day_of_week,
+      </if>
+      <if test="localShhmm != null">
+        local_shhmm,
+      </if>
+      <if test="localEhhmm != null">
+        local_ehhmm,
+      </if>
+      <if test="localDuration != null">
+        local_duration,
+      </if>
+      <if test="sensorCnt != null">
+        sensor_cnt,
+      </if>
+      <if test="totalSensor != null">
+        total_sensor,
+      </if>
+      <if test="totalDetect != null">
+        total_detect,
+      </if>
+      <if test="chkDuration != null">
+        chk_duration,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+      <if test="cdate != null">
+        cdate,
+      </if>
+      <if test="locationId != null">
+        location_id,
+      </if>
+      <if test="errorCnt != null">
+        error_cnt,
+      </if>
+      <if test="resultDate != null">
+        result_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="scheduleId != null">
+        #{scheduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="roomId != null">
+        #{roomId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null">
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="sdate != null">
+        #{sdate,jdbcType=VARCHAR},
+      </if>
+      <if test="edate != null">
+        #{edate,jdbcType=VARCHAR},
+      </if>
+      <if test="localYear != null">
+        #{localYear,jdbcType=INTEGER},
+      </if>
+      <if test="localMonth != null">
+        #{localMonth,jdbcType=INTEGER},
+      </if>
+      <if test="localDay != null">
+        #{localDay,jdbcType=INTEGER},
+      </if>
+      <if test="localDayOfWeek != null">
+        #{localDayOfWeek,jdbcType=INTEGER},
+      </if>
+      <if test="localShhmm != null">
+        #{localShhmm,jdbcType=VARCHAR},
+      </if>
+      <if test="localEhhmm != null">
+        #{localEhhmm,jdbcType=VARCHAR},
+      </if>
+      <if test="localDuration != null">
+        #{localDuration,jdbcType=INTEGER},
+      </if>
+      <if test="sensorCnt != null">
+        #{sensorCnt,jdbcType=INTEGER},
+      </if>
+      <if test="totalSensor != null">
+        #{totalSensor,jdbcType=INTEGER},
+      </if>
+      <if test="totalDetect != null">
+        #{totalDetect,jdbcType=INTEGER},
+      </if>
+      <if test="chkDuration != null">
+        #{chkDuration,jdbcType=INTEGER},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=INTEGER},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="locationId != null">
+        #{locationId,jdbcType=VARCHAR},
+      </if>
+      <if test="errorCnt != null">
+        #{errorCnt,jdbcType=INTEGER},
+      </if>
+      <if test="resultDate != null">
+        #{resultDate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lge.sm.cr_data_store.dto.ScheduleDtoExample" resultType="java.lang.Long">
+    select count(*) from schedule
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update schedule
+    <set>
+      <if test="record.scheduleId != null">
+        schedule_id = #{record.scheduleId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roomId != null">
+        room_id = #{record.roomId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptName != null">
+        dept_name = #{record.deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sdate != null">
+        sdate = #{record.sdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.edate != null">
+        edate = #{record.edate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.localYear != null">
+        local_year = #{record.localYear,jdbcType=INTEGER},
+      </if>
+      <if test="record.localMonth != null">
+        local_month = #{record.localMonth,jdbcType=INTEGER},
+      </if>
+      <if test="record.localDay != null">
+        local_day = #{record.localDay,jdbcType=INTEGER},
+      </if>
+      <if test="record.localDayOfWeek != null">
+        local_day_of_week = #{record.localDayOfWeek,jdbcType=INTEGER},
+      </if>
+      <if test="record.localShhmm != null">
+        local_shhmm = #{record.localShhmm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.localEhhmm != null">
+        local_ehhmm = #{record.localEhhmm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.localDuration != null">
+        local_duration = #{record.localDuration,jdbcType=INTEGER},
+      </if>
+      <if test="record.sensorCnt != null">
+        sensor_cnt = #{record.sensorCnt,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalSensor != null">
+        total_sensor = #{record.totalSensor,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalDetect != null">
+        total_detect = #{record.totalDetect,jdbcType=INTEGER},
+      </if>
+      <if test="record.chkDuration != null">
+        chk_duration = #{record.chkDuration,jdbcType=INTEGER},
+      </if>
+      <if test="record.result != null">
+        result = #{record.result,jdbcType=INTEGER},
+      </if>
+      <if test="record.cdate != null">
+        cdate = #{record.cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.locationId != null">
+        location_id = #{record.locationId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.errorCnt != null">
+        error_cnt = #{record.errorCnt,jdbcType=INTEGER},
+      </if>
+      <if test="record.resultDate != null">
+        result_date = #{record.resultDate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update schedule
+    set schedule_id = #{record.scheduleId,jdbcType=VARCHAR},
+      room_id = #{record.roomId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      dept_name = #{record.deptName,jdbcType=VARCHAR},
+      sdate = #{record.sdate,jdbcType=VARCHAR},
+      edate = #{record.edate,jdbcType=VARCHAR},
+      local_year = #{record.localYear,jdbcType=INTEGER},
+      local_month = #{record.localMonth,jdbcType=INTEGER},
+      local_day = #{record.localDay,jdbcType=INTEGER},
+      local_day_of_week = #{record.localDayOfWeek,jdbcType=INTEGER},
+      local_shhmm = #{record.localShhmm,jdbcType=VARCHAR},
+      local_ehhmm = #{record.localEhhmm,jdbcType=VARCHAR},
+      local_duration = #{record.localDuration,jdbcType=INTEGER},
+      sensor_cnt = #{record.sensorCnt,jdbcType=INTEGER},
+      total_sensor = #{record.totalSensor,jdbcType=INTEGER},
+      total_detect = #{record.totalDetect,jdbcType=INTEGER},
+      chk_duration = #{record.chkDuration,jdbcType=INTEGER},
+      result = #{record.result,jdbcType=INTEGER},
+      cdate = #{record.cdate,jdbcType=VARCHAR},
+      location_id = #{record.locationId,jdbcType=VARCHAR},
+      error_cnt = #{record.errorCnt,jdbcType=INTEGER},
+      result_date = #{record.resultDate,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lge.sm.cr_data_store.dto.ScheduleDto">
+    update schedule
+    <set>
+      <if test="roomId != null">
+        room_id = #{roomId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null">
+        dept_name = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="sdate != null">
+        sdate = #{sdate,jdbcType=VARCHAR},
+      </if>
+      <if test="edate != null">
+        edate = #{edate,jdbcType=VARCHAR},
+      </if>
+      <if test="localYear != null">
+        local_year = #{localYear,jdbcType=INTEGER},
+      </if>
+      <if test="localMonth != null">
+        local_month = #{localMonth,jdbcType=INTEGER},
+      </if>
+      <if test="localDay != null">
+        local_day = #{localDay,jdbcType=INTEGER},
+      </if>
+      <if test="localDayOfWeek != null">
+        local_day_of_week = #{localDayOfWeek,jdbcType=INTEGER},
+      </if>
+      <if test="localShhmm != null">
+        local_shhmm = #{localShhmm,jdbcType=VARCHAR},
+      </if>
+      <if test="localEhhmm != null">
+        local_ehhmm = #{localEhhmm,jdbcType=VARCHAR},
+      </if>
+      <if test="localDuration != null">
+        local_duration = #{localDuration,jdbcType=INTEGER},
+      </if>
+      <if test="sensorCnt != null">
+        sensor_cnt = #{sensorCnt,jdbcType=INTEGER},
+      </if>
+      <if test="totalSensor != null">
+        total_sensor = #{totalSensor,jdbcType=INTEGER},
+      </if>
+      <if test="totalDetect != null">
+        total_detect = #{totalDetect,jdbcType=INTEGER},
+      </if>
+      <if test="chkDuration != null">
+        chk_duration = #{chkDuration,jdbcType=INTEGER},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=INTEGER},
+      </if>
+      <if test="cdate != null">
+        cdate = #{cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="locationId != null">
+        location_id = #{locationId,jdbcType=VARCHAR},
+      </if>
+      <if test="errorCnt != null">
+        error_cnt = #{errorCnt,jdbcType=INTEGER},
+      </if>
+      <if test="resultDate != null">
+        result_date = #{resultDate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where schedule_id = #{scheduleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lge.sm.cr_data_store.dto.ScheduleDto">
+    update schedule
+    set room_id = #{roomId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      dept_name = #{deptName,jdbcType=VARCHAR},
+      sdate = #{sdate,jdbcType=VARCHAR},
+      edate = #{edate,jdbcType=VARCHAR},
+      local_year = #{localYear,jdbcType=INTEGER},
+      local_month = #{localMonth,jdbcType=INTEGER},
+      local_day = #{localDay,jdbcType=INTEGER},
+      local_day_of_week = #{localDayOfWeek,jdbcType=INTEGER},
+      local_shhmm = #{localShhmm,jdbcType=VARCHAR},
+      local_ehhmm = #{localEhhmm,jdbcType=VARCHAR},
+      local_duration = #{localDuration,jdbcType=INTEGER},
+      sensor_cnt = #{sensorCnt,jdbcType=INTEGER},
+      total_sensor = #{totalSensor,jdbcType=INTEGER},
+      total_detect = #{totalDetect,jdbcType=INTEGER},
+      chk_duration = #{chkDuration,jdbcType=INTEGER},
+      result = #{result,jdbcType=INTEGER},
+      cdate = #{cdate,jdbcType=VARCHAR},
+      location_id = #{locationId,jdbcType=VARCHAR},
+      error_cnt = #{errorCnt,jdbcType=INTEGER},
+      result_date = #{resultDate,jdbcType=VARCHAR}
+    where schedule_id = #{scheduleId,jdbcType=VARCHAR}
+  </update>
+</mapper>

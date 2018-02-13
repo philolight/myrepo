@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lge.sm.cr_data_store.mapper.SlmDtoMapper">
+  <resultMap id="BaseResultMap" type="com.lge.sm.cr_data_store.dto.SlmDto">
+    <id column="slm_id" jdbcType="VARCHAR" property="slmId" />
+    <result column="protocol" jdbcType="VARCHAR" property="protocol" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="port" jdbcType="INTEGER" property="port" />
+    <result column="use_auth" jdbcType="INTEGER" property="useAuth" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_pw" jdbcType="VARCHAR" property="userPw" />
+    <result column="cdate" jdbcType="VARCHAR" property="cdate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    slm_id, protocol, ip, port, use_auth, user_id, user_pw, cdate
+  </sql>
+  <select id="selectByExample" parameterType="com.lge.sm.cr_data_store.dto.SlmDtoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from slm
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from slm
+    where slm_id = #{slmId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from slm
+    where slm_id = #{slmId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lge.sm.cr_data_store.dto.SlmDtoExample">
+    delete from slm
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lge.sm.cr_data_store.dto.SlmDto">
+    insert into slm (slm_id, protocol, ip, 
+      port, use_auth, user_id, 
+      user_pw, cdate)
+    values (#{slmId,jdbcType=VARCHAR}, #{protocol,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{port,jdbcType=INTEGER}, #{useAuth,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
+      #{userPw,jdbcType=VARCHAR}, #{cdate,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lge.sm.cr_data_store.dto.SlmDto">
+    insert into slm
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="slmId != null">
+        slm_id,
+      </if>
+      <if test="protocol != null">
+        protocol,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="port != null">
+        port,
+      </if>
+      <if test="useAuth != null">
+        use_auth,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userPw != null">
+        user_pw,
+      </if>
+      <if test="cdate != null">
+        cdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="slmId != null">
+        #{slmId,jdbcType=VARCHAR},
+      </if>
+      <if test="protocol != null">
+        #{protocol,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null">
+        #{port,jdbcType=INTEGER},
+      </if>
+      <if test="useAuth != null">
+        #{useAuth,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userPw != null">
+        #{userPw,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lge.sm.cr_data_store.dto.SlmDtoExample" resultType="java.lang.Long">
+    select count(*) from slm
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update slm
+    <set>
+      <if test="record.slmId != null">
+        slm_id = #{record.slmId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.protocol != null">
+        protocol = #{record.protocol,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ip != null">
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.port != null">
+        port = #{record.port,jdbcType=INTEGER},
+      </if>
+      <if test="record.useAuth != null">
+        use_auth = #{record.useAuth,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPw != null">
+        user_pw = #{record.userPw,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cdate != null">
+        cdate = #{record.cdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update slm
+    set slm_id = #{record.slmId,jdbcType=VARCHAR},
+      protocol = #{record.protocol,jdbcType=VARCHAR},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      port = #{record.port,jdbcType=INTEGER},
+      use_auth = #{record.useAuth,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      user_pw = #{record.userPw,jdbcType=VARCHAR},
+      cdate = #{record.cdate,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lge.sm.cr_data_store.dto.SlmDto">
+    update slm
+    <set>
+      <if test="protocol != null">
+        protocol = #{protocol,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null">
+        port = #{port,jdbcType=INTEGER},
+      </if>
+      <if test="useAuth != null">
+        use_auth = #{useAuth,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userPw != null">
+        user_pw = #{userPw,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        cdate = #{cdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where slm_id = #{slmId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lge.sm.cr_data_store.dto.SlmDto">
+    update slm
+    set protocol = #{protocol,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      port = #{port,jdbcType=INTEGER},
+      use_auth = #{useAuth,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=VARCHAR},
+      user_pw = #{userPw,jdbcType=VARCHAR},
+      cdate = #{cdate,jdbcType=VARCHAR}
+    where slm_id = #{slmId,jdbcType=VARCHAR}
+  </update>
+</mapper>

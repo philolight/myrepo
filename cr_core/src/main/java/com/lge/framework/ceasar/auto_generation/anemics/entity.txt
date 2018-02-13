@@ -1,0 +1,27 @@
+"PACKAGE_DECLARE"
+
+
+import "ANEMIC_ROOT_PACKAGE_NAME".aentity.A"Table"Entity;
+import "CONCRETE_ROOT_PACKAGE_NAME".dto."Table"Dto;
+import "CONCRETE_ROOT_PACKAGE_NAME".repository."Table"Repository;
+import com.lge.framework.ceasar.repository.Repos;
+
+public class "Table"Entity extends A"Table"Entity implements Cloneable{
+    private static final String TAG = "Table"Entity.class.getSimpleName();
+  
+    protected "Table"Entity() {} // for Serialize
+  
+    public "Table"Entity("Table"Dto dto) {
+        super(dto);
+    }
+
+    @Override
+    public boolean flush() {
+        return Repos.repo("Table"Repository.class).update(this);
+    }
+    
+    @Override
+    protected "Table"Entity clone() throws CloneNotSupportedException {
+        return Repos.repo("Table"Repository.class).cloneOf(this);
+    }
+}

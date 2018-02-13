@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lge.sm.cr_data_store.mapper.TcpDtoMapper">
+  <resultMap id="BaseResultMap" type="com.lge.sm.cr_data_store.dto.TcpDto">
+    <id column="tcp_id" jdbcType="BIGINT" property="tcpId" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="port" jdbcType="INTEGER" property="port" />
+    <result column="cdate" jdbcType="VARCHAR" property="cdate" />
+    <result column="driver_id" jdbcType="BIGINT" property="driverId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    tcp_id, ip, port, cdate, driver_id
+  </sql>
+  <select id="selectByExample" parameterType="com.lge.sm.cr_data_store.dto.TcpDtoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tcp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tcp
+    where tcp_id = #{tcpId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tcp
+    where tcp_id = #{tcpId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lge.sm.cr_data_store.dto.TcpDtoExample">
+    delete from tcp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lge.sm.cr_data_store.dto.TcpDto">
+    insert into tcp (tcp_id, ip, port, 
+      cdate, driver_id)
+    values (#{tcpId,jdbcType=BIGINT}, #{ip,jdbcType=VARCHAR}, #{port,jdbcType=INTEGER}, 
+      #{cdate,jdbcType=VARCHAR}, #{driverId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lge.sm.cr_data_store.dto.TcpDto">
+    insert into tcp
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tcpId != null">
+        tcp_id,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="port != null">
+        port,
+      </if>
+      <if test="cdate != null">
+        cdate,
+      </if>
+      <if test="driverId != null">
+        driver_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tcpId != null">
+        #{tcpId,jdbcType=BIGINT},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null">
+        #{port,jdbcType=INTEGER},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="driverId != null">
+        #{driverId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lge.sm.cr_data_store.dto.TcpDtoExample" resultType="java.lang.Long">
+    select count(*) from tcp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tcp
+    <set>
+      <if test="record.tcpId != null">
+        tcp_id = #{record.tcpId,jdbcType=BIGINT},
+      </if>
+      <if test="record.ip != null">
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.port != null">
+        port = #{record.port,jdbcType=INTEGER},
+      </if>
+      <if test="record.cdate != null">
+        cdate = #{record.cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.driverId != null">
+        driver_id = #{record.driverId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tcp
+    set tcp_id = #{record.tcpId,jdbcType=BIGINT},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      port = #{record.port,jdbcType=INTEGER},
+      cdate = #{record.cdate,jdbcType=VARCHAR},
+      driver_id = #{record.driverId,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lge.sm.cr_data_store.dto.TcpDto">
+    update tcp
+    <set>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null">
+        port = #{port,jdbcType=INTEGER},
+      </if>
+      <if test="cdate != null">
+        cdate = #{cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="driverId != null">
+        driver_id = #{driverId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where tcp_id = #{tcpId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lge.sm.cr_data_store.dto.TcpDto">
+    update tcp
+    set ip = #{ip,jdbcType=VARCHAR},
+      port = #{port,jdbcType=INTEGER},
+      cdate = #{cdate,jdbcType=VARCHAR},
+      driver_id = #{driverId,jdbcType=BIGINT}
+    where tcp_id = #{tcpId,jdbcType=BIGINT}
+  </update>
+</mapper>

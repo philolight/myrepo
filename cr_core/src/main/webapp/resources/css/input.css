@@ -1,0 +1,285 @@
+select {
+    padding: 9px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* 둥근모서리 반경 */
+    box-sizing: border-box;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+input[type=text] {
+    width: 150;
+    padding: 7px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* 둥근모서리 반경 */
+    box-sizing: border-box;
+    background-color: transparent;
+}
+
+label {
+    width: 100;
+    padding: 4px 6px;
+    display: inline-block;
+    border: 1px solid transparent;
+    border-radius: 4px; /* 둥근모서리 반경 */
+    box-sizing: border-box;
+    text-align : center;
+    background-color: #eeeeee;
+}
+
+input[type="datetime-local"] {
+    width: 300;
+    padding: 7px 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* 둥근모서리 반경 */
+    box-sizing: border-box;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+input[type="button"] {
+  float : left;
+    
+  border:1px solid #CCCCCC;-webkit-box-shadow: #FEFFFF 0px 1px 1px ;-moz-box-shadow: #FEFFFF 0px 1px 1px ; box-shadow: #FEFFFF 0px 1px 1px ; -webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;font-size:14px;font-family:arial, helvetica, sans-serif; padding: 10px 10px 10px 10px; text-decoration:none; display:inline-block;text-shadow: 0px 1px 0 rgba(255,255,255,1);font-weight:bold; color: #4A4A4A;
+  background-color: #F7F5F6; background-image: -webkit-gradient(linear, left top, left bottom, from(#F7F5F6), to(#DDDDDD));
+  background-image: -webkit-linear-gradient(top, #F7F5F6, #DDDDDD);
+  background-image: -moz-linear-gradient(top, #F7F5F6, #DDDDDD);
+  background-image: -ms-linear-gradient(top, #F7F5F6, #DDDDDD);
+  background-image: -o-linear-gradient(top, #F7F5F6, #DDDDDD);
+  background-image: linear-gradient(to bottom, #F7F5F6, #DDDDDD);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#F7F5F6, endColorstr=#DDDDDD);
+}
+
+input[type="button"]:hover {
+  /* hover는 마우스가 해당 영역에 올라 왔을 때 표시되는 방식을 나타냄 */
+  border:1px solid #ADADAD;
+  background-color: #E0E0E0; background-image: -webkit-gradient(linear, left top, left bottom, from(#E0E0E0), to(#BDBBBC));
+  background-image: -webkit-linear-gradient(top, #E0E0E0, #BDBBBC);
+  background-image: -moz-linear-gradient(top, #E0E0E0, #BDBBBC);
+  background-image: -ms-linear-gradient(top, #E0E0E0, #BDBBBC);
+  background-image: -o-linear-gradient(top, #E0E0E0, #BDBBBC);
+  background-image: linear-gradient(to bottom, #E0E0E0, #BDBBBC);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#E0E0E0, endColorstr=#BDBBBC);
+}
+
+input[type=submit] {
+    width: 250;
+    padding: 7px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* 둥근모서리 반경 */
+    box-sizing: border-box;
+    background-color: #22ff22;
+}
+input[type=submit]:hover {
+    width: 250;
+    padding: 7px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* 둥근모서리 반경 */
+    box-sizing: border-box;
+    background-color: #00dd00;
+}
+
+#fieldValue {
+}
+
+#fieldValue label {
+    width: 250;
+    padding: 4px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* 둥근모서리 반경 */
+    box-sizing: border-box;
+}
+
+#fieldValue input {
+    width: 250;
+    padding: 7px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* 둥근모서리 반경 */
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+
+#fieldValue input[type="text"]:read-only {
+    width: 250;
+    padding: 7px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* 둥근모서리 반경 */
+    box-sizing: border-box;
+    background-color: #aaaaaa;
+}
+
+#fieldValue input:hover {
+    background-color: #ffeeee;
+}
+
+#fieldValue input[type=submit] {
+    width: 250;
+    padding: 7px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* 둥근모서리 반경 */
+    box-sizing: border-box;
+    background-color: #22ff22;
+}
+#fieldValue input[type=submit]:hover {
+    width: 250;
+    padding: 7px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* 둥근모서리 반경 */
+    box-sizing: border-box;
+    background-color: #00dd00;
+}
+
+#fieldValue lable {
+    background-color: #eeeeee;
+}
+
+#fieldName {
+  width: 200;
+  height: 100;
+  float: left;
+}
+
+#fieldName label {
+    width: 200;
+    padding: 4px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align : right;
+    background-color: #ffffdd;
+}
+
+#fieldType {
+}
+
+#fieldType label{
+    width: 70;
+    padding: 4px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align : center;
+    background-color: #e0e0e0;  
+}
+
+#fieldVisible {
+}
+
+#fieldVisible label{
+    width: 70;
+    padding: 4px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align : center;
+    background-color: #e0e0e0;  
+}
+
+#fieldEditable {
+}
+
+#fieldEditable label{
+    width: 70;
+    padding: 4px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align : center;
+    background-color: #e0e0e0;  
+}
+
+#fieldEncryption {
+}
+
+#fieldEncryption label{
+    width: 100;
+    padding: 4px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align : center;
+    background-color: #e0e0e0;  
+}
+
+#fieldHideTyping {
+}
+
+#fieldHideTyping label{
+    width: 120;
+    padding: 4px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align : center;
+    background-color: #e0e0e0;  
+}
+
+#fieldNillable {
+}
+
+#fieldNillable label{
+    width: 70;
+    padding: 4px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align : center;
+    background-color: #e0e0e0;  
+}
+
+#fieldAutoFill {
+}
+
+#fieldAutoFill label{
+    width: 70;
+    padding: 4px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align : center;
+    background-color: #e0e0e0;  
+}
+
+#fieldIsPk {
+}
+
+#fieldIsPk label{
+    width: 70;
+    padding: 4px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align : center;
+    background-color: #e0e0e0;  
+}
+
+#fieldIsFk {
+}
+
+#fieldIsFk label{
+    width: 70;
+    padding: 4px 6px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align : center;
+    background-color: #e0e0e0;  
+}

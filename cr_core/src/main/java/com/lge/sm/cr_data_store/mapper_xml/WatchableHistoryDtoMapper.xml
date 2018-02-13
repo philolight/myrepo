@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lge.sm.cr_data_store.mapper.WatchableHistoryDtoMapper">
+  <resultMap id="BaseResultMap" type="com.lge.sm.cr_data_store.dto.WatchableHistoryDto">
+    <id column="watchable_id" jdbcType="VARCHAR" property="watchableId" />
+    <id column="cdate" jdbcType="VARCHAR" property="cdate" />
+    <result column="run_count" jdbcType="BIGINT" property="runCount" />
+    <result column="latency" jdbcType="BIGINT" property="latency" />
+    <result column="modified_time" jdbcType="VARCHAR" property="modifiedTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    watchable_id, cdate, run_count, latency, modified_time
+  </sql>
+  <select id="selectByExample" parameterType="com.lge.sm.cr_data_store.dto.WatchableHistoryDtoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from watchable_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from watchable_history
+    where watchable_id = #{watchableId,jdbcType=VARCHAR}
+      and cdate = #{cdate,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from watchable_history
+    where watchable_id = #{watchableId,jdbcType=VARCHAR}
+      and cdate = #{cdate,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lge.sm.cr_data_store.dto.WatchableHistoryDtoExample">
+    delete from watchable_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lge.sm.cr_data_store.dto.WatchableHistoryDto">
+    insert into watchable_history (watchable_id, cdate, run_count, 
+      latency, modified_time)
+    values (#{watchableId,jdbcType=VARCHAR}, #{cdate,jdbcType=VARCHAR}, #{runCount,jdbcType=BIGINT}, 
+      #{latency,jdbcType=BIGINT}, #{modifiedTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lge.sm.cr_data_store.dto.WatchableHistoryDto">
+    insert into watchable_history
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="watchableId != null">
+        watchable_id,
+      </if>
+      <if test="cdate != null">
+        cdate,
+      </if>
+      <if test="runCount != null">
+        run_count,
+      </if>
+      <if test="latency != null">
+        latency,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="watchableId != null">
+        #{watchableId,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="runCount != null">
+        #{runCount,jdbcType=BIGINT},
+      </if>
+      <if test="latency != null">
+        #{latency,jdbcType=BIGINT},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lge.sm.cr_data_store.dto.WatchableHistoryDtoExample" resultType="java.lang.Long">
+    select count(*) from watchable_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update watchable_history
+    <set>
+      <if test="record.watchableId != null">
+        watchable_id = #{record.watchableId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cdate != null">
+        cdate = #{record.cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.runCount != null">
+        run_count = #{record.runCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.latency != null">
+        latency = #{record.latency,jdbcType=BIGINT},
+      </if>
+      <if test="record.modifiedTime != null">
+        modified_time = #{record.modifiedTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update watchable_history
+    set watchable_id = #{record.watchableId,jdbcType=VARCHAR},
+      cdate = #{record.cdate,jdbcType=VARCHAR},
+      run_count = #{record.runCount,jdbcType=BIGINT},
+      latency = #{record.latency,jdbcType=BIGINT},
+      modified_time = #{record.modifiedTime,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lge.sm.cr_data_store.dto.WatchableHistoryDto">
+    update watchable_history
+    <set>
+      <if test="runCount != null">
+        run_count = #{runCount,jdbcType=BIGINT},
+      </if>
+      <if test="latency != null">
+        latency = #{latency,jdbcType=BIGINT},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where watchable_id = #{watchableId,jdbcType=VARCHAR}
+      and cdate = #{cdate,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lge.sm.cr_data_store.dto.WatchableHistoryDto">
+    update watchable_history
+    set run_count = #{runCount,jdbcType=BIGINT},
+      latency = #{latency,jdbcType=BIGINT},
+      modified_time = #{modifiedTime,jdbcType=VARCHAR}
+    where watchable_id = #{watchableId,jdbcType=VARCHAR}
+      and cdate = #{cdate,jdbcType=VARCHAR}
+  </update>
+</mapper>

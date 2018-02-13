@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+	<bean id="tcpDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.TcpDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="tcpDAO" class="com.lge.sm.cr_data_store.dao.TcpDao">
+		<constructor-arg ref="tcpDtoMapper" />
+	</bean>
+
+	<bean id="userDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.UserDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="userDAO" class="com.lge.sm.cr_data_store.dao.UserDao">
+		<constructor-arg ref="userDtoMapper" />
+	</bean>
+
+	<bean id="authorityDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.AuthorityDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="authorityDAO" class="com.lge.sm.cr_data_store.dao.AuthorityDao">
+		<constructor-arg ref="authorityDtoMapper" />
+	</bean>
+
+	<bean id="spotDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.SpotDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="spotDAO" class="com.lge.sm.cr_data_store.dao.SpotDao">
+		<constructor-arg ref="spotDtoMapper" />
+	</bean>
+
+	<bean id="driverDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.DriverDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="driverDAO" class="com.lge.sm.cr_data_store.dao.DriverDao">
+		<constructor-arg ref="driverDtoMapper" />
+	</bean>
+
+	<bean id="pointAttributeDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.PointAttributeDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pointAttributeDAO" class="com.lge.sm.cr_data_store.dao.PointAttributeDao">
+		<constructor-arg ref="pointAttributeDtoMapper" />
+	</bean>
+
+	<bean id="urlDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.UrlDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="urlDAO" class="com.lge.sm.cr_data_store.dao.UrlDao">
+		<constructor-arg ref="urlDtoMapper" />
+	</bean>
+
+	<bean id="partyUserDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.PartyUserDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="partyUserDAO" class="com.lge.sm.cr_data_store.dao.PartyUserDao">
+		<constructor-arg ref="partyUserDtoMapper" />
+	</bean>
+
+	<bean id="partyAuthorityDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.PartyAuthorityDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="partyAuthorityDAO" class="com.lge.sm.cr_data_store.dao.PartyAuthorityDao">
+		<constructor-arg ref="partyAuthorityDtoMapper" />
+	</bean>
+
+	<bean id="numericRangeDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.NumericRangeDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="numericRangeDAO" class="com.lge.sm.cr_data_store.dao.NumericRangeDao">
+		<constructor-arg ref="numericRangeDtoMapper" />
+	</bean>
+
+	<bean id="startableDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.StartableDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="startableDAO" class="com.lge.sm.cr_data_store.dao.StartableDao">
+		<constructor-arg ref="startableDtoMapper" />
+	</bean>
+
+	<bean id="partyDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.PartyDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="partyDAO" class="com.lge.sm.cr_data_store.dao.PartyDao">
+		<constructor-arg ref="partyDtoMapper" />
+	</bean>
+
+	<bean id="startableHistoryDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.StartableHistoryDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="startableHistoryDAO" class="com.lge.sm.cr_data_store.dao.StartableHistoryDao">
+		<constructor-arg ref="startableHistoryDtoMapper" />
+	</bean>
+
+	<bean id="roomSensorDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.RoomSensorDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="roomSensorDAO" class="com.lge.sm.cr_data_store.dao.RoomSensorDao">
+		<constructor-arg ref="roomSensorDtoMapper" />
+	</bean>
+
+	<bean id="eventHistoryDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.EventHistoryDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="eventHistoryDAO" class="com.lge.sm.cr_data_store.dao.EventHistoryDao">
+		<constructor-arg ref="eventHistoryDtoMapper" />
+	</bean>
+
+	<bean id="slmDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.SlmDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="slmDAO" class="com.lge.sm.cr_data_store.dao.SlmDao">
+		<constructor-arg ref="slmDtoMapper" />
+	</bean>
+
+	<bean id="serviceAuthorityDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.ServiceAuthorityDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="serviceAuthorityDAO" class="com.lge.sm.cr_data_store.dao.ServiceAuthorityDao">
+		<constructor-arg ref="serviceAuthorityDtoMapper" />
+	</bean>
+
+	<bean id="driverTypeDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.DriverTypeDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="driverTypeDAO" class="com.lge.sm.cr_data_store.dao.DriverTypeDao">
+		<constructor-arg ref="driverTypeDtoMapper" />
+	</bean>
+
+	<bean id="roomDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.RoomDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="roomDAO" class="com.lge.sm.cr_data_store.dao.RoomDao">
+		<constructor-arg ref="roomDtoMapper" />
+	</bean>
+
+	<bean id="spaceDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.SpaceDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="spaceDAO" class="com.lge.sm.cr_data_store.dao.SpaceDao">
+		<constructor-arg ref="spaceDtoMapper" />
+	</bean>
+
+	<bean id="scriptDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.ScriptDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="scriptDAO" class="com.lge.sm.cr_data_store.dao.ScriptDao">
+		<constructor-arg ref="scriptDtoMapper" />
+	</bean>
+
+	<bean id="enumFacetDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.EnumFacetDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="enumFacetDAO" class="com.lge.sm.cr_data_store.dao.EnumFacetDao">
+		<constructor-arg ref="enumFacetDtoMapper" />
+	</bean>
+
+	<bean id="driverHistoryDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.DriverHistoryDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="driverHistoryDAO" class="com.lge.sm.cr_data_store.dao.DriverHistoryDao">
+		<constructor-arg ref="driverHistoryDtoMapper" />
+	</bean>
+
+	<bean id="cancelHistoryDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.CancelHistoryDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="cancelHistoryDAO" class="com.lge.sm.cr_data_store.dao.CancelHistoryDao">
+		<constructor-arg ref="cancelHistoryDtoMapper" />
+	</bean>
+
+	<bean id="serviceDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.ServiceDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="serviceDAO" class="com.lge.sm.cr_data_store.dao.ServiceDao">
+		<constructor-arg ref="serviceDtoMapper" />
+	</bean>
+
+	<bean id="pointDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.PointDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="pointDAO" class="com.lge.sm.cr_data_store.dao.PointDao">
+		<constructor-arg ref="pointDtoMapper" />
+	</bean>
+
+	<bean id="authorityLocationDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.AuthorityLocationDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="authorityLocationDAO" class="com.lge.sm.cr_data_store.dao.AuthorityLocationDao">
+		<constructor-arg ref="authorityLocationDtoMapper" />
+	</bean>
+
+	<bean id="fieldSkinDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.FieldSkinDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="fieldSkinDAO" class="com.lge.sm.cr_data_store.dao.FieldSkinDao">
+		<constructor-arg ref="fieldSkinDtoMapper" />
+	</bean>
+
+	<bean id="stringRangeDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.StringRangeDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="stringRangeDAO" class="com.lge.sm.cr_data_store.dao.StringRangeDao">
+		<constructor-arg ref="stringRangeDtoMapper" />
+	</bean>
+
+	<bean id="watchableDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.WatchableDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="watchableDAO" class="com.lge.sm.cr_data_store.dao.WatchableDao">
+		<constructor-arg ref="watchableDtoMapper" />
+	</bean>
+
+	<bean id="watchableHistoryDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.WatchableHistoryDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="watchableHistoryDAO" class="com.lge.sm.cr_data_store.dao.WatchableHistoryDao">
+		<constructor-arg ref="watchableHistoryDtoMapper" />
+	</bean>
+
+	<bean id="scheduleDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.ScheduleDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="scheduleDAO" class="com.lge.sm.cr_data_store.dao.ScheduleDao">
+		<constructor-arg ref="scheduleDtoMapper" />
+	</bean>
+
+	<bean id="decimalRangeDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.DecimalRangeDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="decimalRangeDAO" class="com.lge.sm.cr_data_store.dao.DecimalRangeDao">
+		<constructor-arg ref="decimalRangeDtoMapper" />
+	</bean>
+
+	<bean id="alarmDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.AlarmDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="alarmDAO" class="com.lge.sm.cr_data_store.dao.AlarmDao">
+		<constructor-arg ref="alarmDtoMapper" />
+	</bean>
+
+	<bean id="skinDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.SkinDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="skinDAO" class="com.lge.sm.cr_data_store.dao.SkinDao">
+		<constructor-arg ref="skinDtoMapper" />
+	</bean>
+
+	<bean id="userAuthorityDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.UserAuthorityDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="userAuthorityDAO" class="com.lge.sm.cr_data_store.dao.UserAuthorityDao">
+		<constructor-arg ref="userAuthorityDtoMapper" />
+	</bean>
+
+	<bean id="personDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.PersonDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="personDAO" class="com.lge.sm.cr_data_store.dao.PersonDao">
+		<constructor-arg ref="personDtoMapper" />
+	</bean>
+
+	<bean id="locationDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.LocationDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="locationDAO" class="com.lge.sm.cr_data_store.dao.LocationDao">
+		<constructor-arg ref="locationDtoMapper" />
+	</bean>
+
+	<bean id="sensorDtoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.lge.sm.cr_data_store.mapper.SensorDtoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="sensorDAO" class="com.lge.sm.cr_data_store.dao.SensorDao">
+		<constructor-arg ref="sensorDtoMapper" />
+	</bean></beans>

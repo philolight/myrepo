@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lge.sm.cr_data_store.mapper.SpaceDtoMapper">
+  <resultMap id="BaseResultMap" type="com.lge.sm.cr_data_store.dto.SpaceDto">
+    <id column="space_id" jdbcType="BIGINT" property="spaceId" />
+    <result column="parent_space_id" jdbcType="BIGINT" property="parentSpaceId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="floor" jdbcType="VARCHAR" property="floor" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="cdate" jdbcType="VARCHAR" property="cdate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    space_id, parent_space_id, name, floor, type, cdate
+  </sql>
+  <select id="selectByExample" parameterType="com.lge.sm.cr_data_store.dto.SpaceDtoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from space
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from space
+    where space_id = #{spaceId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from space
+    where space_id = #{spaceId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lge.sm.cr_data_store.dto.SpaceDtoExample">
+    delete from space
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lge.sm.cr_data_store.dto.SpaceDto">
+    insert into space (space_id, parent_space_id, name, 
+      floor, type, cdate)
+    values (#{spaceId,jdbcType=BIGINT}, #{parentSpaceId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{floor,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{cdate,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lge.sm.cr_data_store.dto.SpaceDto">
+    insert into space
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="spaceId != null">
+        space_id,
+      </if>
+      <if test="parentSpaceId != null">
+        parent_space_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="floor != null">
+        floor,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="cdate != null">
+        cdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="spaceId != null">
+        #{spaceId,jdbcType=BIGINT},
+      </if>
+      <if test="parentSpaceId != null">
+        #{parentSpaceId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="floor != null">
+        #{floor,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lge.sm.cr_data_store.dto.SpaceDtoExample" resultType="java.lang.Long">
+    select count(*) from space
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update space
+    <set>
+      <if test="record.spaceId != null">
+        space_id = #{record.spaceId,jdbcType=BIGINT},
+      </if>
+      <if test="record.parentSpaceId != null">
+        parent_space_id = #{record.parentSpaceId,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.floor != null">
+        floor = #{record.floor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cdate != null">
+        cdate = #{record.cdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update space
+    set space_id = #{record.spaceId,jdbcType=BIGINT},
+      parent_space_id = #{record.parentSpaceId,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      floor = #{record.floor,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      cdate = #{record.cdate,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lge.sm.cr_data_store.dto.SpaceDto">
+    update space
+    <set>
+      <if test="parentSpaceId != null">
+        parent_space_id = #{parentSpaceId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="floor != null">
+        floor = #{floor,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        cdate = #{cdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where space_id = #{spaceId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lge.sm.cr_data_store.dto.SpaceDto">
+    update space
+    set parent_space_id = #{parentSpaceId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      floor = #{floor,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      cdate = #{cdate,jdbcType=VARCHAR}
+    where space_id = #{spaceId,jdbcType=BIGINT}
+  </update>
+</mapper>

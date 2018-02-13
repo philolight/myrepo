@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lge.sm.cr_data_store.mapper.SensorDtoMapper">
+  <resultMap id="BaseResultMap" type="com.lge.sm.cr_data_store.dto.SensorDto">
+    <id column="sensor_id" jdbcType="VARCHAR" property="sensorId" />
+    <result column="slm_id" jdbcType="VARCHAR" property="slmId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="cdate" jdbcType="VARCHAR" property="cdate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    sensor_id, slm_id, name, cdate
+  </sql>
+  <select id="selectByExample" parameterType="com.lge.sm.cr_data_store.dto.SensorDtoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sensor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sensor
+    where sensor_id = #{sensorId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sensor
+    where sensor_id = #{sensorId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lge.sm.cr_data_store.dto.SensorDtoExample">
+    delete from sensor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lge.sm.cr_data_store.dto.SensorDto">
+    insert into sensor (sensor_id, slm_id, name, 
+      cdate)
+    values (#{sensorId,jdbcType=VARCHAR}, #{slmId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{cdate,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lge.sm.cr_data_store.dto.SensorDto">
+    insert into sensor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sensorId != null">
+        sensor_id,
+      </if>
+      <if test="slmId != null">
+        slm_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="cdate != null">
+        cdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sensorId != null">
+        #{sensorId,jdbcType=VARCHAR},
+      </if>
+      <if test="slmId != null">
+        #{slmId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lge.sm.cr_data_store.dto.SensorDtoExample" resultType="java.lang.Long">
+    select count(*) from sensor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sensor
+    <set>
+      <if test="record.sensorId != null">
+        sensor_id = #{record.sensorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.slmId != null">
+        slm_id = #{record.slmId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cdate != null">
+        cdate = #{record.cdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sensor
+    set sensor_id = #{record.sensorId,jdbcType=VARCHAR},
+      slm_id = #{record.slmId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      cdate = #{record.cdate,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lge.sm.cr_data_store.dto.SensorDto">
+    update sensor
+    <set>
+      <if test="slmId != null">
+        slm_id = #{slmId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        cdate = #{cdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where sensor_id = #{sensorId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lge.sm.cr_data_store.dto.SensorDto">
+    update sensor
+    set slm_id = #{slmId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      cdate = #{cdate,jdbcType=VARCHAR}
+    where sensor_id = #{sensorId,jdbcType=VARCHAR}
+  </update>
+</mapper>

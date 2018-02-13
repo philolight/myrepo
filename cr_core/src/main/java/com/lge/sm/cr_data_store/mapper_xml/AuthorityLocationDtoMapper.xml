@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lge.sm.cr_data_store.mapper.AuthorityLocationDtoMapper">
+  <resultMap id="BaseResultMap" type="com.lge.sm.cr_data_store.dto.AuthorityLocationDto">
+    <id column="location_id" jdbcType="VARCHAR" property="locationId" />
+    <id column="authority_id" jdbcType="BIGINT" property="authorityId" />
+    <result column="cdate" jdbcType="VARCHAR" property="cdate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    location_id, authority_id, cdate
+  </sql>
+  <select id="selectByExample" parameterType="com.lge.sm.cr_data_store.dto.AuthorityLocationDtoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from authority_location
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from authority_location
+    where location_id = #{locationId,jdbcType=VARCHAR}
+      and authority_id = #{authorityId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from authority_location
+    where location_id = #{locationId,jdbcType=VARCHAR}
+      and authority_id = #{authorityId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lge.sm.cr_data_store.dto.AuthorityLocationDtoExample">
+    delete from authority_location
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lge.sm.cr_data_store.dto.AuthorityLocationDto">
+    insert into authority_location (location_id, authority_id, cdate
+      )
+    values (#{locationId,jdbcType=VARCHAR}, #{authorityId,jdbcType=BIGINT}, #{cdate,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lge.sm.cr_data_store.dto.AuthorityLocationDto">
+    insert into authority_location
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="locationId != null">
+        location_id,
+      </if>
+      <if test="authorityId != null">
+        authority_id,
+      </if>
+      <if test="cdate != null">
+        cdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="locationId != null">
+        #{locationId,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityId != null">
+        #{authorityId,jdbcType=BIGINT},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lge.sm.cr_data_store.dto.AuthorityLocationDtoExample" resultType="java.lang.Long">
+    select count(*) from authority_location
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update authority_location
+    <set>
+      <if test="record.locationId != null">
+        location_id = #{record.locationId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authorityId != null">
+        authority_id = #{record.authorityId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cdate != null">
+        cdate = #{record.cdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update authority_location
+    set location_id = #{record.locationId,jdbcType=VARCHAR},
+      authority_id = #{record.authorityId,jdbcType=BIGINT},
+      cdate = #{record.cdate,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lge.sm.cr_data_store.dto.AuthorityLocationDto">
+    update authority_location
+    <set>
+      <if test="cdate != null">
+        cdate = #{cdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where location_id = #{locationId,jdbcType=VARCHAR}
+      and authority_id = #{authorityId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lge.sm.cr_data_store.dto.AuthorityLocationDto">
+    update authority_location
+    set cdate = #{cdate,jdbcType=VARCHAR}
+    where location_id = #{locationId,jdbcType=VARCHAR}
+      and authority_id = #{authorityId,jdbcType=BIGINT}
+  </update>
+</mapper>

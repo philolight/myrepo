@@ -1,0 +1,173 @@
+"PACKAGE_DECLARE"
+
+/**
+  * <<<<<<<< Automatically Generated Code >>>>>>>>
+  * If you want to modify this file, use Inherited class in ".dao" package.
+  */
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.lge.framework.ceasar.dao.DataAccessObject;
+import "CONCRETE_ROOT_PACKAGE_NAME".mapper."Table"DtoMapper;
+import "CONCRETE_ROOT_PACKAGE_NAME".dto."Table"Dto;
+import "CONCRETE_ROOT_PACKAGE_NAME".dto."Table"DtoExample;
+
+abstract public class A"Table"Dao implements DataAccessObject<"Table"Dto, "Table"DtoExample>{
+    protected final "Table"DtoMapper mapper;
+    protected final "Table"DtoExample example = new "Table"DtoExample();
+          
+    public A"Table"Dao("Table"DtoMapper mapper) {
+        this.mapper = mapper;
+    }
+  
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public "Table"Dto select("ForPk,"<"PkType" "tablePk">){
+        "Table"Dto record = new "Table"Dto();
+"ForPk"<\t\trecord.set"TablePk"("tablePk");>
+        List<"Table"Dto> list = select(Arrays.asList(record));
+        return list.size() == 1 ? list.get(0) : null;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<"Table"Dto> select(List<"Table"Dto> records){
+        List<"Table"Dto> list = new ArrayList<"Table"Dto>();
+        for("Table"Dto record : records){
+            List<"Table"Dto> newRecords = null;
+            synchronized(example) {
+                "Table"DtoExample.Criteria c = cleanExample().or();
+                "ForPk"<\t\t\tc.and"TablePk"EqualTo(record.get"TablePk"());>
+                newRecords = mapper.selectByExample(example);
+            }
+            if(newRecords != null) list.addAll(newRecords);
+        }
+            
+        return list;
+    }
+  
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<"Table"Dto> selectAll(){
+        synchronized(example) {
+            List<"Table"Dto> list = mapper.selectByExample(cleanExample());
+            return (list == null) ? Collections.emptyList() : list;
+        }
+    }
+  
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<"Table"Dto> selectBetween(String cdateFrom, String cdateTo){
+        synchronized(example) {
+            example.or().andCdateBetween(cdateFrom, cdateTo);     
+            return sortByCdate(selectByExample(example));
+        }
+    }
+  
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<"Table"Dto> selectFrom(String cdateFrom){
+        synchronized(example) {
+            example.or().andCdateGreaterThanOrEqualTo(cdateFrom);     
+            return sortByCdate(selectByExample(example));
+        }
+    }
+  
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<"Table"Dto> selectTo(String cdateTo){
+        synchronized(example) {
+            cleanExample().or().andCdateLessThanOrEqualTo(cdateTo);     
+            return sortByCdate(selectByExample(example));
+        }
+    }
+    
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Override
+    public List<"Table"Dto> selectByExample("Table"DtoExample example) {
+        List<"Table"Dto> list = mapper.selectByExample(example);
+        return (list == null) ? Collections.emptyList() : list;
+    }
+  
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean insert("Table"Dto record) {
+        return insert(Arrays.asList(record));
+    }
+  
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean insert(List<"Table"Dto> records) {
+        for("Table"Dto record : records){
+            mapper.insert(record);
+        }     
+        return true;
+    }
+  
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean update("Table"Dto record){
+        return update(Arrays.asList(record));
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean update(List<"Table"Dto> records){
+        for("Table"Dto record : records){
+            synchronized(example) {
+                "Table"DtoExample.Criteria c = cleanExample().or();
+"ForPk"<\t\t\t\tc.and"TablePk"EqualTo(record.get"TablePk"());>
+                mapper.updateByExample(record, example);
+            }
+        }
+        return true;
+    }
+  
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean delete("ForPk,"<"PkType" "tablePk">){
+        "Table"Dto record = new "Table"Dto();
+"ForPk"<\t\trecord.set"TablePk"("tablePk");>
+        return delete(Arrays.asList(record));
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean delete("Table"Dto record) {
+        return delete(Arrays.asList(record));
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean delete(List<"Table"Dto> records) {
+        for("Table"Dto record : records){
+            synchronized(example) {
+                "Table"DtoExample.Criteria c = cleanExample().or();
+"ForPk"<\t\t\t\tc.and"TablePk"EqualTo(record.get"TablePk"());>
+                mapper.deleteByExample(example);
+            }
+        }
+        return true;
+    }
+  
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean deleteAll() {
+        synchronized(example) {
+            mapper.deleteByExample(cleanExample());
+            return true;
+        }
+    }
+    
+    public "Table"DtoExample example() {
+        return new "Table"DtoExample();
+    }
+  
+    protected List<"Table"Dto> sortByCdate(List<"Table"Dto> list){
+        if(list == null) return Collections.emptyList();
+        Collections.sort(list, (a, b) -> {
+            return a.getCdate().compareTo(b.getCdate());
+        });
+    
+        return list;
+    }
+  
+    protected "Table"DtoExample cleanExample() {
+        example.clear();
+        return example;
+    }
+    
+    "GET_LAST_ID()"
+}

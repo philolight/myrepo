@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2.2-10/10/2010 12:09 AM(ramapulavarthi)-. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://com/mobileleader/lighting/service/soapws/pointaccess/types"
+           xmlns:tns="http://com/mobileleader/lighting/service/soapws/pointaccess/types"
+           targetNamespace="http://com/mobileleader/lighting/service/soapws/pointaccess/types"
+           elementFormDefault="qualified">
+
+	<xs:element name="getTimeRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="req" nillable="true" type="tns:getTimeRequest_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="getTimeResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="res" nillable="true" type="tns:getTimeResponse_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="setTimeRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="req" nillable="true" type="tns:setTimeRequest_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="setTimeResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="res" nillable="true" type="tns:setTimeResponse_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="checkSystemAliveRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="req" nillable="true" type="tns:checkSystemAliveRequest_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="checkSystemAliveResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="res" nillable="true" type="tns:checkSystemAliveResponse_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="discoverRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="req" nillable="true" type="tns:discoverRequest_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="discoverResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="res" nillable="true" type="tns:discoverResponse_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="readPointValuesRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="req" nillable="true" type="tns:readPointValuesRequest_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="readPointValuesResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="res" nillable="true" type="tns:readPointValuesResponse_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="writePointValuesRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="req" nillable="true" type="tns:writePointValuesRequest_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="writePointValuesResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="res" nillable="true" type="tns:writePointValuesResponse_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="subscribeCovPointsRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="req" nillable="true" type="tns:subscribeCovPointsRequest_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="subscribeCovPointsResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="res" nillable="true" type="tns:subscribeCovPointsResponse_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="unsubscribeCovPointsRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="req" nillable="true" type="tns:unsubscribeCovPointsRequest_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="unsubscribeCovPointsResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" name="res" nillable="true" type="tns:unsubscribeCovPointsResponse_T"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="getTimeRequest_T">
+		<xs:sequence />
+	</xs:complexType>
+	<xs:complexType name="getTimeResponse_T">
+		<xs:sequence>
+			<xs:element name="result" type="xs:long" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="setTimeRequest_T">
+		<xs:sequence>
+			<xs:element name="newTime" type="xs:long" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="setTimeResponse_T">
+		<xs:sequence>
+			<xs:element name="result" type="xs:long" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="checkSystemAliveRequest_T">
+		<xs:sequence />
+	</xs:complexType>
+	<xs:complexType name="checkSystemAliveResponse_T">
+		<xs:sequence>
+			<xs:element name="result" type="xs:long" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="pointObject">
+		<xs:sequence>
+			<xs:element name="path" type="xs:string" minOccurs="0" />
+			<xs:element name="name" type="xs:string" minOccurs="0" />
+			<xs:element name="dataType" type="xs:string" minOccurs="0" />
+			<xs:element name="writable" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="pointValue">
+		<xs:sequence>
+			<xs:element name="path" type="xs:string" minOccurs="0" />
+			<xs:element name="priority" type="xs:long" />
+			<xs:element name="value" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="discoverRequest_T">
+		<xs:sequence />
+	</xs:complexType>
+	<xs:complexType name="discoverResponse_T">
+		<xs:sequence>
+			<xs:element name="result" type="xs:long" />
+			<xs:element name="pointObjects" type="tns:pointObject" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="readPointValuesRequest_T">
+		<xs:sequence>
+			<xs:element name="pointPaths" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="readPointValuesResponse_T">
+		<xs:sequence>
+			<xs:element name="result" type="xs:long" />
+			<xs:element name="pointValues" type="tns:pointValue" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="writePointValuesRequest_T">
+		<xs:sequence>
+			<xs:element name="pointValues" type="tns:pointValue" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="writePointValuesResponse_T">
+		<xs:sequence>
+			<xs:element name="result" type="xs:long" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="subscribeCovPointsRequest_T">
+		<xs:sequence>
+			<xs:element name="pointPaths" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="covLifeTime" type="xs:long" />
+			<xs:element name="notiUrl" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="subscribeCovPointsResponse_T">
+		<xs:sequence>
+			<xs:element name="result" type="xs:long" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="unsubscribeCovPointsRequest_T">
+		<xs:sequence>
+			<xs:element name="pointPaths" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="unsubscribeCovPointsResponse_T">
+		<xs:sequence>
+			<xs:element name="result" type="xs:long" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

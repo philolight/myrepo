@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lge.sm.cr_data_store.mapper.CancelHistoryDtoMapper">
+  <resultMap id="BaseResultMap" type="com.lge.sm.cr_data_store.dto.CancelHistoryDto">
+    <id column="date_of" jdbcType="VARCHAR" property="dateOf" />
+    <id column="location_id" jdbcType="VARCHAR" property="locationId" />
+    <result column="reservations" jdbcType="INTEGER" property="reservations" />
+    <result column="cancels" jdbcType="INTEGER" property="cancels" />
+    <result column="cancel_minutes" jdbcType="INTEGER" property="cancelMinutes" />
+    <result column="cancel_rate" jdbcType="REAL" property="cancelRate" />
+    <result column="cdate" jdbcType="VARCHAR" property="cdate" />
+    <result column="reuses" jdbcType="INTEGER" property="reuses" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    date_of, location_id, reservations, cancels, cancel_minutes, cancel_rate, cdate, 
+    reuses
+  </sql>
+  <select id="selectByExample" parameterType="com.lge.sm.cr_data_store.dto.CancelHistoryDtoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cancel_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cancel_history
+    where date_of = #{dateOf,jdbcType=VARCHAR}
+      and location_id = #{locationId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from cancel_history
+    where date_of = #{dateOf,jdbcType=VARCHAR}
+      and location_id = #{locationId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lge.sm.cr_data_store.dto.CancelHistoryDtoExample">
+    delete from cancel_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lge.sm.cr_data_store.dto.CancelHistoryDto">
+    insert into cancel_history (date_of, location_id, reservations, 
+      cancels, cancel_minutes, cancel_rate, 
+      cdate, reuses)
+    values (#{dateOf,jdbcType=VARCHAR}, #{locationId,jdbcType=VARCHAR}, #{reservations,jdbcType=INTEGER}, 
+      #{cancels,jdbcType=INTEGER}, #{cancelMinutes,jdbcType=INTEGER}, #{cancelRate,jdbcType=REAL}, 
+      #{cdate,jdbcType=VARCHAR}, #{reuses,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lge.sm.cr_data_store.dto.CancelHistoryDto">
+    insert into cancel_history
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dateOf != null">
+        date_of,
+      </if>
+      <if test="locationId != null">
+        location_id,
+      </if>
+      <if test="reservations != null">
+        reservations,
+      </if>
+      <if test="cancels != null">
+        cancels,
+      </if>
+      <if test="cancelMinutes != null">
+        cancel_minutes,
+      </if>
+      <if test="cancelRate != null">
+        cancel_rate,
+      </if>
+      <if test="cdate != null">
+        cdate,
+      </if>
+      <if test="reuses != null">
+        reuses,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dateOf != null">
+        #{dateOf,jdbcType=VARCHAR},
+      </if>
+      <if test="locationId != null">
+        #{locationId,jdbcType=VARCHAR},
+      </if>
+      <if test="reservations != null">
+        #{reservations,jdbcType=INTEGER},
+      </if>
+      <if test="cancels != null">
+        #{cancels,jdbcType=INTEGER},
+      </if>
+      <if test="cancelMinutes != null">
+        #{cancelMinutes,jdbcType=INTEGER},
+      </if>
+      <if test="cancelRate != null">
+        #{cancelRate,jdbcType=REAL},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="reuses != null">
+        #{reuses,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lge.sm.cr_data_store.dto.CancelHistoryDtoExample" resultType="java.lang.Long">
+    select count(*) from cancel_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cancel_history
+    <set>
+      <if test="record.dateOf != null">
+        date_of = #{record.dateOf,jdbcType=VARCHAR},
+      </if>
+      <if test="record.locationId != null">
+        location_id = #{record.locationId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reservations != null">
+        reservations = #{record.reservations,jdbcType=INTEGER},
+      </if>
+      <if test="record.cancels != null">
+        cancels = #{record.cancels,jdbcType=INTEGER},
+      </if>
+      <if test="record.cancelMinutes != null">
+        cancel_minutes = #{record.cancelMinutes,jdbcType=INTEGER},
+      </if>
+      <if test="record.cancelRate != null">
+        cancel_rate = #{record.cancelRate,jdbcType=REAL},
+      </if>
+      <if test="record.cdate != null">
+        cdate = #{record.cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reuses != null">
+        reuses = #{record.reuses,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cancel_history
+    set date_of = #{record.dateOf,jdbcType=VARCHAR},
+      location_id = #{record.locationId,jdbcType=VARCHAR},
+      reservations = #{record.reservations,jdbcType=INTEGER},
+      cancels = #{record.cancels,jdbcType=INTEGER},
+      cancel_minutes = #{record.cancelMinutes,jdbcType=INTEGER},
+      cancel_rate = #{record.cancelRate,jdbcType=REAL},
+      cdate = #{record.cdate,jdbcType=VARCHAR},
+      reuses = #{record.reuses,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lge.sm.cr_data_store.dto.CancelHistoryDto">
+    update cancel_history
+    <set>
+      <if test="reservations != null">
+        reservations = #{reservations,jdbcType=INTEGER},
+      </if>
+      <if test="cancels != null">
+        cancels = #{cancels,jdbcType=INTEGER},
+      </if>
+      <if test="cancelMinutes != null">
+        cancel_minutes = #{cancelMinutes,jdbcType=INTEGER},
+      </if>
+      <if test="cancelRate != null">
+        cancel_rate = #{cancelRate,jdbcType=REAL},
+      </if>
+      <if test="cdate != null">
+        cdate = #{cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="reuses != null">
+        reuses = #{reuses,jdbcType=INTEGER},
+      </if>
+    </set>
+    where date_of = #{dateOf,jdbcType=VARCHAR}
+      and location_id = #{locationId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lge.sm.cr_data_store.dto.CancelHistoryDto">
+    update cancel_history
+    set reservations = #{reservations,jdbcType=INTEGER},
+      cancels = #{cancels,jdbcType=INTEGER},
+      cancel_minutes = #{cancelMinutes,jdbcType=INTEGER},
+      cancel_rate = #{cancelRate,jdbcType=REAL},
+      cdate = #{cdate,jdbcType=VARCHAR},
+      reuses = #{reuses,jdbcType=INTEGER}
+    where date_of = #{dateOf,jdbcType=VARCHAR}
+      and location_id = #{locationId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,24 @@
+"PACKAGE_DECLARE"
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import "ANEMIC_ROOT_PACKAGE_NAME".arepository.A"Table"Repository;
+import "CONCRETE_ROOT_PACKAGE_NAME".dao."Table"Dao;
+import "CONCRETE_ROOT_PACKAGE_NAME".dto."Table"Dto;
+import "CONCRETE_ROOT_PACKAGE_NAME".entity."Table"Entity;
+
+@Repository
+public class "Table"Repository extends A"Table"Repository{
+    public "Table"Repository("Table"Dao dao) {
+        super(dao);
+        TAG = this.getClass().getSimpleName();
+    }
+
+    @Override
+    public String getStartableId() {
+        return this.getClass().getSimpleName();
+    }
+  
+}

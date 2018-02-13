@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-sources>
+	<data-source id="sqlite_jdbc-15f4821f270-556606b94da237e0" provider="generic" driver="sqlite_jdbc" name="SQLite - cr.db" save-password="true" show-system-objects="true" read-only="false">
+		<connection server="" database="/Users/zack/works/lge/smart_building/git/smart_building_cr/smart_building/cr_core/resources/cr.db" url="jdbc:sqlite:/Users/zack/works/lge/smart_building/git/smart_building_cr/smart_building/cr_core/resources/cr.db" type="dev"/>
+	</data-source>
+	<filters/>
+</data-sources>

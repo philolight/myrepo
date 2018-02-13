@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lge.sm.cr_data_store.mapper.StartableHistoryDtoMapper">
+  <resultMap id="BaseResultMap" type="com.lge.sm.cr_data_store.dto.StartableHistoryDto">
+    <id column="startable_id" jdbcType="VARCHAR" property="startableId" />
+    <id column="cdate" jdbcType="VARCHAR" property="cdate" />
+    <result column="start_succeed" jdbcType="INTEGER" property="startSucceed" />
+    <result column="start_date" jdbcType="VARCHAR" property="startDate" />
+    <result column="latency" jdbcType="BIGINT" property="latency" />
+    <result column="report" jdbcType="VARCHAR" property="report" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    startable_id, cdate, start_succeed, start_date, latency, report
+  </sql>
+  <select id="selectByExample" parameterType="com.lge.sm.cr_data_store.dto.StartableHistoryDtoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from startable_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from startable_history
+    where startable_id = #{startableId,jdbcType=VARCHAR}
+      and cdate = #{cdate,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from startable_history
+    where startable_id = #{startableId,jdbcType=VARCHAR}
+      and cdate = #{cdate,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lge.sm.cr_data_store.dto.StartableHistoryDtoExample">
+    delete from startable_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lge.sm.cr_data_store.dto.StartableHistoryDto">
+    insert into startable_history (startable_id, cdate, start_succeed, 
+      start_date, latency, report
+      )
+    values (#{startableId,jdbcType=VARCHAR}, #{cdate,jdbcType=VARCHAR}, #{startSucceed,jdbcType=INTEGER}, 
+      #{startDate,jdbcType=VARCHAR}, #{latency,jdbcType=BIGINT}, #{report,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lge.sm.cr_data_store.dto.StartableHistoryDto">
+    insert into startable_history
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="startableId != null">
+        startable_id,
+      </if>
+      <if test="cdate != null">
+        cdate,
+      </if>
+      <if test="startSucceed != null">
+        start_succeed,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="latency != null">
+        latency,
+      </if>
+      <if test="report != null">
+        report,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="startableId != null">
+        #{startableId,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null">
+        #{cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="startSucceed != null">
+        #{startSucceed,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="latency != null">
+        #{latency,jdbcType=BIGINT},
+      </if>
+      <if test="report != null">
+        #{report,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lge.sm.cr_data_store.dto.StartableHistoryDtoExample" resultType="java.lang.Long">
+    select count(*) from startable_history
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update startable_history
+    <set>
+      <if test="record.startableId != null">
+        startable_id = #{record.startableId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cdate != null">
+        cdate = #{record.cdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startSucceed != null">
+        start_succeed = #{record.startSucceed,jdbcType=INTEGER},
+      </if>
+      <if test="record.startDate != null">
+        start_date = #{record.startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.latency != null">
+        latency = #{record.latency,jdbcType=BIGINT},
+      </if>
+      <if test="record.report != null">
+        report = #{record.report,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update startable_history
+    set startable_id = #{record.startableId,jdbcType=VARCHAR},
+      cdate = #{record.cdate,jdbcType=VARCHAR},
+      start_succeed = #{record.startSucceed,jdbcType=INTEGER},
+      start_date = #{record.startDate,jdbcType=VARCHAR},
+      latency = #{record.latency,jdbcType=BIGINT},
+      report = #{record.report,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lge.sm.cr_data_store.dto.StartableHistoryDto">
+    update startable_history
+    <set>
+      <if test="startSucceed != null">
+        start_succeed = #{startSucceed,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="latency != null">
+        latency = #{latency,jdbcType=BIGINT},
+      </if>
+      <if test="report != null">
+        report = #{report,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where startable_id = #{startableId,jdbcType=VARCHAR}
+      and cdate = #{cdate,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lge.sm.cr_data_store.dto.StartableHistoryDto">
+    update startable_history
+    set start_succeed = #{startSucceed,jdbcType=INTEGER},
+      start_date = #{startDate,jdbcType=VARCHAR},
+      latency = #{latency,jdbcType=BIGINT},
+      report = #{report,jdbcType=VARCHAR}
+    where startable_id = #{startableId,jdbcType=VARCHAR}
+      and cdate = #{cdate,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,13 @@
+"PACKAGE_DECLARE"
+
+import java.util.List;
+
+import "ANEMIC_ROOT_PACKAGE_NAME".adao.A"Table"Dao;
+import "CONCRETE_ROOT_PACKAGE_NAME".dto."Table"Dto;
+import "CONCRETE_ROOT_PACKAGE_NAME".mapper."Table"DtoMapper;
+
+public class "Table"Dao extends A"Table"Dao{
+    public "Table"Dao("Table"DtoMapper mapper) {
+        super(mapper);
+    }
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+ <classPathEntry location="C://Users/USER/git/smart_building_cr/smart_building/cr_core/src/main/java/com/lge/sm/cr_data_store/mybatis_generator/mariadb-java-client-2.1.2.jar" />
+
+  <context id="context1" defaultModelType="flat">
+  		<!-- 자동으로 생성되는 주석 제거 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+			<property name="suppressDate" value="true" />
+		</commentGenerator>
+		
+		<jdbcConnection 
+		  driverClass="org.mariadb.jdbc.Driver" 
+		  connectionURL="jdbc:mariadb://localhost:3306/smart_building"
+		  userId="root"
+      password="root"
+		  >
+    </jdbcConnection>
+    				
+    <javaModelGenerator targetPackage="com.lge.sm.cr_data_store.dto" targetProject="cr_core/src/main/java" />
+    <sqlMapGenerator targetPackage="com.lge.sm.cr_data_store.mapper_xml" targetProject="cr_core/src/main/java" />
+    <javaClientGenerator targetPackage="com.lge.sm.cr_data_store.mapper" targetProject="cr_core/src/main/java" type="XMLMAPPER" />
+            
+  <table schema="public" tableName="cancel_history"     domainObjectName="CancelHistoryDto"/>
+  <table schema="public" tableName="location"           domainObjectName="LocationDto"/>
+  <table schema="public" tableName="room"               domainObjectName="RoomDto"/>
+  <table schema="public" tableName="room_sensor"        domainObjectName="RoomSensorDto"/>
+  <table schema="public" tableName="schedule"           domainObjectName="ScheduleDto"/>
+  <table schema="public" tableName="sensor"             domainObjectName="SensorDto"/>
+  <table schema="public" tableName="slm"                domainObjectName="SlmDto"/>
+  <table schema="public" tableName="user"               domainObjectName="UserDto"/>
+  <table schema="public" tableName="person"             domainObjectName="PersonDto"/>
+  <table schema="public" tableName="party_user"         domainObjectName="PartyUserDto"/>
+  <table schema="public" tableName="party"              domainObjectName="PartyDto"/>
+  <table schema="public" tableName="user_authority"     domainObjectName="UserAuthorityDto"/>
+  <table schema="public" tableName="party_authority"    domainObjectName="PartyAuthorityDto"/>
+  <table schema="public" tableName="authority"          domainObjectName="AuthorityDto"/>
+  <table schema="public" tableName="service_authority"  domainObjectName="ServiceAuthorityDto"/>
+  <table schema="public" tableName="service"            domainObjectName="ServiceDto"/>
+  <table schema="public" tableName="watchable"          domainObjectName="WatchableDto"/>
+  <table schema="public" tableName="startable"          domainObjectName="StartableDto"/>
+  <table schema="public" tableName="watchable_history"  domainObjectName="WatchableHistoryDto"/>
+  <table schema="public" tableName="startable_history"  domainObjectName="StartableHistoryDto"/>
+  <table schema="public" tableName="skin"               domainObjectName="SkinDto"/>
+  <table schema="public" tableName="field_skin"         domainObjectName="FieldSkinDto"/>
+  <table schema="public" tableName="script"             domainObjectName="ScriptDto"/>
+  <table schema="public" tableName="decimal_range"      domainObjectName="DecimalRangeDto"/>
+  <table schema="public" tableName="numeric_range"      domainObjectName="NumericRangeDto"/>
+  <table schema="public" tableName="string_range"       domainObjectName="StringRangeDto"/>
+  <table schema="public" tableName="enum_facet"         domainObjectName="EnumFacetDto"/>
+  <table schema="public" tableName="authority_location" domainObjectName="AuthorityLocationDto"/>
+  <table schema="public" tableName="event_history"      domainObjectName="EventHistoryDto"/>
+  <table schema="public" tableName="driver_type"        domainObjectName="DriverTypeDto"/>
+  <table schema="public" tableName="driver_history"     domainObjectName="DriverHistoryDto"/>
+  <table schema="public" tableName="driver"             domainObjectName="DriverDto"/>
+  <table schema="public" tableName="url"                domainObjectName="UrlDto"/>
+  <table schema="public" tableName="tcp"                domainObjectName="TcpDto"/>
+  <table schema="public" tableName="point"              domainObjectName="PointDto"/>
+  <table schema="public" tableName="space"              domainObjectName="SpaceDto"/>
+  <table schema="public" tableName="alarm"              domainObjectName="AlarmDto"/>
+  <table schema="public" tableName="point_attribute"    domainObjectName="PointAttributeDto"/>
+  <table schema="public" tableName="spot"               domainObjectName="SpotDto"/>
+  </context>
+
+</generatorConfiguration>

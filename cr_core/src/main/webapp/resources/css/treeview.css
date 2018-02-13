@@ -1,0 +1,173 @@
+.indent{
+  width: 40;
+  height : 20;
+  display: inline-block;
+  border: 1px solid transparent;
+  background-color: transparent;
+  border-radius: 2px;
+  box-sizing: border-box;
+  float:left;
+  clear:left;
+}
+
+.skinType{
+ width: 600px;
+ height: 25px;
+ padding: 1px 1px;
+ margin : 1px 1px;
+ border: 1px solid transparent;
+ border-radius: 2px;
+ box-sizing: border-box;
+ font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+ font-size: 18px;
+ font-weight: bold;
+ color: black;
+ background-color: #ccf;
+ text-align: center;
+}
+
+.tt{
+  height: 25px;
+  padding: 1px 1px;
+  margin : 1px 1px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  box-sizing: border-box;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  
+  float:none;
+  text-align: center;
+  background-color: #8888dd;
+  color: white;
+  width:400px;
+}
+
+.nm{
+  height: 25px;
+  padding: 1px 1px;
+  margin : 1px 1px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  box-sizing: border-box;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  
+  float:left;
+  text-align: center;
+  background-color: #ccccff;
+  color: black;
+  width:200px;
+}
+
+.tv{
+ height: 25px;
+ padding: 1px 1px;
+ margin : 1px 1px;
+ border: 1px solid transparent;
+ border-radius: 2px;
+ box-sizing: border-box;
+ font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+ font-size: 16px;
+ font-weight: normal;
+ 
+ background-color: #eeeeff;
+}
+
+.tv div{
+  height: 25px;
+  padding: 1px 1px;
+  margin : 1px 1px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  box-sizing: border-box;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  
+  float:left;
+  width: 200px;
+}
+
+.tv table {}
+.tv td {}
+.tv th {
+    text-align: center;
+    background-color: #8888dd;
+    color: white;
+}
+.tv tr:nth-child(even){background-color: #eeeeff;}
+.tv tr:hover {background-color: #dde;}
+
+.tv caption {
+    background-color: #ccf;
+    text-align: left;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.tv button {
+	background-color: #fff;
+	padding: 1px 1px;
+}
+.tv button:hover {
+	background-color: #fff;
+	padding: 1px 1px;
+}
+
+.tv input {
+	width: 100%;
+	padding: 0px 0px;
+	border: 1px solid transparent;
+	box-sizing: border-box;
+	background-color: transparent;
+}
+
+.tv input[type="text"]{
+ padding: 0px 0px;
+ border: 1px solid transparent;
+ box-sizing: border-box;
+ background-color: #fff;
+}
+
+.tv input[type="text"]:read-only{
+ padding: 0px 0px;
+ border: 1px solid transparent;
+ box-sizing: border-box;
+ background-color: transparent;
+}
+
+.tv input[type="password"]{
+  width: 100%;
+  padding: 0px 0px;
+  border: 1px solid #888888;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.tv input[type="datetime-local"] {
+ padding: 0px 0px;
+ border: 0px solid transparent;
+ background-color: transparent;
+}
+
+.tv select, .tv select {
+ padding: 0px 0px;
+ display: inline-block;
+ border: 0px solid transparent;
+ background-color: transparent;
+ border-radius: 0px;
+ box-sizing: border-box;
+}
+
+.tv input[type="radio"]{
+ padding: 0px 0px;
+ display: inline-block;
+ border: 0px solid transparent;
+ background-color: transparent;
+ border-radius: 0px;
+ box-sizing: border-box;
+}
