@@ -1,0 +1,157 @@
+.at{
+ height: 25px;
+ padding: 0px;
+ margin : 0px;
+ border: 1px solid transparent;
+ border-radius: 2px;
+ box-sizing: border-box;
+ font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+ font-size: 16px;
+ font-weight: normal; 
+ background-color: transparent;
+}
+
+.at table{
+	table-layout: fixed;
+	word-break:break-all;
+	border-collapse: collapse;
+}
+.at td {}
+.at th {
+    text-align: center;
+    background-color: #dd88dd;
+    color: white;
+}
+.at tr:nth-child(even){background-color: #ffeeff;}
+.at tr:nth-child(odd){background-color: #f8ddf8;}
+.at tr:hover {background-color: #ede;}
+
+.at caption {
+	height:30px;
+    background-color: #cc66cc;
+    text-align: left;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.at button {
+	background-color: #fff;
+	padding: 1px 1px;	
+}
+.at button:hover {
+	background-color: #fff;
+	padding: 1px 1px;
+}
+
+.at input {
+	padding: 0px 0px;
+	box-sizing: border-box;
+	background-color: transparent;
+}
+
+.at input[type="text"]{
+ border: 1px solid #ccc;
+ box-sizing: border-box;
+ background-color: #fff;
+}
+
+.ctCreate{
+ height: 25px;
+ padding: 0px;
+ margin : 0px;
+ border: 3px solid #f00;
+ border-radius: 2px;
+ box-sizing: border-box;
+ font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+ font-size: 16px;
+ font-weight: normal; 
+ background-color: transparent;	
+ float:right;
+}
+
+.ctCreate input{
+	padding: 0px 0px;
+	box-sizing: border-box;
+	background-color: transparent;
+}
+
+.ctinfo{
+ padding: 0px;
+ margin : 0px;
+ border: 1px solid transparent;
+ border-radius: 2px;
+ box-sizing: border-box;
+ font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+ font-size: 16px;
+ font-weight: normal; 
+ background-color: transparent;
+ color:#2222ff;
+}
+
+.ct{
+ padding: 0px;
+ margin : 0px;
+ border: 1px solid transparent;
+ border-radius: 2px;
+ box-sizing: border-box;
+ font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+ font-size: 16px;
+ font-weight: normal; 
+ background-color: transparent;
+}
+
+.ct table{
+	table-layout: fixed;
+	word-break:break-all;
+	border-collapse: collapse;
+}
+.ct td {}
+.ct th {
+    text-align: center;
+    background-color: #8888dd;
+    color: white;
+}
+.ct tr:nth-child(even){background-color: #eeeeff;}
+.ct tr:nth-child(odd){background-color: #ddddf8;}
+.ct tr:hover {background-color: #dde;}
+
+.ct caption {
+    background-color: #ccf;
+    text-align: left;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.ct button {
+	background-color: #fff;
+	padding: 1px 1px;
+}
+.ct button:hover {
+	background-color: #fff;
+	padding: 1px 1px;
+}
+
+.ct input {
+	padding: 0px 0px;
+	box-sizing: border-box;
+	background-color: transparent;
+}
+
+.ct input[type="text"]{
+ border: 1px solid #ccc;
+ box-sizing: border-box;
+ background-color: #fff;
+}
+
+.ct input[type="text"]:read-only{
+ border: 1px solid transparent;
+ box-sizing: border-box;
+ background-color: transparent;
+}
+
+.ct input[type="password"]{
+  width: 100%;
+  box-sizing: border-box;
+}

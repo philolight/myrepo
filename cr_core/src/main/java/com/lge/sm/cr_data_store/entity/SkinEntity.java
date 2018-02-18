@@ -1,16 +1,11 @@
 package com.lge.sm.cr_data_store.entity;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.service.view.Skin;
-import com.lge.framework.pacific.logger.Logger;
 import com.lge.sm.cr_data_store.anemics.aentity.ASkinEntity;
 import com.lge.sm.cr_data_store.dto.SkinDto;
 import com.lge.sm.cr_data_store.repository.SkinRepository;

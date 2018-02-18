@@ -27,9 +27,10 @@ import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.util.ToString;
 import com.lge.framework.ceasar.util.CriteriaUtil;
 import com.lge.framework.ceasar.util.JsonUtil;
+import com.lge.framework.ceasar.util.DateStringUtil;
 import com.lge.framework.ceasar.service.view.Skin;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_data_store.repository.PartyRepository;
 import com.lge.sm.cr_data_store.dao.PartyDao;
 import com.lge.sm.cr_data_store.entity.PartyUserEntity;
@@ -67,6 +68,8 @@ abstract public class APartyRepository extends CacheableRepository<PartyEntity, 
 
     @Override
     public PartyEntity create(PartyDto dto) throws IllegalArgumentException {
+    	dto.setCdate(DateStringUtil.getCurrentDateString(DateStringUtil.gmtTimeZoneId));
+
         if(checkCreated(dto) == true) throw new IllegalArgumentException("Already created : " + ToString.toLine(dto));    
         if(checkForeignKeyEntityExist(dto) == false) throw new IllegalArgumentException("No record of foreign key when create : " + ToString.toLine(dto));
         if(dao.insert(dto) == false) throw new IllegalArgumentException();
@@ -98,10 +101,14 @@ abstract public class APartyRepository extends CacheableRepository<PartyEntity, 
         super.deleteDao(entities);
 		List<PartyUserEntity> partyUserList = new ArrayList<>();
 		for(PartyEntity each : entities) partyUserList.addAll(Repos.repo(PartyUserRepository.class).getByPartyId(each.getPartyId()));
-		if(Repos.repo(PartyUserRepository.class).delete(partyUserList) == false) return false;
+		if(partyUserList.size() != 0) {
+			if(Repos.repo(PartyUserRepository.class).delete(partyUserList) == false) return false;
+		}
 		List<PartyAuthorityEntity> partyAuthorityList = new ArrayList<>();
 		for(PartyEntity each : entities) partyAuthorityList.addAll(Repos.repo(PartyAuthorityRepository.class).getByPartyId(each.getPartyId()));
-		if(Repos.repo(PartyAuthorityRepository.class).delete(partyAuthorityList) == false) return false;
+		if(partyAuthorityList.size() != 0) {
+			if(Repos.repo(PartyAuthorityRepository.class).delete(partyAuthorityList) == false) return false;
+		}
  
         return dao.delete(Repos.repo(PartyRepository.class).getDtoList(entities));
     }
@@ -211,36 +218,105 @@ abstract public class APartyRepository extends CacheableRepository<PartyEntity, 
       }
     }
     
-    public String create(JsonNode inputNode) {
-        PartyDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        PartyEntity entity = create(dto);
-        if(entity != null) return skinized(entity);
-        return "";
-    }
-    
-    public String update(JsonNode inputNode) {
-        PartyDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        PartyEntity entity = get(dto);
-        if(entity != null){
-          boolean ret = update(newEntity(dto));
-          if(ret) return skinized(get(dto));
+    public String create(JsonNode nodeList) {
+    	List<PartyDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        PartyDto dto = jsonNodeToDto(each);
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<PartyEntity> entityList = new ArrayList<>();
+		for(PartyDto dto : dtoList) {
+	        PartyEntity entity = create(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to create : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	PartyEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
         }
-        return "";
+        ret.append("]");
+        
+        return ret.toString();
     }
     
-    public boolean delete(JsonNode inputNode) {
-        PartyDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return false;
-        PartyEntity entity = get(dto);
-        return delete(entity);
+    public String update(JsonNode nodeList) {
+    	List<PartyDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        PartyDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<PartyEntity> entityList = new ArrayList<>();
+		for(PartyDto dto : dtoList) {
+	        PartyEntity entity = newEntity(dto);
+	        entityList.add(entity);
+		}
+		
+		boolean result = update(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to update");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	PartyEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
+    }
+    
+    public String delete(JsonNode nodeList) {
+    	List<PartyDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        PartyDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<PartyEntity> entityList = new ArrayList<>();
+		for(PartyDto dto : dtoList) {
+	        PartyEntity entity = get(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to delete : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+		boolean result = delete(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to delete");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	PartyEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
     }
     
     public String getSkinizedKids(JsonNode node, String kidSkinType) {
         PartyDto dto = jsonNodeToDto(node);
         if(dto == null) return "";
         PartyEntity entity = get(dto);
+        if(entity == null) return "";
 
 		if(kidSkinType.equals("PartyUser")) {
 			List<PartyUserEntity> list = entity.getPartyUserEntityList();
@@ -381,12 +457,6 @@ abstract public class APartyRepository extends CacheableRepository<PartyEntity, 
     protected void daoDeleted(List<PartyEntity> entities) {
         super.daoDeleted(entities);
         for(PartyEntity entity : entities) deletePublisher.publish(new DeleteEvent<PartyEntity>(cloneOf(entity)));
-		List<PartyUserEntity> partyUserList = new ArrayList<>();
-		for(PartyEntity each : entities) partyUserList.addAll(Repos.repo(PartyUserRepository.class).getByPartyId(each.getPartyId()));
-		Repos.repo(PartyUserRepository.class).daoDeleted(partyUserList);
-		List<PartyAuthorityEntity> partyAuthorityList = new ArrayList<>();
-		for(PartyEntity each : entities) partyAuthorityList.addAll(Repos.repo(PartyAuthorityRepository.class).getByPartyId(each.getPartyId()));
-		Repos.repo(PartyAuthorityRepository.class).daoDeleted(partyAuthorityList);
 
     }
     

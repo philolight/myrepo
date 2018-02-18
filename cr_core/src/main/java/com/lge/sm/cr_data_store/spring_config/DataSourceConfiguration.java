@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 
 @Configuration
 public class DataSourceConfiguration {

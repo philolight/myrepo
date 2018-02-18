@@ -7,10 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lge.framework.ceasar.util.JsonUtil;
-import com.lge.framework.pacific.logger.Logger;
 
 public class SkinnerManager {
 	private static final String TAG = SkinnerManager.class.getSimpleName();

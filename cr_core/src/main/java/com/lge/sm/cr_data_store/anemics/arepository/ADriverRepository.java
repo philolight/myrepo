@@ -27,9 +27,10 @@ import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.util.ToString;
 import com.lge.framework.ceasar.util.CriteriaUtil;
 import com.lge.framework.ceasar.util.JsonUtil;
+import com.lge.framework.ceasar.util.DateStringUtil;
 import com.lge.framework.ceasar.service.view.Skin;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_data_store.repository.DriverRepository;
 import com.lge.sm.cr_data_store.dao.DriverDao;
 import com.lge.sm.cr_data_store.entity.DriverTypeEntity;
@@ -75,6 +76,8 @@ abstract public class ADriverRepository extends CacheableRepository<DriverEntity
 
     @Override
     public DriverEntity create(DriverDto dto) throws IllegalArgumentException {
+    	dto.setCdate(DateStringUtil.getCurrentDateString(DateStringUtil.gmtTimeZoneId));
+		dto.setDriverId(getNextId());
         if(checkCreated(dto) == true) throw new IllegalArgumentException("Already created : " + ToString.toLine(dto));    
         if(checkForeignKeyEntityExist(dto) == false) throw new IllegalArgumentException("No record of foreign key when create : " + ToString.toLine(dto));
         if(dao.insert(dto) == false) throw new IllegalArgumentException();
@@ -86,7 +89,7 @@ abstract public class ADriverRepository extends CacheableRepository<DriverEntity
     }
   
     protected boolean checkForeignKeyEntityExist(DriverDto dto) {
-		if(Repos.repo(DriverTypeRepository.class).getByMapKey(DriverTypeEntity.newMapKey(dto.getDriverTypeId())) == null) return false;
+		if(dto.getDriverTypeId() != null && Repos.repo(DriverTypeRepository.class).getByMapKey(DriverTypeEntity.newMapKey(dto.getDriverTypeId())) == null) return false;
 
         return true;
     }
@@ -107,13 +110,19 @@ abstract public class ADriverRepository extends CacheableRepository<DriverEntity
         super.deleteDao(entities);
 		List<TcpEntity> tcpList = new ArrayList<>();
 		for(DriverEntity each : entities) tcpList.addAll(Repos.repo(TcpRepository.class).getByDriverId(each.getDriverId()));
-		if(Repos.repo(TcpRepository.class).delete(tcpList) == false) return false;
+		if(tcpList.size() != 0) {
+			if(Repos.repo(TcpRepository.class).delete(tcpList) == false) return false;
+		}
 		List<UrlEntity> urlList = new ArrayList<>();
 		for(DriverEntity each : entities) urlList.addAll(Repos.repo(UrlRepository.class).getByDriverId(each.getDriverId()));
-		if(Repos.repo(UrlRepository.class).delete(urlList) == false) return false;
+		if(urlList.size() != 0) {
+			if(Repos.repo(UrlRepository.class).delete(urlList) == false) return false;
+		}
 		List<PointEntity> pointList = new ArrayList<>();
 		for(DriverEntity each : entities) pointList.addAll(Repos.repo(PointRepository.class).getByDriverId(each.getDriverId()));
-		if(Repos.repo(PointRepository.class).delete(pointList) == false) return false;
+		if(pointList.size() != 0) {
+			if(Repos.repo(PointRepository.class).delete(pointList) == false) return false;
+		}
  
         return dao.delete(Repos.repo(DriverRepository.class).getDtoList(entities));
     }
@@ -216,46 +225,117 @@ abstract public class ADriverRepository extends CacheableRepository<DriverEntity
             DriverDto dto = om.treeToValue(node, DriverDto.class);
             return dto;
         } catch (Exception e) {
+System.out.println("Exception = " + e.getMessage());
             try {
               String json = om.writeValueAsString(node);
         Logger.error(TAG, "Failed to create " + skinType() + " with jsonNode " + json);
       } catch (JsonProcessingException e1) {
+System.out.println("JsonProcessingException = " + e1.getMessage());
         Logger.error(TAG, "Failed to create " + skinType());
       }
             return null;
       }
     }
     
-    public String create(JsonNode inputNode) {
-        DriverDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        DriverEntity entity = create(dto);
-        if(entity != null) return skinized(entity);
-        return "";
-    }
-    
-    public String update(JsonNode inputNode) {
-        DriverDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        DriverEntity entity = get(dto);
-        if(entity != null){
-          boolean ret = update(newEntity(dto));
-          if(ret) return skinized(get(dto));
+    public String create(JsonNode nodeList) {
+    	List<DriverDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        DriverDto dto = jsonNodeToDto(each);
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<DriverEntity> entityList = new ArrayList<>();
+		for(DriverDto dto : dtoList) {
+	        DriverEntity entity = create(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to create : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	DriverEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
         }
-        return "";
+        ret.append("]");
+        
+        return ret.toString();
     }
     
-    public boolean delete(JsonNode inputNode) {
-        DriverDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return false;
-        DriverEntity entity = get(dto);
-        return delete(entity);
+    public String update(JsonNode nodeList) {
+    	List<DriverDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        DriverDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<DriverEntity> entityList = new ArrayList<>();
+		for(DriverDto dto : dtoList) {
+	        DriverEntity entity = newEntity(dto);
+	        entityList.add(entity);
+		}
+		
+		boolean result = update(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to update");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	DriverEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
+    }
+    
+    public String delete(JsonNode nodeList) {
+    	List<DriverDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        DriverDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<DriverEntity> entityList = new ArrayList<>();
+		for(DriverDto dto : dtoList) {
+	        DriverEntity entity = get(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to delete : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+		boolean result = delete(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to delete");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	DriverEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
     }
     
     public String getSkinizedKids(JsonNode node, String kidSkinType) {
         DriverDto dto = jsonNodeToDto(node);
         if(dto == null) return "";
         DriverEntity entity = get(dto);
+        if(entity == null) return "";
 
 		if(kidSkinType.equals("Tcp")) {
 			List<TcpEntity> list = entity.getTcpEntityList();
@@ -414,16 +494,7 @@ abstract public class ADriverRepository extends CacheableRepository<DriverEntity
     protected void daoDeleted(List<DriverEntity> entities) {
         super.daoDeleted(entities);
         for(DriverEntity entity : entities) deletePublisher.publish(new DeleteEvent<DriverEntity>(cloneOf(entity)));
-		List<TcpEntity> tcpList = new ArrayList<>();
-		for(DriverEntity each : entities) tcpList.addAll(Repos.repo(TcpRepository.class).getByDriverId(each.getDriverId()));
-		Repos.repo(TcpRepository.class).daoDeleted(tcpList);
-		List<UrlEntity> urlList = new ArrayList<>();
-		for(DriverEntity each : entities) urlList.addAll(Repos.repo(UrlRepository.class).getByDriverId(each.getDriverId()));
-		Repos.repo(UrlRepository.class).daoDeleted(urlList);
-		List<PointEntity> pointList = new ArrayList<>();
-		for(DriverEntity each : entities) pointList.addAll(Repos.repo(PointRepository.class).getByDriverId(each.getDriverId()));
-		Repos.repo(PointRepository.class).daoDeleted(pointList);
-
+		for(DriverEntity each : entities) driverTypeMapSet.remove(DriverTypeEntity.newMapKey(each.getDriverTypeId()), each);
     }
     
     @Override

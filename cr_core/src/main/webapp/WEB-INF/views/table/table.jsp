@@ -9,11 +9,17 @@
 <meta charset="UTF-8">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/treeview/treeview.js"></script>
+<script type="text/javascript" src="js/crud/crud.js"></script>
+<script type="text/javascript" src="js/crud/create.js"></script>
+<script type="text/javascript" src="js/crud/update.js"></script>
+<script type="text/javascript" src="js/shape/rect.js"></script>
+<script type="text/javascript" src="js/heatmap/heatmap.js"></script>
 <link rel="stylesheet" type="text/css" href="/resources/css/layout.css">
 <link rel="stylesheet" type="text/css" href="/resources/css/table.css">
 <link rel="stylesheet" type="text/css" href="/resources/css/button.css">
 <link rel="stylesheet" type="text/css" href="/resources/css/input.css">
 <link rel="stylesheet" type="text/css" href="/resources/css/treeview.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/crud/create.css">
 </head>
 
 <body>
@@ -33,54 +39,53 @@
 		<input type="button" onClick=onUpdate()            value="Update Event">
 		<input type="button" onClick=onDelete()            value="Delete Event">
 		<input type="button" onClick=onChart()             value="Chart">
+		<input type="button" onClick=InitCreateUpdateTables() value="CreateUpdate">
+		<input type="button" onClick=InitHeatMap() value="HeatMap">
 	</section>
 
 	<section style="height: 100%; width: 100%; overflow: scroll;">
-		<div id="tableTab" style="display=inline-block; float: left;"></div>
-		<div id="createTab" style="display=none; float: left;"></div>
-		<div id="relationalEditorTab" style="display=none; float: left;"></div>
-		<div id="readTab" style="float:left; display=none; float: left;"></div>
-		<div id="updateTab" style="float:left; display=none; float: left;"></div>
-		<div id="deleteTab" style="float:left; display=none; float: left;"></div>
-		<div id="chartTab" style="float:left; display=none; float: left;"></div>
+		<div id="view" style="display=inline-block; float: left;"></div>
 	</section>
 
 	<script>	
 		var selectedEntity = null;  // 선택된 Entity
-	  var selectedSkinType = null;// 선택된 Enitity의 SkinType
+	  	var selectedSkinType = null;// 선택된 Enitity의 SkinType
 		var list;                   // data list
 		var skinTypeMap;            // skinType들이 정의된 list들
 		var selectedEvent = "tableTab";
 		var tabs = ["tableTab", "createTab", "relationalEditorTab", "readTab", "updateTab", "deleteTab", "chartTab"];
 	
-		// 이미 생성된 Tab들을 보이지 않게 만드는 메소드.
-		function tabDisplayNone(){
-			for(i in tabs) document.getElementById(tabs[i]).style.display = 'none';
+		function InitCreateUpdateTables(){
+			$('#view').html(
+					"<div id='create' style='display=inline-block; float:left;'></div>" +
+					"<div id='update' style='display=inline-block; float:left;'></div>"
+					);
+			CreateTableInit();
+			UpdateTableInit();
 		}
-	
-		// Tab의 하위 뷰들을 모두 삭제하는 메소드. Tab의 전환을 위해 수행.
-		function tabRemoveKids() {
-			for (i in tabs) {
-				var elem = document.getElementById(tabs[i]);
-				while(elem.firstChild) elem.removeChild(elem.firstChild);
-			}
+		
+		function InitHeatMap(){
+			var content = "<div id='heatmap' style='display=inline-block; float:left;'>";
+//			content += "<img id='layout' src='/resources/images/layout.jpg' alt='Layout' height='1024' width='768'>";
+//			content += "<img id='layout' src='/resources/images/layout.jpg' style='display:none;' alt='Layout' height='1024' width='768'>";
+			content += "<div id='heatMapControl'></div>";
+			content += "<div><canvas id='heatMapCanvas' width='1024' height='800'></canvas></div>";
+			content += "</div>";
+			$('#view').html(content);
+			HeatMapInit();
 		}
-	
+		
 		// Table 버튼이 눌렸을 때 호출되는 메소드.
 		function onTable() {
-        selectedEvent = "tableTab";        
-        tabDisplayNone();
-        tabRemoveKids();
-        document.getElementById('tableTab').style.display = 'inline-block';
+			$('#view').html("<div id='tableTab' style='display=inline-block; float:left;'></div>");
+	        selectedEvent = "tableTab";
 		}
 		
 		// Create 버튼이 눌렸을 때 호출되는 메소드.
 		function onCreate() {
+			$('#view').html("<div id='createTab' style='display=inline-block; float:left;'></div>");
 			selectedEvent = "createTab";
-		  tabDisplayNone();
-	    tabRemoveKids();
-		  document.getElementById('createTab').style.display = 'inline-block';
-		  initCreateTab();
+		  	initCreateTab();
 		}
 	
 		// Create 버튼이 눌렸을 때 화면을 생성하는 메소드.
@@ -96,11 +101,10 @@
 		
     // Relational Editor 버튼이 눌렸을 때 호출되는 메소드.
     function onRelationalEditor() {
-      selectedEvent = "relationalEditorTab";
-      tabDisplayNone();
-      tabRemoveKids();
-      document.getElementById('relationalEditorTab').style.display = 'inline-block';
-      initRelationalEditorTab();
+    	$('#view').html("<div id='relationalEditorTab' style='display=inline-block; float:left;'></div>");
+      	selectedEvent = "relationalEditorTab";
+      	document.getElementById('relationalEditorTab').style.display = 'inline-block';
+      	initRelationalEditorTab();
     }
   
     // Relation 버튼이 눌렸을 때 화면을 생성하는 메소드.
@@ -116,10 +120,8 @@
 			
 		// Update 버튼이 눌렸을 때 호출되는 메소드.
 		function onUpdate() {
+			$('#view').html("<div id='updateTab' style='display=inline-block; float:left;'></div>");
 			selectedEvent = "updateTab";
-			tabDisplayNone();
-			tabRemoveKids();
-			document.getElementById('updateTab').style.display = 'inline-block';
 			initUpdateTab();
 		}
 	
@@ -136,19 +138,15 @@
 	
 		// Delete 버튼이 눌렸을 때 호출되는 메소드.
 		function onDelete() {
+			$('#view').html("<div id='deleteTab' style='display=inline-block; float:left;'></div>");
 			selectedEvent = "deleteTab";
-      tabDisplayNone();
-      tabRemoveKids();
-      document.getElementById('deleteTab').style.display = 'inline-block';
 		}
 		
     // Delete 버튼이 눌렸을 때 호출되는 메소드.
     function onChart() {
-      selectedEvent = "chartTab";
-      tabDisplayNone();
-      tabRemoveKids();
-      document.getElementById('chartTab').style.display = 'inline-block';
-      initChartTab();
+    	$('#view').html("<div id='chartTab' style='display=inline-block; float:left;'></div>");
+      	selectedEvent = "chartTab";
+      	initChartTab();
     }
     
     // Create 버튼이 눌렸을 때 화면을 생성하는 메소드.
@@ -203,8 +201,6 @@
 					"skinType" : skinType
 				},
 				success : function(result) {
-					list = JSON.parse(result);
-	
 					var skin = skinTypeMap[selectedSkinType];
 					var fields = skin["fields"];
 

@@ -1,6 +1,7 @@
 package com.lge.sm.cr_core.service.crud;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -9,12 +10,11 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.framework.ceasar.service.AbstractService;
 import com.lge.framework.ceasar.service.view.Skinner;
 import com.lge.framework.ceasar.service.view.SkinnerManager;
 import com.lge.framework.ceasar.util.JsonUtil;
-import com.lge.framework.ceasar.util.ToString;
-import com.lge.framework.pacific.logger.Logger;
 
 @Service
 public class CrudService extends AbstractService{
@@ -54,10 +54,13 @@ public class CrudService extends AbstractService{
 	
 	public String create(String json) {
 		JsonNode node = asJsonNode(json);
-		if(node == null) return "";
-		Skinner skinner = SkinnerManager.get(((ObjectNode) node).get("skinType").asText());
+		if(node == null || node.size() == 0) return "";
+		if(((ObjectNode) node.get(0)).get("skinType") == null) return "";		
+		
+		Skinner skinner = SkinnerManager.get(((ObjectNode) node.get(0)).get("skinType").asText());
 		if(skinner == null) return "";
-		((ObjectNode) node).remove("skinType");
+		
+		for(JsonNode each : node) ((ObjectNode) each).remove("skinType");
 		
 		return skinner.create(node);
 	}
@@ -70,19 +73,26 @@ public class CrudService extends AbstractService{
 	
 	public String update(String json) {
 		JsonNode node = asJsonNode(json);
-		if(node == null) return "";
-		Skinner skinner = SkinnerManager.get(((ObjectNode) node).get("skinType").asText());
+		if(node == null || node.size() == 0) return "";
+		if(((ObjectNode) node.get(0)).get("skinType") == null) return "";		
+		
+		Skinner skinner = SkinnerManager.get(((ObjectNode) node.get(0)).get("skinType").asText());
 		if(skinner == null) return "";
-		((ObjectNode) node).remove("skinType");	
+		
+		for(JsonNode each : node) ((ObjectNode) each).remove("skinType");
+		
 		return skinner.update(node);
 	}
 	
-	public boolean delete(String json) {
+	public String delete(String json) {
 		JsonNode node = asJsonNode(json);
-		if(node == null) return false;
-		Skinner skinner = SkinnerManager.get(((ObjectNode) node).get("skinType").asText());
-		if(skinner == null) return false;
-		((ObjectNode) node).remove("skinType");
+		if(node == null || node.size() == 0) return "";
+		if(((ObjectNode) node.get(0)).get("skinType") == null) return "";		
+		
+		Skinner skinner = SkinnerManager.get(((ObjectNode) node.get(0)).get("skinType").asText());
+		if(skinner == null) return "";
+		
+		for(JsonNode each : node) ((ObjectNode) each).remove("skinType");
 		
 		return skinner.delete(node);
 	}

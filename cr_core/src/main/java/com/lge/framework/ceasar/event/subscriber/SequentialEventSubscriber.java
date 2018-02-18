@@ -7,7 +7,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 import com.lge.framework.ceasar.event.event_kind.Event;
 import com.lge.framework.ceasar.event.publisher.KindredEventPublisher;
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 
 /**
  * 들어온 이벤트를 시간 순서대로 처리할 수 있도록 만들어진 Event Subscriber.

@@ -139,7 +139,6 @@ TreeHead.prototype.find = function(id){
 TreeHead.prototype.created = function(id,result){
 	for(i in this.news){
 		if(this.news[i].id == id){
-			console.log("delete = " + this.news[i]);
 			this.news.splice(i, 1);
 			break;
 		}
@@ -150,7 +149,7 @@ TreeHead.prototype.created = function(id,result){
 TreeHead.prototype.remove = function(id){
 	for(i in this.news){
 		if(this.news[i].id == id){
-			console.log("delete = " + JSON.stringify(this.news[i]));
+//			console.log("delete = " + JSON.stringify(this.news[i]));
 			this.news.splice(i, 1);
 			return;
 		}
@@ -189,13 +188,13 @@ function TreeNode(parent, skin, me, skinTypeMap, exist){
 TreeNode.prototype.existDraw = function(){
 	var txt = "<div style='float:none; clear:left; display:block; width:100%'>";
 	
-		txt += "<div style='float:none; clear:left; display:block; width:400px'>";
+		txt += "<div style='float:none; clear:left; display:block; width:500px'>";
 			txt += "<input class='tv' type='button' value='Update' onclick='TreeNode.prototype.onUpdate(\""+this.id+"\")' style='width:80px; padding:1px;'>";
-			txt += "<label class='tt' style='height:26px; width:234px;'>"+this.skin["skinType"]+"</label>";
+			txt += "<label class='tt' style='height:26px; width:334px;'>"+this.skin["skinType"]+"</label>";
 			txt += "<input class='tv' type='button' value='Delete' onclick='TreeNode.prototype.onDelete(\""+this.id+"\")' style='float:right; width:80px; padding:1px;'>";
 		txt += "</div>";
 	
-		txt += "<div style='float:none; clear:left; display:block; width:400px;'>";
+		txt += "<div style='float:none; clear:left; display:block; width:500px;'>";
 		
 			txt += "<div style='float:left; display:inline-block; width:200px;'>";
 			for(var i in this.fields){
@@ -221,10 +220,19 @@ TreeNode.prototype.existDraw = function(){
 				txt += " value='"+this.me[field.name]+"'></div>";
 			}
 			txt += "</div>";
+			
+			txt += "<div style='float:left; display:inline-block; width:100px;'>";
+			for(var i in this.fields){
+				var field = this.fields[i];
+				if(field.name == 'skinType') continue;
+				
+				txt += "<div style='float:none; width:100px;'><label class='info'>"+field.type+"</label></div>";
+			}
+			txt += "</div>";
 		
 		txt += "</div>";
 		
-		txt += "<div class='tv' style='float:none; clear:left; display:block; width:400px;'>";
+		txt += "<div style='float:none; clear:left; display:block; width:400px;'>";
 			if(this.fold) txt += "<input class='tv' type='button' value='Open' onclick='TreeNode.prototype.onOpen(\""+this.id+"\")' style='float:left; width:80px; padding:1px;'>";
 			else txt += "<input class='tv' type='button' value='Fold' onclick='TreeNode.prototype.onFold(\""+this.id+"\")' style='float:left; width:80px; padding:1px;'>";
 		txt += "</div>";
@@ -242,13 +250,13 @@ TreeNode.prototype.existDraw = function(){
 TreeNode.prototype.newDraw = function(){
 	var txt = "<div style='float:none; clear:left; display:block; width:100%'>";
 	
-		txt += "<div style='float:none; clear:left; display:block; width:400px'>";
+		txt += "<div style='float:none; clear:left; display:block; width:500px'>";
 			txt +="<input class='tv' type='button' value='Create' onclick='TreeNode.prototype.onInsert(\""+this.id+"\")' style='width:80px; padding:1px;'>";	
-			txt += "<label class='tt' style='height:26px; width:234px;'>"+this.skin["skinType"]+"</label>";
+			txt += "<label class='tt' style='height:26px; width:334px;'>"+this.skin["skinType"]+"</label>";
 			txt +="<input class='tv' type='button' value='Delete' onclick='TreeNode.prototype.onNewDelete(\""+this.id+"\")' style='float:right; width:80px; padding:1px'>";
 		txt += "</div>";
 	
-		txt += "<div style='float:none; clear:left; display:block; width:400px;'>";
+		txt += "<div style='float:none; clear:left; display:block; width:500px;'>";
 		
 			txt += "<div style='float:left; display:inline-block; width:200px;'>";
 			for(var i in this.fields){
@@ -264,23 +272,31 @@ TreeNode.prototype.newDraw = function(){
 				if(field.name == 'skinType') continue;
 				
 				txt += "<div class='tv' style='float:none; width:200px;'><input type=";
-				
+				console.log(field.name + " " + field.autoFill);
 				if (field.hideTyping)
-					txt += "'password' onfocusout=onFocusOut(\""+field.name+"\",\""+this.id+"\",this.value)";
+					txt += "'password' onfocusout=onFocusOut(\""+field.name+"\",\""+this.id+"\",this.value)></div>";
 				else if (field.autoFill == 0)
-					txt += "'text' onfocusout=onFocusOut(\""+field.name+"\",\""+this.id+"\",this.value)";
+					txt += "'text' onfocusout=onFocusOut(\""+field.name+"\",\""+this.id+"\",this.value)></div>";
 				else
-					txt += "'text' readonly";
-				txt += " value='"+this.me[field.name]+"'></div>";
+					txt += "'text' readonly value='[AutoFill]'></div>";
+			}
+			txt += "</div>";
+			
+			txt += "<div style='float:left; display:inline-block; width:100px;'>";
+			for(var i in this.fields){
+				var field = this.fields[i];
+				if(field.name == 'skinType') continue;
+				
+				txt += "<div style='float:none; width:100px;'><label class='info'>"+field.type+"</label></div>";
 			}
 			txt += "</div>";
 		
 		txt += "</div>";
 		
-		txt += "<div class='tv' style='float:none; clear:left; display:block; width:400px;'>";
+/*		txt += "<div style='float:none; clear:left; display:block; width:400px;'>";
 			if(this.fold) txt += "<input class='tv' type='button' value='Open' onclick='TreeNode.prototype.onOpen(\""+this.id+"\")' style='float:left; width:80px; padding:1px;'>";
 			else txt += "<input class='tv' type='button' value='Fold' onclick='TreeNode.prototype.onFold(\""+this.id+"\")' style='float:left; width:80px; padding:1px;'>";
-		txt += "</div>";
+		txt += "</div>";*/
 
 	txt +="</div>";
 	
@@ -296,18 +312,18 @@ TreeNode.prototype.newDraw = function(){
 TreeNode.prototype.onInsert = function(id){
 	var node = find(id);
 	if(node == null) return;
-	
+//	var request = [];
+//	request.push(node.me);
+//	console.log("A");
 	$.ajax({
 		url : "/crud/create",
 		type : "POST",
 		dataType : "json",
 		contentType : "application/json; charset=utf-8",
 		mimeType : 'application/json',
-		data : JSON.stringify(node.me),
+		data : JSON.stringify([node.me]),
 		success : function(result) {
-			alert("데이터가 생성 되었습니다.");
-			console.log('success = ' + JSON.stringify(result));
-			console.log("node.parent = " + node.parent == undefined);
+			alert("데이터가 생성 되었습니다 : " + JSON.stringify(result));
 			node.parent.created(id,result);
 			tree.refresh();
 		},

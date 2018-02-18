@@ -1,21 +1,14 @@
 package com.lge.sm.cr_core;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.lge.framework.ceasar.service.view.SkinnerManager;
+import com.lge.framework.ceasar.logger.LogLevel;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.framework.ceasar.startable.Starter;
-import com.lge.framework.pacific.logger.LogLevel;
-import com.lge.framework.pacific.logger.Logger;
 import com.lge.sm.cr_core.cr_task_manager.CrTaskManager;
 import com.lge.sm.cr_data_store.DataStore;
 import com.lge.sm.cr_data_store.dao.CancelHistoryDao;
@@ -38,13 +31,13 @@ public class AppStarter {
 
 		Logger.debug(TAG, "cr_core start");
 		  
-		linkSpringContext();
-
-		if (CrTaskManager.getInstance().start()) {
-			Logger.debug(TAG, "CrTaskManager start");
-		} else {
-			Logger.error(TAG, "The initialization of CrTaskManager is failed.");
-		}
+//		linkSpringContext();
+//
+//		if (CrTaskManager.getInstance().start()) {
+//			Logger.debug(TAG, "CrTaskManager start");
+//		} else {
+//			Logger.error(TAG, "The initialization of CrTaskManager is failed.");
+//		}
 
 		Starter starter = new Starter();
 		if(starter.init() == false) {

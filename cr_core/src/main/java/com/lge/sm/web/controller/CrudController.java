@@ -17,16 +17,20 @@ import com.lge.sm.cr_core.service.crud.CrudService;
 public class CrudController {
 	@Autowired CrudService service;
 	
-	@RequestMapping(value = "/crud/create", method = RequestMethod.POST)
+	@RequestMapping(value = "/crud/create", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
 	public @ResponseBody String createRequest(@RequestBody String json) {
+		System.out.println("create = " + json);
+		
 		String ret = service.create(json);
+		
+		System.out.println("ret = " + ret);
 		
 		return ret;
 	}
 	
-	@RequestMapping(value = "/crud/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/crud/update", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
 	public @ResponseBody String updateRequest(@RequestBody String json) {
-		System.out.println(json);
+		System.out.println("update = " + json);
 		
 		String ret = service.update(json);
 		
@@ -35,18 +39,18 @@ public class CrudController {
 		return ret;
 	}
 	
-	@RequestMapping(value = "/crud/delete", method = RequestMethod.POST)
+	@RequestMapping(value = "/crud/delete", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
 	public @ResponseBody String deleteRequest(@RequestBody String json) {
-		System.out.println(json);
+		System.out.println("delete = " + json);
 		
-		boolean ret = service.delete(json);
+		String ret = service.delete(json);
 		
 		System.out.println("ret = " + ret);
 		
-		return ret == true ? "{\"result\":\"success\"}" : "{\"result\":\"fail\"}";
+		return ret;
 	}
 	
-	@RequestMapping(value = "/crud/kids", method = RequestMethod.POST)
+	@RequestMapping(value = "/crud/kids", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
 	public @ResponseBody String kidsRequest(@RequestBody KidsRequest request) {
 		System.out.println("parent = " + request.parent.toString());
 		System.out.println("kidSkinType = " + request.kidSkinType);

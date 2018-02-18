@@ -27,9 +27,10 @@ import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.util.ToString;
 import com.lge.framework.ceasar.util.CriteriaUtil;
 import com.lge.framework.ceasar.util.JsonUtil;
+import com.lge.framework.ceasar.util.DateStringUtil;
 import com.lge.framework.ceasar.service.view.Skin;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_data_store.repository.SpaceRepository;
 import com.lge.sm.cr_data_store.dao.SpaceDao;
 import com.lge.sm.cr_data_store.entity.SpaceEntity;
@@ -71,6 +72,8 @@ abstract public class ASpaceRepository extends CacheableRepository<SpaceEntity, 
 
     @Override
     public SpaceEntity create(SpaceDto dto) throws IllegalArgumentException {
+    	dto.setCdate(DateStringUtil.getCurrentDateString(DateStringUtil.gmtTimeZoneId));
+		dto.setSpaceId(getNextId());
         if(checkCreated(dto) == true) throw new IllegalArgumentException("Already created : " + ToString.toLine(dto));    
         if(checkForeignKeyEntityExist(dto) == false) throw new IllegalArgumentException("No record of foreign key when create : " + ToString.toLine(dto));
         if(dao.insert(dto) == false) throw new IllegalArgumentException();
@@ -82,7 +85,7 @@ abstract public class ASpaceRepository extends CacheableRepository<SpaceEntity, 
     }
   
     protected boolean checkForeignKeyEntityExist(SpaceDto dto) {
-		if(Repos.repo(SpaceRepository.class).getByMapKey(SpaceEntity.newMapKey(dto.getParentSpaceId())) == null) return false;
+		if(dto.getParentSpaceId() != null && Repos.repo(SpaceRepository.class).getByMapKey(SpaceEntity.newMapKey(dto.getParentSpaceId())) == null) return false;
 
         return true;
     }
@@ -103,7 +106,9 @@ abstract public class ASpaceRepository extends CacheableRepository<SpaceEntity, 
         super.deleteDao(entities);
 		List<SpaceEntity> spaceList = new ArrayList<>();
 		for(SpaceEntity each : entities) spaceList.addAll(Repos.repo(SpaceRepository.class).getBySpaceId(each.getSpaceId()));
-		if(Repos.repo(SpaceRepository.class).delete(spaceList) == false) return false;
+		if(spaceList.size() != 0) {
+			if(Repos.repo(SpaceRepository.class).delete(spaceList) == false) return false;
+		}
  
         return dao.delete(Repos.repo(SpaceRepository.class).getDtoList(entities));
     }
@@ -214,36 +219,105 @@ abstract public class ASpaceRepository extends CacheableRepository<SpaceEntity, 
       }
     }
     
-    public String create(JsonNode inputNode) {
-        SpaceDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        SpaceEntity entity = create(dto);
-        if(entity != null) return skinized(entity);
-        return "";
-    }
-    
-    public String update(JsonNode inputNode) {
-        SpaceDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        SpaceEntity entity = get(dto);
-        if(entity != null){
-          boolean ret = update(newEntity(dto));
-          if(ret) return skinized(get(dto));
+    public String create(JsonNode nodeList) {
+    	List<SpaceDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        SpaceDto dto = jsonNodeToDto(each);
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<SpaceEntity> entityList = new ArrayList<>();
+		for(SpaceDto dto : dtoList) {
+	        SpaceEntity entity = create(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to create : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	SpaceEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
         }
-        return "";
+        ret.append("]");
+        
+        return ret.toString();
     }
     
-    public boolean delete(JsonNode inputNode) {
-        SpaceDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return false;
-        SpaceEntity entity = get(dto);
-        return delete(entity);
+    public String update(JsonNode nodeList) {
+    	List<SpaceDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        SpaceDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<SpaceEntity> entityList = new ArrayList<>();
+		for(SpaceDto dto : dtoList) {
+	        SpaceEntity entity = newEntity(dto);
+	        entityList.add(entity);
+		}
+		
+		boolean result = update(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to update");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	SpaceEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
+    }
+    
+    public String delete(JsonNode nodeList) {
+    	List<SpaceDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        SpaceDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<SpaceEntity> entityList = new ArrayList<>();
+		for(SpaceDto dto : dtoList) {
+	        SpaceEntity entity = get(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to delete : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+		boolean result = delete(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to delete");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	SpaceEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
     }
     
     public String getSkinizedKids(JsonNode node, String kidSkinType) {
         SpaceDto dto = jsonNodeToDto(node);
         if(dto == null) return "";
         SpaceEntity entity = get(dto);
+        if(entity == null) return "";
 
 		if(kidSkinType.equals("Space")) {
 			List<SpaceEntity> list = entity.getSpaceEntityList();
@@ -376,10 +450,7 @@ abstract public class ASpaceRepository extends CacheableRepository<SpaceEntity, 
     protected void daoDeleted(List<SpaceEntity> entities) {
         super.daoDeleted(entities);
         for(SpaceEntity entity : entities) deletePublisher.publish(new DeleteEvent<SpaceEntity>(cloneOf(entity)));
-		List<SpaceEntity> spaceList = new ArrayList<>();
-		for(SpaceEntity each : entities) spaceList.addAll(Repos.repo(SpaceRepository.class).getBySpaceId(each.getSpaceId()));
-		Repos.repo(SpaceRepository.class).daoDeleted(spaceList);
-
+		for(SpaceEntity each : entities) spaceMapSet.remove(SpaceEntity.newMapKey(each.getSpaceId()), each);
     }
     
     @Override

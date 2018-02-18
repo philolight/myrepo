@@ -8,7 +8,7 @@ import java.net.URL;
 
 import javax.activation.UnsupportedDataTypeException;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_data_store.common.Constants;
 import com.lge.sm.cr_data_store.dto.SlmDto;
 

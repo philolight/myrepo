@@ -1,13 +1,14 @@
 package com.lge.sm.cr_core.cr_system_comm;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.lge.framework.pacific.logger.LogLevel;
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.LogLevel;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_core.cr_task_manager.PropertyLoader;
 
 public class CrSystemCommunicatorTest {

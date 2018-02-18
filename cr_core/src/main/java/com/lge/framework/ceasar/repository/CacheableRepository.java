@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.lge.framework.ceasar.dao.DataAccessObject;
 import com.lge.framework.ceasar.entity.Entity;
 import com.lge.framework.ceasar.entity.MapKey;
@@ -85,6 +87,7 @@ abstract public class CacheableRepository<ET extends Entity<DTO>, DAO extends Da
 		return update(Arrays.asList(entity));
 	}
 	
+	@Transactional
 	public boolean update(List<ET> entities) {
 		if(dao.update(getDtoList(entities)) == false) return false;
 		for(ET entity : entities) {
@@ -103,7 +106,9 @@ abstract public class CacheableRepository<ET extends Entity<DTO>, DAO extends Da
 	
 	/** Delete 이후에 하위 클래스들이 해야 할 작업을 정의하는 메소드. */
 	protected void daoDeleted(List<ET> entities) {
-		for(ET entity : entities) map.remove(entity.mapKey(), entity);
+		for(ET entity : entities) {
+			map.remove(entity.mapKey(), entity);
+		}
 	}
 	
 	@Override
@@ -113,6 +118,7 @@ abstract public class CacheableRepository<ET extends Entity<DTO>, DAO extends Da
 		return true;
 	}	
 	
+	@Transactional
 	@Override
 	public boolean deleteAll() {
 		List<ET> list = new ArrayList<>();

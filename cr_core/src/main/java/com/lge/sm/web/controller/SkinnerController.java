@@ -11,26 +11,25 @@ import com.lge.framework.ceasar.service.view.SkinnerManager;
 
 @Controller
 public class SkinnerController {
-	@RequestMapping(value="/skinner/skinTypeMap", method = RequestMethod.POST)
+	@RequestMapping(value="/skinner/skinTypeMap", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String skinMap(ModelAndView modelAndView){
-		System.out.println("/skinner/skinTypeMap");
 		return SkinnerManager.getSkinTypeMap();
 	}
 	
-	@RequestMapping(value="/skinner/skinTypeList", method = RequestMethod.POST)
+	@RequestMapping(value="/skinner/skinTypeList", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String skinTypeList(ModelAndView modelAndView){
-		System.out.println("/skinner/skinTypeList");
 		return SkinnerManager.getSkinTypeList();
 	}
 	
-	@RequestMapping(value="/skinner/skinizedAll", method = RequestMethod.POST)
+	@RequestMapping(value="/skinner/skinizedAll", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
 	@ResponseBody
 	String skinizedAll(HttpServletRequest request){
-		System.out.println("/skinner/skinizedAll");
 		String skinType = request.getParameter("skinType");
-		return SkinnerManager.getSkinizedAll(skinType);
+		String ret = SkinnerManager.getSkinizedAll(skinType);
+		System.out.println("ret = " + ret);
+		return ret;
 	}
 }
 

@@ -10,9 +10,9 @@ public interface Skinner {
 	public Skin skin();
 	public String skinized(JsonNode node);
 	public String skinizedAll();
-	public String create(JsonNode node);
+	public String create(JsonNode nodeList);
 	public String read(Map<String, String> from, Map<String, String> to, Map<String, List<String>> maps, int limit);
-	public String update(JsonNode node);
-	public boolean delete(JsonNode node);
+	public String update(JsonNode nodeList);
+	public String delete(JsonNode nodeList);
 	public String getSkinizedKids(JsonNode node, String kidSkinType);
 }

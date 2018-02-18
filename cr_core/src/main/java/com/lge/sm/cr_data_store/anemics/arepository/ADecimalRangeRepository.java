@@ -27,9 +27,10 @@ import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.util.ToString;
 import com.lge.framework.ceasar.util.CriteriaUtil;
 import com.lge.framework.ceasar.util.JsonUtil;
+import com.lge.framework.ceasar.util.DateStringUtil;
 import com.lge.framework.ceasar.service.view.Skin;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_data_store.repository.DecimalRangeRepository;
 import com.lge.sm.cr_data_store.dao.DecimalRangeDao;
 import com.lge.sm.cr_data_store.entity.FieldSkinEntity;
@@ -69,6 +70,8 @@ abstract public class ADecimalRangeRepository extends CacheableRepository<Decima
 
     @Override
     public DecimalRangeEntity create(DecimalRangeDto dto) throws IllegalArgumentException {
+    	dto.setCdate(DateStringUtil.getCurrentDateString(DateStringUtil.gmtTimeZoneId));
+		dto.setDecimalRangeId(getNextId());
         if(checkCreated(dto) == true) throw new IllegalArgumentException("Already created : " + ToString.toLine(dto));    
         if(checkForeignKeyEntityExist(dto) == false) throw new IllegalArgumentException("No record of foreign key when create : " + ToString.toLine(dto));
         if(dao.insert(dto) == false) throw new IllegalArgumentException();
@@ -80,7 +83,7 @@ abstract public class ADecimalRangeRepository extends CacheableRepository<Decima
     }
   
     protected boolean checkForeignKeyEntityExist(DecimalRangeDto dto) {
-		if(Repos.repo(FieldSkinRepository.class).getByMapKey(FieldSkinEntity.newMapKey(dto.getFieldSkinId())) == null) return false;
+		if(dto.getFieldSkinId() != null && Repos.repo(FieldSkinRepository.class).getByMapKey(FieldSkinEntity.newMapKey(dto.getFieldSkinId())) == null) return false;
 
         return true;
     }
@@ -208,36 +211,105 @@ abstract public class ADecimalRangeRepository extends CacheableRepository<Decima
       }
     }
     
-    public String create(JsonNode inputNode) {
-        DecimalRangeDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        DecimalRangeEntity entity = create(dto);
-        if(entity != null) return skinized(entity);
-        return "";
-    }
-    
-    public String update(JsonNode inputNode) {
-        DecimalRangeDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        DecimalRangeEntity entity = get(dto);
-        if(entity != null){
-          boolean ret = update(newEntity(dto));
-          if(ret) return skinized(get(dto));
+    public String create(JsonNode nodeList) {
+    	List<DecimalRangeDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        DecimalRangeDto dto = jsonNodeToDto(each);
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<DecimalRangeEntity> entityList = new ArrayList<>();
+		for(DecimalRangeDto dto : dtoList) {
+	        DecimalRangeEntity entity = create(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to create : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	DecimalRangeEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
         }
-        return "";
+        ret.append("]");
+        
+        return ret.toString();
     }
     
-    public boolean delete(JsonNode inputNode) {
-        DecimalRangeDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return false;
-        DecimalRangeEntity entity = get(dto);
-        return delete(entity);
+    public String update(JsonNode nodeList) {
+    	List<DecimalRangeDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        DecimalRangeDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<DecimalRangeEntity> entityList = new ArrayList<>();
+		for(DecimalRangeDto dto : dtoList) {
+	        DecimalRangeEntity entity = newEntity(dto);
+	        entityList.add(entity);
+		}
+		
+		boolean result = update(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to update");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	DecimalRangeEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
+    }
+    
+    public String delete(JsonNode nodeList) {
+    	List<DecimalRangeDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        DecimalRangeDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<DecimalRangeEntity> entityList = new ArrayList<>();
+		for(DecimalRangeDto dto : dtoList) {
+	        DecimalRangeEntity entity = get(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to delete : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+		boolean result = delete(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to delete");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	DecimalRangeEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
     }
     
     public String getSkinizedKids(JsonNode node, String kidSkinType) {
         DecimalRangeDto dto = jsonNodeToDto(node);
         if(dto == null) return "";
         DecimalRangeEntity entity = get(dto);
+        if(entity == null) return "";
 
         
         return "";
@@ -357,7 +429,7 @@ abstract public class ADecimalRangeRepository extends CacheableRepository<Decima
     protected void daoDeleted(List<DecimalRangeEntity> entities) {
         super.daoDeleted(entities);
         for(DecimalRangeEntity entity : entities) deletePublisher.publish(new DeleteEvent<DecimalRangeEntity>(cloneOf(entity)));
-
+		for(DecimalRangeEntity each : entities) fieldSkinMapSet.remove(FieldSkinEntity.newMapKey(each.getFieldSkinId()), each);
     }
     
     @Override

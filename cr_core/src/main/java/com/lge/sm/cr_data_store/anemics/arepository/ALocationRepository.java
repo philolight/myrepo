@@ -27,9 +27,10 @@ import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.util.ToString;
 import com.lge.framework.ceasar.util.CriteriaUtil;
 import com.lge.framework.ceasar.util.JsonUtil;
+import com.lge.framework.ceasar.util.DateStringUtil;
 import com.lge.framework.ceasar.service.view.Skin;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_data_store.repository.LocationRepository;
 import com.lge.sm.cr_data_store.dao.LocationDao;
 import com.lge.sm.cr_data_store.entity.RoomSensorEntity;
@@ -69,6 +70,8 @@ abstract public class ALocationRepository extends CacheableRepository<LocationEn
 
     @Override
     public LocationEntity create(LocationDto dto) throws IllegalArgumentException {
+    	dto.setCdate(DateStringUtil.getCurrentDateString(DateStringUtil.gmtTimeZoneId));
+
         if(checkCreated(dto) == true) throw new IllegalArgumentException("Already created : " + ToString.toLine(dto));    
         if(checkForeignKeyEntityExist(dto) == false) throw new IllegalArgumentException("No record of foreign key when create : " + ToString.toLine(dto));
         if(dao.insert(dto) == false) throw new IllegalArgumentException();
@@ -100,13 +103,19 @@ abstract public class ALocationRepository extends CacheableRepository<LocationEn
         super.deleteDao(entities);
 		List<RoomSensorEntity> roomSensorList = new ArrayList<>();
 		for(LocationEntity each : entities) roomSensorList.addAll(Repos.repo(RoomSensorRepository.class).getByLocationId(each.getLocationId()));
-		if(Repos.repo(RoomSensorRepository.class).delete(roomSensorList) == false) return false;
+		if(roomSensorList.size() != 0) {
+			if(Repos.repo(RoomSensorRepository.class).delete(roomSensorList) == false) return false;
+		}
 		List<RoomEntity> roomList = new ArrayList<>();
 		for(LocationEntity each : entities) roomList.addAll(Repos.repo(RoomRepository.class).getByLocationId(each.getLocationId()));
-		if(Repos.repo(RoomRepository.class).delete(roomList) == false) return false;
+		if(roomList.size() != 0) {
+			if(Repos.repo(RoomRepository.class).delete(roomList) == false) return false;
+		}
 		List<AuthorityLocationEntity> authorityLocationList = new ArrayList<>();
 		for(LocationEntity each : entities) authorityLocationList.addAll(Repos.repo(AuthorityLocationRepository.class).getByLocationId(each.getLocationId()));
-		if(Repos.repo(AuthorityLocationRepository.class).delete(authorityLocationList) == false) return false;
+		if(authorityLocationList.size() != 0) {
+			if(Repos.repo(AuthorityLocationRepository.class).delete(authorityLocationList) == false) return false;
+		}
  
         return dao.delete(Repos.repo(LocationRepository.class).getDtoList(entities));
     }
@@ -217,36 +226,105 @@ abstract public class ALocationRepository extends CacheableRepository<LocationEn
       }
     }
     
-    public String create(JsonNode inputNode) {
-        LocationDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        LocationEntity entity = create(dto);
-        if(entity != null) return skinized(entity);
-        return "";
-    }
-    
-    public String update(JsonNode inputNode) {
-        LocationDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        LocationEntity entity = get(dto);
-        if(entity != null){
-          boolean ret = update(newEntity(dto));
-          if(ret) return skinized(get(dto));
+    public String create(JsonNode nodeList) {
+    	List<LocationDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        LocationDto dto = jsonNodeToDto(each);
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<LocationEntity> entityList = new ArrayList<>();
+		for(LocationDto dto : dtoList) {
+	        LocationEntity entity = create(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to create : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	LocationEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
         }
-        return "";
+        ret.append("]");
+        
+        return ret.toString();
     }
     
-    public boolean delete(JsonNode inputNode) {
-        LocationDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return false;
-        LocationEntity entity = get(dto);
-        return delete(entity);
+    public String update(JsonNode nodeList) {
+    	List<LocationDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        LocationDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<LocationEntity> entityList = new ArrayList<>();
+		for(LocationDto dto : dtoList) {
+	        LocationEntity entity = newEntity(dto);
+	        entityList.add(entity);
+		}
+		
+		boolean result = update(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to update");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	LocationEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
+    }
+    
+    public String delete(JsonNode nodeList) {
+    	List<LocationDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        LocationDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<LocationEntity> entityList = new ArrayList<>();
+		for(LocationDto dto : dtoList) {
+	        LocationEntity entity = get(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to delete : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+		boolean result = delete(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to delete");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	LocationEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
     }
     
     public String getSkinizedKids(JsonNode node, String kidSkinType) {
         LocationDto dto = jsonNodeToDto(node);
         if(dto == null) return "";
         LocationEntity entity = get(dto);
+        if(entity == null) return "";
 
 		if(kidSkinType.equals("RoomSensor")) {
 			List<RoomSensorEntity> list = entity.getRoomSensorEntityList();
@@ -400,15 +478,6 @@ abstract public class ALocationRepository extends CacheableRepository<LocationEn
     protected void daoDeleted(List<LocationEntity> entities) {
         super.daoDeleted(entities);
         for(LocationEntity entity : entities) deletePublisher.publish(new DeleteEvent<LocationEntity>(cloneOf(entity)));
-		List<RoomSensorEntity> roomSensorList = new ArrayList<>();
-		for(LocationEntity each : entities) roomSensorList.addAll(Repos.repo(RoomSensorRepository.class).getByLocationId(each.getLocationId()));
-		Repos.repo(RoomSensorRepository.class).daoDeleted(roomSensorList);
-		List<RoomEntity> roomList = new ArrayList<>();
-		for(LocationEntity each : entities) roomList.addAll(Repos.repo(RoomRepository.class).getByLocationId(each.getLocationId()));
-		Repos.repo(RoomRepository.class).daoDeleted(roomList);
-		List<AuthorityLocationEntity> authorityLocationList = new ArrayList<>();
-		for(LocationEntity each : entities) authorityLocationList.addAll(Repos.repo(AuthorityLocationRepository.class).getByLocationId(each.getLocationId()));
-		Repos.repo(AuthorityLocationRepository.class).daoDeleted(authorityLocationList);
 
     }
     

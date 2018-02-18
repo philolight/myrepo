@@ -1,15 +1,3 @@
-﻿/*
-Created: 2018-01-09
-Modified: 2018-02-10
-Model: CrViewContext
-Author: SeyoungLee
-Database: MySQL 5.5
-*/
-
-
--- Create tables section -------------------------------------------------
-
--- Table skin
 
 CREATE TABLE skin
 (

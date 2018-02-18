@@ -27,9 +27,10 @@ import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.util.ToString;
 import com.lge.framework.ceasar.util.CriteriaUtil;
 import com.lge.framework.ceasar.util.JsonUtil;
+import com.lge.framework.ceasar.util.DateStringUtil;
 import com.lge.framework.ceasar.service.view.Skin;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_data_store.repository.SkinRepository;
 import com.lge.sm.cr_data_store.dao.SkinDao;
 import com.lge.sm.cr_data_store.entity.FieldSkinEntity;
@@ -65,6 +66,8 @@ abstract public class ASkinRepository extends CacheableRepository<SkinEntity, Sk
 
     @Override
     public SkinEntity create(SkinDto dto) throws IllegalArgumentException {
+    	dto.setCdate(DateStringUtil.getCurrentDateString(DateStringUtil.gmtTimeZoneId));
+
         if(checkCreated(dto) == true) throw new IllegalArgumentException("Already created : " + ToString.toLine(dto));    
         if(checkForeignKeyEntityExist(dto) == false) throw new IllegalArgumentException("No record of foreign key when create : " + ToString.toLine(dto));
         if(dao.insert(dto) == false) throw new IllegalArgumentException();
@@ -96,7 +99,9 @@ abstract public class ASkinRepository extends CacheableRepository<SkinEntity, Sk
         super.deleteDao(entities);
 		List<FieldSkinEntity> fieldSkinList = new ArrayList<>();
 		for(SkinEntity each : entities) fieldSkinList.addAll(Repos.repo(FieldSkinRepository.class).getBySkinId(each.getSkinId()));
-		if(Repos.repo(FieldSkinRepository.class).delete(fieldSkinList) == false) return false;
+		if(fieldSkinList.size() != 0) {
+			if(Repos.repo(FieldSkinRepository.class).delete(fieldSkinList) == false) return false;
+		}
  
         return dao.delete(Repos.repo(SkinRepository.class).getDtoList(entities));
     }
@@ -205,36 +210,105 @@ abstract public class ASkinRepository extends CacheableRepository<SkinEntity, Sk
       }
     }
     
-    public String create(JsonNode inputNode) {
-        SkinDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        SkinEntity entity = create(dto);
-        if(entity != null) return skinized(entity);
-        return "";
-    }
-    
-    public String update(JsonNode inputNode) {
-        SkinDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        SkinEntity entity = get(dto);
-        if(entity != null){
-          boolean ret = update(newEntity(dto));
-          if(ret) return skinized(get(dto));
+    public String create(JsonNode nodeList) {
+    	List<SkinDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        SkinDto dto = jsonNodeToDto(each);
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<SkinEntity> entityList = new ArrayList<>();
+		for(SkinDto dto : dtoList) {
+	        SkinEntity entity = create(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to create : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	SkinEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
         }
-        return "";
+        ret.append("]");
+        
+        return ret.toString();
     }
     
-    public boolean delete(JsonNode inputNode) {
-        SkinDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return false;
-        SkinEntity entity = get(dto);
-        return delete(entity);
+    public String update(JsonNode nodeList) {
+    	List<SkinDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        SkinDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<SkinEntity> entityList = new ArrayList<>();
+		for(SkinDto dto : dtoList) {
+	        SkinEntity entity = newEntity(dto);
+	        entityList.add(entity);
+		}
+		
+		boolean result = update(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to update");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	SkinEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
+    }
+    
+    public String delete(JsonNode nodeList) {
+    	List<SkinDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        SkinDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<SkinEntity> entityList = new ArrayList<>();
+		for(SkinDto dto : dtoList) {
+	        SkinEntity entity = get(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to delete : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+		boolean result = delete(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to delete");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	SkinEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
     }
     
     public String getSkinizedKids(JsonNode node, String kidSkinType) {
         SkinDto dto = jsonNodeToDto(node);
         if(dto == null) return "";
         SkinEntity entity = get(dto);
+        if(entity == null) return "";
 
 		if(kidSkinType.equals("FieldSkin")) {
 			List<FieldSkinEntity> list = entity.getFieldSkinEntityList();
@@ -362,9 +436,6 @@ abstract public class ASkinRepository extends CacheableRepository<SkinEntity, Sk
     protected void daoDeleted(List<SkinEntity> entities) {
         super.daoDeleted(entities);
         for(SkinEntity entity : entities) deletePublisher.publish(new DeleteEvent<SkinEntity>(cloneOf(entity)));
-		List<FieldSkinEntity> fieldSkinList = new ArrayList<>();
-		for(SkinEntity each : entities) fieldSkinList.addAll(Repos.repo(FieldSkinRepository.class).getBySkinId(each.getSkinId()));
-		Repos.repo(FieldSkinRepository.class).daoDeleted(fieldSkinList);
 
     }
     

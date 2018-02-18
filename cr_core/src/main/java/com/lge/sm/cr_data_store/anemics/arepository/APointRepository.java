@@ -27,9 +27,10 @@ import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.util.ToString;
 import com.lge.framework.ceasar.util.CriteriaUtil;
 import com.lge.framework.ceasar.util.JsonUtil;
+import com.lge.framework.ceasar.util.DateStringUtil;
 import com.lge.framework.ceasar.service.view.Skin;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_data_store.repository.PointRepository;
 import com.lge.sm.cr_data_store.dao.PointDao;
 import com.lge.sm.cr_data_store.entity.DriverEntity;
@@ -77,6 +78,8 @@ abstract public class APointRepository extends CacheableRepository<PointEntity, 
 
     @Override
     public PointEntity create(PointDto dto) throws IllegalArgumentException {
+    	dto.setCdate(DateStringUtil.getCurrentDateString(DateStringUtil.gmtTimeZoneId));
+		dto.setPointId(getNextId());
         if(checkCreated(dto) == true) throw new IllegalArgumentException("Already created : " + ToString.toLine(dto));    
         if(checkForeignKeyEntityExist(dto) == false) throw new IllegalArgumentException("No record of foreign key when create : " + ToString.toLine(dto));
         if(dao.insert(dto) == false) throw new IllegalArgumentException();
@@ -88,8 +91,8 @@ abstract public class APointRepository extends CacheableRepository<PointEntity, 
     }
   
     protected boolean checkForeignKeyEntityExist(PointDto dto) {
-		if(Repos.repo(DriverRepository.class).getByMapKey(DriverEntity.newMapKey(dto.getDriverId())) == null) return false;
-		if(Repos.repo(PointRepository.class).getByMapKey(PointEntity.newMapKey(dto.getParentPointId())) == null) return false;
+		if(dto.getDriverId() != null && Repos.repo(DriverRepository.class).getByMapKey(DriverEntity.newMapKey(dto.getDriverId())) == null) return false;
+		if(dto.getParentPointId() != null && Repos.repo(PointRepository.class).getByMapKey(PointEntity.newMapKey(dto.getParentPointId())) == null) return false;
 
         return true;
     }
@@ -110,13 +113,19 @@ abstract public class APointRepository extends CacheableRepository<PointEntity, 
         super.deleteDao(entities);
 		List<SpotEntity> spotList = new ArrayList<>();
 		for(PointEntity each : entities) spotList.addAll(Repos.repo(SpotRepository.class).getByPointId(each.getPointId()));
-		if(Repos.repo(SpotRepository.class).delete(spotList) == false) return false;
+		if(spotList.size() != 0) {
+			if(Repos.repo(SpotRepository.class).delete(spotList) == false) return false;
+		}
 		List<PointAttributeEntity> pointAttributeList = new ArrayList<>();
 		for(PointEntity each : entities) pointAttributeList.addAll(Repos.repo(PointAttributeRepository.class).getByPointId(each.getPointId()));
-		if(Repos.repo(PointAttributeRepository.class).delete(pointAttributeList) == false) return false;
+		if(pointAttributeList.size() != 0) {
+			if(Repos.repo(PointAttributeRepository.class).delete(pointAttributeList) == false) return false;
+		}
 		List<PointEntity> pointList = new ArrayList<>();
 		for(PointEntity each : entities) pointList.addAll(Repos.repo(PointRepository.class).getByPointId(each.getPointId()));
-		if(Repos.repo(PointRepository.class).delete(pointList) == false) return false;
+		if(pointList.size() != 0) {
+			if(Repos.repo(PointRepository.class).delete(pointList) == false) return false;
+		}
  
         return dao.delete(Repos.repo(PointRepository.class).getDtoList(entities));
     }
@@ -230,36 +239,105 @@ abstract public class APointRepository extends CacheableRepository<PointEntity, 
       }
     }
     
-    public String create(JsonNode inputNode) {
-        PointDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        PointEntity entity = create(dto);
-        if(entity != null) return skinized(entity);
-        return "";
-    }
-    
-    public String update(JsonNode inputNode) {
-        PointDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        PointEntity entity = get(dto);
-        if(entity != null){
-          boolean ret = update(newEntity(dto));
-          if(ret) return skinized(get(dto));
+    public String create(JsonNode nodeList) {
+    	List<PointDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        PointDto dto = jsonNodeToDto(each);
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<PointEntity> entityList = new ArrayList<>();
+		for(PointDto dto : dtoList) {
+	        PointEntity entity = create(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to create : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	PointEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
         }
-        return "";
+        ret.append("]");
+        
+        return ret.toString();
     }
     
-    public boolean delete(JsonNode inputNode) {
-        PointDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return false;
-        PointEntity entity = get(dto);
-        return delete(entity);
+    public String update(JsonNode nodeList) {
+    	List<PointDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        PointDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<PointEntity> entityList = new ArrayList<>();
+		for(PointDto dto : dtoList) {
+	        PointEntity entity = newEntity(dto);
+	        entityList.add(entity);
+		}
+		
+		boolean result = update(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to update");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	PointEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
+    }
+    
+    public String delete(JsonNode nodeList) {
+    	List<PointDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        PointDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<PointEntity> entityList = new ArrayList<>();
+		for(PointDto dto : dtoList) {
+	        PointEntity entity = get(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to delete : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+		boolean result = delete(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to delete");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	PointEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
     }
     
     public String getSkinizedKids(JsonNode node, String kidSkinType) {
         PointDto dto = jsonNodeToDto(node);
         if(dto == null) return "";
         PointEntity entity = get(dto);
+        if(entity == null) return "";
 
 		if(kidSkinType.equals("Spot")) {
 			List<SpotEntity> list = entity.getSpotEntityList();
@@ -423,16 +501,7 @@ abstract public class APointRepository extends CacheableRepository<PointEntity, 
     protected void daoDeleted(List<PointEntity> entities) {
         super.daoDeleted(entities);
         for(PointEntity entity : entities) deletePublisher.publish(new DeleteEvent<PointEntity>(cloneOf(entity)));
-		List<SpotEntity> spotList = new ArrayList<>();
-		for(PointEntity each : entities) spotList.addAll(Repos.repo(SpotRepository.class).getByPointId(each.getPointId()));
-		Repos.repo(SpotRepository.class).daoDeleted(spotList);
-		List<PointAttributeEntity> pointAttributeList = new ArrayList<>();
-		for(PointEntity each : entities) pointAttributeList.addAll(Repos.repo(PointAttributeRepository.class).getByPointId(each.getPointId()));
-		Repos.repo(PointAttributeRepository.class).daoDeleted(pointAttributeList);
-		List<PointEntity> pointList = new ArrayList<>();
-		for(PointEntity each : entities) pointList.addAll(Repos.repo(PointRepository.class).getByPointId(each.getPointId()));
-		Repos.repo(PointRepository.class).daoDeleted(pointList);
-
+		for(PointEntity each : entities) driverMapSet.remove(DriverEntity.newMapKey(each.getDriverId()), each);		for(PointEntity each : entities) pointMapSet.remove(PointEntity.newMapKey(each.getPointId()), each);
     }
     
     @Override

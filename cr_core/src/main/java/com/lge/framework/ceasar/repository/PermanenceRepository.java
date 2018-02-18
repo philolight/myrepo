@@ -7,13 +7,14 @@ import java.util.List;
 import com.lge.framework.ceasar.dao.DataAccessObject;
 import com.lge.framework.ceasar.dao.DataSelectObject;
 import com.lge.framework.ceasar.entity.Entity;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.framework.ceasar.service.view.Skinner;
 import com.lge.framework.ceasar.service.view.SkinnerManager;
 import com.lge.framework.ceasar.startable.Startable;
 import com.lge.framework.ceasar.startable.StartableStatus;
 import com.lge.framework.ceasar.startable.StartableType;
 import com.lge.framework.ceasar.startable.Starter;
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.util.ToString;
 
 abstract public class PermanenceRepository <ET extends Entity<DTO>, DAO extends DataAccessObject<DTO, EX>, DTO, EX>
 implements DtoCollector<DTO, EX>, Startable, Skinner{

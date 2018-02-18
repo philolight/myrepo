@@ -32,7 +32,7 @@ public class MapSet<V> {
 	/**
 	 * key에 대응되는 Set을 삭제하는 메소드.
 	 */
-	public void remove(MapKey key) {
+	public void removeSet(MapKey key) {
 		mapSet.remove(key);
 	}
 	

@@ -27,9 +27,10 @@ import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.util.ToString;
 import com.lge.framework.ceasar.util.CriteriaUtil;
 import com.lge.framework.ceasar.util.JsonUtil;
+import com.lge.framework.ceasar.util.DateStringUtil;
 import com.lge.framework.ceasar.service.view.Skin;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_data_store.repository.ServiceAuthorityRepository;
 import com.lge.sm.cr_data_store.dao.ServiceAuthorityDao;
 import com.lge.sm.cr_data_store.entity.AuthorityEntity;
@@ -67,6 +68,8 @@ abstract public class AServiceAuthorityRepository extends CacheableRepository<Se
 
     @Override
     public ServiceAuthorityEntity create(ServiceAuthorityDto dto) throws IllegalArgumentException {
+    	dto.setCdate(DateStringUtil.getCurrentDateString(DateStringUtil.gmtTimeZoneId));
+
         if(checkCreated(dto) == true) throw new IllegalArgumentException("Already created : " + ToString.toLine(dto));    
         if(checkForeignKeyEntityExist(dto) == false) throw new IllegalArgumentException("No record of foreign key when create : " + ToString.toLine(dto));
         if(dao.insert(dto) == false) throw new IllegalArgumentException();
@@ -78,8 +81,8 @@ abstract public class AServiceAuthorityRepository extends CacheableRepository<Se
     }
   
     protected boolean checkForeignKeyEntityExist(ServiceAuthorityDto dto) {
-		if(Repos.repo(AuthorityRepository.class).getByMapKey(AuthorityEntity.newMapKey(dto.getAuthorityId())) == null) return false;
-		if(Repos.repo(ServiceRepository.class).getByMapKey(ServiceEntity.newMapKey(dto.getServiceId())) == null) return false;
+		if(dto.getAuthorityId() != null && Repos.repo(AuthorityRepository.class).getByMapKey(AuthorityEntity.newMapKey(dto.getAuthorityId())) == null) return false;
+		if(dto.getServiceId() != null && Repos.repo(ServiceRepository.class).getByMapKey(ServiceEntity.newMapKey(dto.getServiceId())) == null) return false;
 
         return true;
     }
@@ -207,36 +210,105 @@ abstract public class AServiceAuthorityRepository extends CacheableRepository<Se
       }
     }
     
-    public String create(JsonNode inputNode) {
-        ServiceAuthorityDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        ServiceAuthorityEntity entity = create(dto);
-        if(entity != null) return skinized(entity);
-        return "";
-    }
-    
-    public String update(JsonNode inputNode) {
-        ServiceAuthorityDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        ServiceAuthorityEntity entity = get(dto);
-        if(entity != null){
-          boolean ret = update(newEntity(dto));
-          if(ret) return skinized(get(dto));
+    public String create(JsonNode nodeList) {
+    	List<ServiceAuthorityDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        ServiceAuthorityDto dto = jsonNodeToDto(each);
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<ServiceAuthorityEntity> entityList = new ArrayList<>();
+		for(ServiceAuthorityDto dto : dtoList) {
+	        ServiceAuthorityEntity entity = create(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to create : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	ServiceAuthorityEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
         }
-        return "";
+        ret.append("]");
+        
+        return ret.toString();
     }
     
-    public boolean delete(JsonNode inputNode) {
-        ServiceAuthorityDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return false;
-        ServiceAuthorityEntity entity = get(dto);
-        return delete(entity);
+    public String update(JsonNode nodeList) {
+    	List<ServiceAuthorityDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        ServiceAuthorityDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<ServiceAuthorityEntity> entityList = new ArrayList<>();
+		for(ServiceAuthorityDto dto : dtoList) {
+	        ServiceAuthorityEntity entity = newEntity(dto);
+	        entityList.add(entity);
+		}
+		
+		boolean result = update(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to update");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	ServiceAuthorityEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
+    }
+    
+    public String delete(JsonNode nodeList) {
+    	List<ServiceAuthorityDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        ServiceAuthorityDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<ServiceAuthorityEntity> entityList = new ArrayList<>();
+		for(ServiceAuthorityDto dto : dtoList) {
+	        ServiceAuthorityEntity entity = get(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to delete : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+		boolean result = delete(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to delete");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	ServiceAuthorityEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
     }
     
     public String getSkinizedKids(JsonNode node, String kidSkinType) {
         ServiceAuthorityDto dto = jsonNodeToDto(node);
         if(dto == null) return "";
         ServiceAuthorityEntity entity = get(dto);
+        if(entity == null) return "";
 
         
         return "";
@@ -361,7 +433,7 @@ abstract public class AServiceAuthorityRepository extends CacheableRepository<Se
     protected void daoDeleted(List<ServiceAuthorityEntity> entities) {
         super.daoDeleted(entities);
         for(ServiceAuthorityEntity entity : entities) deletePublisher.publish(new DeleteEvent<ServiceAuthorityEntity>(cloneOf(entity)));
-
+		for(ServiceAuthorityEntity each : entities) authorityMapSet.remove(AuthorityEntity.newMapKey(each.getAuthorityId()), each);		for(ServiceAuthorityEntity each : entities) serviceMapSet.remove(ServiceEntity.newMapKey(each.getServiceId()), each);
     }
     
     @Override

@@ -27,9 +27,10 @@ import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.util.ToString;
 import com.lge.framework.ceasar.util.CriteriaUtil;
 import com.lge.framework.ceasar.util.JsonUtil;
+import com.lge.framework.ceasar.util.DateStringUtil;
 import com.lge.framework.ceasar.service.view.Skin;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import "CONCRETE_ROOT_PACKAGE_NAME".repository."Table"Repository;
 import "CONCRETE_ROOT_PACKAGE_NAME".dao."Table"Dao;
 "FOREIGN_IMPORT"
@@ -63,6 +64,8 @@ abstract public class A"Table"Repository extends "TableType"Repository<"Table"En
 
     @Override
     public "Table"Entity create("Table"Dto dto) throws IllegalArgumentException {
+    	dto.setCdate(DateStringUtil.getCurrentDateString(DateStringUtil.gmtTimeZoneId));
+"SET_NEW_ID"
         if(checkCreated(dto) == true) throw new IllegalArgumentException("Already created : " + ToString.toLine(dto));    
         if(checkForeignKeyEntityExist(dto) == false) throw new IllegalArgumentException("No record of foreign key when create : " + ToString.toLine(dto));
         if(dao.insert(dto) == false) throw new IllegalArgumentException();
@@ -92,7 +95,7 @@ abstract public class A"Table"Repository extends "TableType"Repository<"Table"En
     @Override
     protected boolean deleteDao(List<"Table"Entity> entities) {
         super.deleteDao(entities);
-"DELETE_FOREIGN_RECORDS" 
+"DELETE_FOREIGN_USED_RECORDS" 
         return dao.delete(Repos.repo("Table"Repository.class).getDtoList(entities));
     }
    
@@ -199,36 +202,105 @@ abstract public class A"Table"Repository extends "TableType"Repository<"Table"En
       }
     }
     
-    public String create(JsonNode inputNode) {
-        "Table"Dto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        "Table"Entity entity = create(dto);
-        if(entity != null) return skinized(entity);
-        return "";
-    }
-    
-    public String update(JsonNode inputNode) {
-        "Table"Dto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        "Table"Entity entity = get(dto);
-        if(entity != null){
-          boolean ret = update(newEntity(dto));
-          if(ret) return skinized(get(dto));
+    public String create(JsonNode nodeList) {
+    	List<"Table"Dto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        "Table"Dto dto = jsonNodeToDto(each);
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<"Table"Entity> entityList = new ArrayList<>();
+		for("Table"Dto dto : dtoList) {
+	        "Table"Entity entity = create(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to create : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	"Table"Entity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
         }
-        return "";
+        ret.append("]");
+        
+        return ret.toString();
     }
     
-    public boolean delete(JsonNode inputNode) {
-        "Table"Dto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return false;
-        "Table"Entity entity = get(dto);
-        return delete(entity);
+    public String update(JsonNode nodeList) {
+    	List<"Table"Dto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        "Table"Dto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<"Table"Entity> entityList = new ArrayList<>();
+		for("Table"Dto dto : dtoList) {
+	        "Table"Entity entity = newEntity(dto);
+	        entityList.add(entity);
+		}
+		
+		boolean result = update(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to update");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	"Table"Entity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
+    }
+    
+    public String delete(JsonNode nodeList) {
+    	List<"Table"Dto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        "Table"Dto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<"Table"Entity> entityList = new ArrayList<>();
+		for("Table"Dto dto : dtoList) {
+	        "Table"Entity entity = get(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to delete : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+		boolean result = delete(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to delete");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	"Table"Entity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
     }
     
     public String getSkinizedKids(JsonNode node, String kidSkinType) {
         "Table"Dto dto = jsonNodeToDto(node);
         if(dto == null) return "";
         "Table"Entity entity = get(dto);
+        if(entity == null) return "";
 "FOREIGN_USED_SKINIZED"
         
         return "";
@@ -364,7 +436,7 @@ abstract public class A"Table"Repository extends "TableType"Repository<"Table"En
     protected void daoDeleted(List<"Table"Entity> entities) {
         super.daoDeleted(entities);
         for("Table"Entity entity : entities) deletePublisher.publish(new DeleteEvent<"Table"Entity>(cloneOf(entity)));
-"DELETE_FOREIGN_ENTITIES"
+"DELETE_FOREIGN_USED_ENTITIES"
     }
     
     @Override

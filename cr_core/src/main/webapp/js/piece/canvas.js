@@ -32,30 +32,30 @@ canvas.addEventListener('mousedown', function(event) {
 	  canvasContext.draw(ctx);
 	}, false);
 
-	canvas.addEventListener('mousemove', function(event) {
-	  const p = getMousePos(canvas, event);
-	  //console.log(p.x + ", " + p.y);
-	  canvasContext.mouseMoveTo(p.x, p.y);
-	  canvasContext.draw(ctx);
-	}, false);
+canvas.addEventListener('mousemove', function(event) {
+  const p = getMousePos(canvas, event);
+  //console.log(p.x + ", " + p.y);
+  canvasContext.mouseMoveTo(p.x, p.y);
+  canvasContext.draw(ctx);
+}, false);
 
-	canvas.addEventListener('mouseup', function(event) {
-	  const p = getMousePos(canvas, event);
-	  canvasContext.mouseUp(p.x, p.y);
-	  canvasContext.draw(ctx);
-	}, false);
+canvas.addEventListener('mouseup', function(event) {
+  const p = getMousePos(canvas, event);
+  canvasContext.mouseUp(p.x, p.y);
+  canvasContext.draw(ctx);
+}, false);
 	
-	var lastDownTarget;
-	window.onload = function() {
-	    document.addEventListener('keyup', function(event) {
-	        if(lastDownTarget == canvas) {
-	            console.log(event.keyCode + " down");
-	        }
-	    }, false);
+var lastDownTarget;
+window.onload = function() {
+    document.addEventListener('keyup', function(event) {
+        if(lastDownTarget == canvas) {
+            console.log(event.keyCode + " down");
+        }
+    }, false);
 
-	    document.addEventListener('keydown', function(event) {
-	        if(lastDownTarget == canvas) {
-	        	console.log(event.keyCode + " up");
-	        }
-	    }, false);
-	}
+    document.addEventListener('keydown', function(event) {
+        if(lastDownTarget == canvas) {
+        	console.log(event.keyCode + " up");
+        }
+    }, false);
+}

@@ -3,8 +3,7 @@ package com.lge.framework.ceasar.util;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lge.framework.ceasar.service.view.SkinnerManager;
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 
 public class JsonUtil {
 	private static final String TAG = JsonUtil.class.getSimpleName();

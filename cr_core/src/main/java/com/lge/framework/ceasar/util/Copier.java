@@ -6,14 +6,14 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.lge.framework.pacific.common.Utils;
+//import com.lge.framework.pacific.common.Utils;
 import com.lge.sm.cr_data_store.DataStore;
 
 public class Copier {
-	private boolean isPackageMode = false;
+//	private boolean isPackageMode = false;
 	
 	public Copier() {
-		isPackageMode = Utils.isClassInPackageFile(DataStore.class);
+//		isPackageMode = Utils.isClassInPackageFile(DataStore.class);
 	}
 	
 	public void copy(String fromString, String toString) {

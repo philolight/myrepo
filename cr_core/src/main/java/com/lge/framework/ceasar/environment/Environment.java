@@ -3,12 +3,13 @@ package com.lge.framework.ceasar.environment;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.mariadb.jdbc.internal.util.Utils;
+
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.framework.ceasar.startable.Startable;
 import com.lge.framework.ceasar.startable.StartableStatus;
 import com.lge.framework.ceasar.startable.StartableType;
 import com.lge.framework.ceasar.startable.Starter;
-import com.lge.framework.pacific.common.Utils;
-import com.lge.framework.pacific.logger.Logger;
 import com.lge.sm.cr_data_store.DataStore;
 
 public class Environment implements Startable{
@@ -27,9 +28,9 @@ public class Environment implements Startable{
 
 	@Override
 	public boolean init() {
-	    boolean isPackageMode = Utils.isClassInPackageFile(DataStore.class);
+/*	    boolean isPackageMode = Utils.isClassInPackageFile(DataStore.class);
 	    String targetDir = Utils.getDirPathOfClass(DataStore.class) + (isPackageMode ? "" : "../");
-	    map.put("root", targetDir);
+	    map.put("root", targetDir);*/
 		return true;
 	}
 

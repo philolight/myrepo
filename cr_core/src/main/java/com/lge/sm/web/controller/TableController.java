@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class TableController {
 	@RequestMapping("/table")
 	public String onMouseMove(ModelAndView modelAndView){
-		System.out.println("table in");
 		return "/table/table";
 	}
 }

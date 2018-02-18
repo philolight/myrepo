@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_core.cr_task_manager.CrTaskManager;
 
 @ComponentScan({"com.lge.sm.cr_data_store", "com.lge.sm.web", "com.lge.sm.cr_core"}) // 순서가 중요

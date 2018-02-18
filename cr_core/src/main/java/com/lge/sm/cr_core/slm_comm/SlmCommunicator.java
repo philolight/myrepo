@@ -32,11 +32,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.mariadb.jdbc.internal.util.Utils;
+
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.framework.ceasar.util.ModelUtil;
-import com.lge.framework.pacific.common.Utils;
 import com.lge.framework.pacific.common.thread.DefaultManagedRunnable;
 import com.lge.framework.pacific.common.thread.ManagedThreadFactory;
-import com.lge.framework.pacific.logger.Logger;
 import com.lge.sm.cr_core.common.Constants;
 import com.lge.sm.cr_core.property_manager.PropertyManager;
 import com.lge.sm.cr_core.slm_comm.inf.IChangedPoint;

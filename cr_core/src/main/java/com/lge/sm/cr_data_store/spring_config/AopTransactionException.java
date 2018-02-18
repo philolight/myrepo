@@ -8,22 +8,24 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.lge.framework.ceasar.event.load.LoadManager;
 import com.lge.framework.ceasar.event.load.LoadType;
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 
 @Aspect
 public class AopTransactionException {
 	private static final String TAG = AopTransactionException.class.getSimpleName();
 
-    @Around("execution(* com.lge.sm.cr_data_store.anemics.adao..*.*(..)) || execution(* com.lge.sm.cr_data_store.dao..*.*(..))")
+    @Around("execution(public * com.lge.sm.cr_data_store.anemics.adao..*.*(..)) || execution(public * com.lge.sm.cr_data_store.dao..*.*(..))")
     public Object exceptionHandle(ProceedingJoinPoint joinpoint){
 
         Object obj = null;
         long start = System.currentTimeMillis();
         try {
-            obj = joinpoint.proceed(); // run method
             String className = joinpoint.getSignature().getDeclaringTypeName();
+//System.out.println(className + "." + joinpoint.getSignature().getName());
             className = className.substring(className.lastIndexOf(".") + 1, className.length());
             String methodName = joinpoint.getSignature().getName();
+        	
+            obj = joinpoint.proceed(); // run method
             LoadManager.addLoad(className + "." + methodName, LoadType.DB_TRANSACTION, (System.currentTimeMillis() - start), 1);
             return obj;
         }

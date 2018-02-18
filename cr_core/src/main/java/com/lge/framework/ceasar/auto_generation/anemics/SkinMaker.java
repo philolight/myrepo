@@ -78,15 +78,7 @@ public class SkinMaker {
 			fieldSkinPair.put("field_skin_id", Table + "." + field.smallName);
 			fieldSkinPair.put("name", field.smallName);
 			fieldSkinPair.put("type", field.type);
-			if(field.foreignKey || (field.primaryKey && field.isAutoincrement)) {
-				fieldSkinPair.put("visible", "0");
-				fieldSkinPair.put("editable", "0");
-			}
-			else if(field.primaryKey) {
-				fieldSkinPair.put("visible", "1");
-				fieldSkinPair.put("editable", "0");
-			}
-			else if(field.dbName.equals("cdate")) {
+			if(field.foreignKey || field.primaryKey || field.dbName.equals("cdate")) {
 				fieldSkinPair.put("visible", "1");
 				fieldSkinPair.put("editable", "0");
 			}

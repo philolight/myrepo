@@ -11,6 +11,6 @@
   <aop:aspectj-autoproxy/>
 
   <import resource="classpath:spring/data_store_context.xml" />
-	<import resource="classpath:spring/rmi_context.xml" />
+  <import resource="classpath:spring/spring_web_context.xml" />
 
 </beans>

@@ -3,6 +3,7 @@ package com.lge.framework.ceasar.auto_generation.anemics;
 import java.util.List;
 
 import com.lge.framework.ceasar.repository.TableType;
+import com.lge.sm.cr_data_store.entity.DriverEntity;
 import com.lge.sm.cr_data_store.entity.RoomSensorEntity;
 
 class RepositoryMaker extends AbstractMaker{
@@ -43,18 +44,20 @@ class RepositoryMaker extends AbstractMaker{
 		
 		in = in.replaceAll(TableTypeTag, tableType.TableTypeString());
 		
-		String deleteForeignRecordsTag = "\"DELETE_FOREIGN_RECORDS\"";
-		String deleteForeignRecordsString = "\t\tList<"+ForeignTableTag+"Entity> "+foreigntableTag+"List = new ArrayList<>();\n" +
+		String deleteForeignUsedRecordsTag = "\"DELETE_FOREIGN_USED_RECORDS\"";
+		String deleteForeignUsedRecordsString = "\t\tList<"+ForeignTableTag+"Entity> "+foreigntableTag+"List = new ArrayList<>();\n" +
 											"\t\tfor("+TableTag+"Entity each : entities) "+foreigntableTag+"List.addAll(Repos.repo("+ForeignTableTag+"Repository.class).getBy"+TableTag+"Id("+forPkCommaTag +"<each.get"+TablePkTag+"()>));\n" +
-											"\t\tif(Repos.repo("+ForeignTableTag+"Repository.class).delete("+foreigntableTag+"List) == false) return false;\n";
+											"\t\tif("+foreigntableTag+"List.size() != 0) {\n" +
+											"\t\t\tif(Repos.repo("+ForeignTableTag+"Repository.class).delete("+foreigntableTag+"List) == false) return false;\n" +
+											"\t\t}\n";
 		
-		String deleteForeignEntitiesTag = "\"DELETE_FOREIGN_ENTITIES\"";
-		String deleteForeignEntitiesString = "\t\tList<"+ForeignTableTag+"Entity> "+foreigntableTag+"List = new ArrayList<>();\n" +
-											"\t\tfor("+TableTag+"Entity each : entities) "+foreigntableTag+"List.addAll(Repos.repo("+ForeignTableTag+"Repository.class).getBy"+TableTag+"Id("+forPkCommaTag +"<each.get"+TablePkTag+"()>));\n" +
-											"\t\tRepos.repo("+ForeignTableTag+"Repository.class).daoDeleted("+foreigntableTag+"List);\n";
+		String deleteForeignUsedEntitiesTag = "\"DELETE_FOREIGN_USED_ENTITIES\"";
+		String deleteForeignUsedEntitiesString = "\t\tfor("+TableTag+"Entity each : entities) "+foreigntableTag+"MapSet.remove("+ForeignTableTag+"Entity.newMapKey(each.get"+ForeignTableTag+"Id()), each);";
 		
 		String checkForeignKeyEntityTag = "\"CHECK_FOREIGN_KEY_ENTITY\"";
-		String checkForeignKeyEntityTagString = "\t\tif(Repos.repo(" + ForeignTableTag + "Repository.class).getByMapKey(" + ForeignTableTag + "Entity.newMapKey(dto.get" + ForeignTablePkTag + "())) == null) return false;\n";
+		String checkForeignKeyEntityTagString = "\t\tif(dto.get"+ ForeignTablePkTag +"() != null && "+
+												"Repos.repo(" + ForeignTableTag + "Repository.class).getByMapKey(" + 
+												ForeignTableTag + "Entity.newMapKey(dto.get" + ForeignTablePkTag + "())) == null) return false;\n";
 		
 		String getNextIdTag = "\"GET_NEXT_ID\"";
 		String initLastIdTag = "\"INIT_LAST_ID\"";
@@ -63,6 +66,10 @@ class RepositoryMaker extends AbstractMaker{
 									"\n\t\treturn ++lastId;" +
 									"\n\t}"; 
 		String initLastIdString = "\n\t\tlastId = dao.getLastId();";
+		
+		String setNewIdTag = "\"SET_NEW_ID\"";
+		String SingleTableIdTag = "\"SingleTableId\"";
+		String setNewIdString = "\t\tdto.set"+SingleTableIdTag+"(getNextId());";
 		
 		String initParentSkinTypesTag = "\"INIT_PARENT_SKIN_TYPES\"";
 		String initParentSkinTypesString = "\n\t\tparentSkinTypes.add("+ForeignTableTag+"Entity.skinType());";
@@ -99,8 +106,8 @@ class RepositoryMaker extends AbstractMaker{
 		String mapSetRemove = "";
 		String mapSetGet = "";
 		String foreignImport = "";
-		String deleteForeignRecords = "";
-		String deleteForeignEntities = "";
+		String deleteForeignUsedRecords = "";
+		String deleteForeignUsedEntities = "";
 		String checkForeignKeyEntity = "";
 		
 		String initKidSkinTypes = "";
@@ -149,22 +156,21 @@ class RepositoryMaker extends AbstractMaker{
 			
 			initParentSkinTypes += initParentSkinTypesString;
 			initParentSkinTypes = initParentSkinTypes.replaceAll(ForeignTableTag, ForeignTable);
-			
+					
+			deleteForeignUsedEntities += deleteForeignUsedEntitiesString;
+			deleteForeignUsedEntities = deleteForeignUsedEntities.replaceAll(TableTag, Table);
+			deleteForeignUsedEntities = deleteForeignUsedEntities.replaceAll(ForeignTableTag, ForeignTable);
+			deleteForeignUsedEntities = deleteForeignUsedEntities.replaceAll(foreigntableTag, smallName(ForeignTable));
+			deleteForeignUsedEntities = replaceForPkCommaTag(deleteForeignUsedEntities);
 		}
 		
 		for(String each : c.foreignUsedMap().get(Table)) {
 			if(c.tableTypeMap().get(each) == TableType.PERMANENCE) continue;
-			deleteForeignRecords += deleteForeignRecordsString;
-			deleteForeignRecords = deleteForeignRecords.replaceAll(TableTag, Table);
-			deleteForeignRecords = deleteForeignRecords.replaceAll(ForeignTableTag, each);
-			deleteForeignRecords = deleteForeignRecords.replaceAll(foreigntableTag, smallName(each));
-			deleteForeignRecords = replaceForPkCommaTag(deleteForeignRecords);
-			
-			deleteForeignEntities += deleteForeignEntitiesString;
-			deleteForeignEntities = deleteForeignEntities.replaceAll(TableTag, Table);
-			deleteForeignEntities = deleteForeignEntities.replaceAll(ForeignTableTag, each);
-			deleteForeignEntities = deleteForeignEntities.replaceAll(foreigntableTag, smallName(each));
-			deleteForeignEntities = replaceForPkCommaTag(deleteForeignEntities);
+			deleteForeignUsedRecords += deleteForeignUsedRecordsString;
+			deleteForeignUsedRecords = deleteForeignUsedRecords.replaceAll(TableTag, Table);
+			deleteForeignUsedRecords = deleteForeignUsedRecords.replaceAll(ForeignTableTag, each);
+			deleteForeignUsedRecords = deleteForeignUsedRecords.replaceAll(foreigntableTag, smallName(each));
+			deleteForeignUsedRecords = replaceForPkCommaTag(deleteForeignUsedRecords);
 			
 			foreignImport += foreignImportString;
 			foreignImport = foreignImport.replaceAll(ForeignTableTag, each);
@@ -181,8 +187,8 @@ class RepositoryMaker extends AbstractMaker{
 		out = out.replaceAll("\"MAPSET_PUT\"", mapSetPut);
 		out = out.replaceAll("\"MAPSET_REMOVE\"", mapSetRemove);
 		out = out.replaceAll("\"MAPSET_GET\"", mapSetGet);
-		out = out.replaceAll(deleteForeignRecordsTag, deleteForeignRecords);
-		out = out.replaceAll(deleteForeignEntitiesTag, deleteForeignEntities);
+		out = out.replaceAll(deleteForeignUsedRecordsTag, deleteForeignUsedRecords);
+		out = out.replaceAll(deleteForeignUsedEntitiesTag, deleteForeignUsedEntities);
 		out = out.replaceAll(checkForeignKeyEntityTag, checkForeignKeyEntity);
 		
 		out = out.replaceAll(initParentSkinTypesTag, initParentSkinTypes);
@@ -192,10 +198,13 @@ class RepositoryMaker extends AbstractMaker{
 		if(c.tablePkMap().get(Table).size() == 1 && c.tablePkMap().get(Table).get(0).type.equals("Long")) {
 			out = out.replaceAll(getNextIdTag, getNextIdString);
 			out = out.replaceAll(initLastIdTag, initLastIdString);
+			out = out.replaceAll(setNewIdTag, setNewIdString);
+			out = out.replaceAll(SingleTableIdTag, c.tablePkMap().get(Table).get(0).bigName);
 		}
 		else {
 			out = out.replaceAll(getNextIdTag, "");
 			out = out.replaceAll(initLastIdTag, "");
+			out = out.replaceAll(setNewIdTag, "");
 		}
 		
 		out = out.replaceAll(anemicRootPackageNameTag, anemicPackageName.substring(0, anemicPackageName.lastIndexOf(".")));

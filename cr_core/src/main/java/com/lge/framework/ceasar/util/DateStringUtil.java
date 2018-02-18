@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_data_store.common.Constants;
 
 /**
@@ -15,7 +15,7 @@ import com.lge.sm.cr_data_store.common.Constants;
 public class DateStringUtil {
 	private static final String TAG = TimeUtil.class.getSimpleName();
 	private static final long ONE_DAY_MILLIS = (24L * 60L * 60L * 1000L);
-	private static final String gmtTimeZoneId = "GMT";
+	public static final String gmtTimeZoneId = "GMT";
 	private static final TimeZone gmtTimeZone = TimeZone.getTimeZone(gmtTimeZoneId);
 	private static final String DATE_FORMAT = Constants.DEFAULT_DATE_FORMAT;
 		

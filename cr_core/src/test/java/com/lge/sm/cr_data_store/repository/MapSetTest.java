@@ -46,7 +46,7 @@ public class MapSetTest {
 	
 	@Test
 	public void testRemove_key를통해key에해당하는Set전부를지울수있어야한다() {		
-		sut.remove(key1);		
+		sut.removeSet(key1);		
 		assertThat(sut.get(key1), hasSize(0));
 		assertThat(sut.get(key2), hasSize(2));
 	}

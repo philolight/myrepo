@@ -12,7 +12,7 @@ import java.util.Map;
 
 import javax.activation.UnsupportedDataTypeException;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 
 public class Factory{
 	private static final String TAG = Factory.class.getSimpleName();

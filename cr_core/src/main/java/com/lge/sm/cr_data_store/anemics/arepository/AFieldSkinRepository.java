@@ -27,9 +27,10 @@ import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.util.ToString;
 import com.lge.framework.ceasar.util.CriteriaUtil;
 import com.lge.framework.ceasar.util.JsonUtil;
+import com.lge.framework.ceasar.util.DateStringUtil;
 import com.lge.framework.ceasar.service.view.Skin;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_data_store.repository.FieldSkinRepository;
 import com.lge.sm.cr_data_store.dao.FieldSkinDao;
 import com.lge.sm.cr_data_store.entity.SkinEntity;
@@ -73,6 +74,8 @@ abstract public class AFieldSkinRepository extends CacheableRepository<FieldSkin
 
     @Override
     public FieldSkinEntity create(FieldSkinDto dto) throws IllegalArgumentException {
+    	dto.setCdate(DateStringUtil.getCurrentDateString(DateStringUtil.gmtTimeZoneId));
+
         if(checkCreated(dto) == true) throw new IllegalArgumentException("Already created : " + ToString.toLine(dto));    
         if(checkForeignKeyEntityExist(dto) == false) throw new IllegalArgumentException("No record of foreign key when create : " + ToString.toLine(dto));
         if(dao.insert(dto) == false) throw new IllegalArgumentException();
@@ -84,7 +87,7 @@ abstract public class AFieldSkinRepository extends CacheableRepository<FieldSkin
     }
   
     protected boolean checkForeignKeyEntityExist(FieldSkinDto dto) {
-		if(Repos.repo(SkinRepository.class).getByMapKey(SkinEntity.newMapKey(dto.getSkinId())) == null) return false;
+		if(dto.getSkinId() != null && Repos.repo(SkinRepository.class).getByMapKey(SkinEntity.newMapKey(dto.getSkinId())) == null) return false;
 
         return true;
     }
@@ -105,16 +108,24 @@ abstract public class AFieldSkinRepository extends CacheableRepository<FieldSkin
         super.deleteDao(entities);
 		List<NumericRangeEntity> numericRangeList = new ArrayList<>();
 		for(FieldSkinEntity each : entities) numericRangeList.addAll(Repos.repo(NumericRangeRepository.class).getByFieldSkinId(each.getFieldSkinId()));
-		if(Repos.repo(NumericRangeRepository.class).delete(numericRangeList) == false) return false;
+		if(numericRangeList.size() != 0) {
+			if(Repos.repo(NumericRangeRepository.class).delete(numericRangeList) == false) return false;
+		}
 		List<EnumFacetEntity> enumFacetList = new ArrayList<>();
 		for(FieldSkinEntity each : entities) enumFacetList.addAll(Repos.repo(EnumFacetRepository.class).getByFieldSkinId(each.getFieldSkinId()));
-		if(Repos.repo(EnumFacetRepository.class).delete(enumFacetList) == false) return false;
+		if(enumFacetList.size() != 0) {
+			if(Repos.repo(EnumFacetRepository.class).delete(enumFacetList) == false) return false;
+		}
 		List<StringRangeEntity> stringRangeList = new ArrayList<>();
 		for(FieldSkinEntity each : entities) stringRangeList.addAll(Repos.repo(StringRangeRepository.class).getByFieldSkinId(each.getFieldSkinId()));
-		if(Repos.repo(StringRangeRepository.class).delete(stringRangeList) == false) return false;
+		if(stringRangeList.size() != 0) {
+			if(Repos.repo(StringRangeRepository.class).delete(stringRangeList) == false) return false;
+		}
 		List<DecimalRangeEntity> decimalRangeList = new ArrayList<>();
 		for(FieldSkinEntity each : entities) decimalRangeList.addAll(Repos.repo(DecimalRangeRepository.class).getByFieldSkinId(each.getFieldSkinId()));
-		if(Repos.repo(DecimalRangeRepository.class).delete(decimalRangeList) == false) return false;
+		if(decimalRangeList.size() != 0) {
+			if(Repos.repo(DecimalRangeRepository.class).delete(decimalRangeList) == false) return false;
+		}
  
         return dao.delete(Repos.repo(FieldSkinRepository.class).getDtoList(entities));
     }
@@ -227,36 +238,105 @@ abstract public class AFieldSkinRepository extends CacheableRepository<FieldSkin
       }
     }
     
-    public String create(JsonNode inputNode) {
-        FieldSkinDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        FieldSkinEntity entity = create(dto);
-        if(entity != null) return skinized(entity);
-        return "";
-    }
-    
-    public String update(JsonNode inputNode) {
-        FieldSkinDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        FieldSkinEntity entity = get(dto);
-        if(entity != null){
-          boolean ret = update(newEntity(dto));
-          if(ret) return skinized(get(dto));
+    public String create(JsonNode nodeList) {
+    	List<FieldSkinDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        FieldSkinDto dto = jsonNodeToDto(each);
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<FieldSkinEntity> entityList = new ArrayList<>();
+		for(FieldSkinDto dto : dtoList) {
+	        FieldSkinEntity entity = create(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to create : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	FieldSkinEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
         }
-        return "";
+        ret.append("]");
+        
+        return ret.toString();
     }
     
-    public boolean delete(JsonNode inputNode) {
-        FieldSkinDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return false;
-        FieldSkinEntity entity = get(dto);
-        return delete(entity);
+    public String update(JsonNode nodeList) {
+    	List<FieldSkinDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        FieldSkinDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<FieldSkinEntity> entityList = new ArrayList<>();
+		for(FieldSkinDto dto : dtoList) {
+	        FieldSkinEntity entity = newEntity(dto);
+	        entityList.add(entity);
+		}
+		
+		boolean result = update(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to update");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	FieldSkinEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
+    }
+    
+    public String delete(JsonNode nodeList) {
+    	List<FieldSkinDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        FieldSkinDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<FieldSkinEntity> entityList = new ArrayList<>();
+		for(FieldSkinDto dto : dtoList) {
+	        FieldSkinEntity entity = get(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to delete : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+		boolean result = delete(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to delete");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	FieldSkinEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
     }
     
     public String getSkinizedKids(JsonNode node, String kidSkinType) {
         FieldSkinDto dto = jsonNodeToDto(node);
         if(dto == null) return "";
         FieldSkinEntity entity = get(dto);
+        if(entity == null) return "";
 
 		if(kidSkinType.equals("NumericRange")) {
 			List<NumericRangeEntity> list = entity.getNumericRangeEntityList();
@@ -428,19 +508,7 @@ abstract public class AFieldSkinRepository extends CacheableRepository<FieldSkin
     protected void daoDeleted(List<FieldSkinEntity> entities) {
         super.daoDeleted(entities);
         for(FieldSkinEntity entity : entities) deletePublisher.publish(new DeleteEvent<FieldSkinEntity>(cloneOf(entity)));
-		List<NumericRangeEntity> numericRangeList = new ArrayList<>();
-		for(FieldSkinEntity each : entities) numericRangeList.addAll(Repos.repo(NumericRangeRepository.class).getByFieldSkinId(each.getFieldSkinId()));
-		Repos.repo(NumericRangeRepository.class).daoDeleted(numericRangeList);
-		List<EnumFacetEntity> enumFacetList = new ArrayList<>();
-		for(FieldSkinEntity each : entities) enumFacetList.addAll(Repos.repo(EnumFacetRepository.class).getByFieldSkinId(each.getFieldSkinId()));
-		Repos.repo(EnumFacetRepository.class).daoDeleted(enumFacetList);
-		List<StringRangeEntity> stringRangeList = new ArrayList<>();
-		for(FieldSkinEntity each : entities) stringRangeList.addAll(Repos.repo(StringRangeRepository.class).getByFieldSkinId(each.getFieldSkinId()));
-		Repos.repo(StringRangeRepository.class).daoDeleted(stringRangeList);
-		List<DecimalRangeEntity> decimalRangeList = new ArrayList<>();
-		for(FieldSkinEntity each : entities) decimalRangeList.addAll(Repos.repo(DecimalRangeRepository.class).getByFieldSkinId(each.getFieldSkinId()));
-		Repos.repo(DecimalRangeRepository.class).daoDeleted(decimalRangeList);
-
+		for(FieldSkinEntity each : entities) skinMapSet.remove(SkinEntity.newMapKey(each.getSkinId()), each);
     }
     
     @Override

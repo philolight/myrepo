@@ -14,7 +14,7 @@ import com.lge.framework.ceasar.event.load.Load;
 import com.lge.framework.ceasar.event.load.LoadManager;
 import com.lge.framework.ceasar.event.load.LoadType;
 import com.lge.framework.ceasar.event.subscriber.EventSubscriber;
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 
 /**
  * 같은 종류의 모든 객체들에 대하여 같은 종류의 이벤트가 발생했을 때 이를 전달하는 EventPublisher. 

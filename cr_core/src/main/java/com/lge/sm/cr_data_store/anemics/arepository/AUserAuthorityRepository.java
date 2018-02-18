@@ -27,9 +27,10 @@ import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.util.ToString;
 import com.lge.framework.ceasar.util.CriteriaUtil;
 import com.lge.framework.ceasar.util.JsonUtil;
+import com.lge.framework.ceasar.util.DateStringUtil;
 import com.lge.framework.ceasar.service.view.Skin;
 
-import com.lge.framework.pacific.logger.Logger;
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.sm.cr_data_store.repository.UserAuthorityRepository;
 import com.lge.sm.cr_data_store.dao.UserAuthorityDao;
 import com.lge.sm.cr_data_store.entity.UserEntity;
@@ -67,6 +68,8 @@ abstract public class AUserAuthorityRepository extends CacheableRepository<UserA
 
     @Override
     public UserAuthorityEntity create(UserAuthorityDto dto) throws IllegalArgumentException {
+    	dto.setCdate(DateStringUtil.getCurrentDateString(DateStringUtil.gmtTimeZoneId));
+
         if(checkCreated(dto) == true) throw new IllegalArgumentException("Already created : " + ToString.toLine(dto));    
         if(checkForeignKeyEntityExist(dto) == false) throw new IllegalArgumentException("No record of foreign key when create : " + ToString.toLine(dto));
         if(dao.insert(dto) == false) throw new IllegalArgumentException();
@@ -78,8 +81,8 @@ abstract public class AUserAuthorityRepository extends CacheableRepository<UserA
     }
   
     protected boolean checkForeignKeyEntityExist(UserAuthorityDto dto) {
-		if(Repos.repo(UserRepository.class).getByMapKey(UserEntity.newMapKey(dto.getUserId())) == null) return false;
-		if(Repos.repo(AuthorityRepository.class).getByMapKey(AuthorityEntity.newMapKey(dto.getAuthorityId())) == null) return false;
+		if(dto.getUserId() != null && Repos.repo(UserRepository.class).getByMapKey(UserEntity.newMapKey(dto.getUserId())) == null) return false;
+		if(dto.getAuthorityId() != null && Repos.repo(AuthorityRepository.class).getByMapKey(AuthorityEntity.newMapKey(dto.getAuthorityId())) == null) return false;
 
         return true;
     }
@@ -207,36 +210,105 @@ abstract public class AUserAuthorityRepository extends CacheableRepository<UserA
       }
     }
     
-    public String create(JsonNode inputNode) {
-        UserAuthorityDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        UserAuthorityEntity entity = create(dto);
-        if(entity != null) return skinized(entity);
-        return "";
-    }
-    
-    public String update(JsonNode inputNode) {
-        UserAuthorityDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return "";
-        UserAuthorityEntity entity = get(dto);
-        if(entity != null){
-          boolean ret = update(newEntity(dto));
-          if(ret) return skinized(get(dto));
+    public String create(JsonNode nodeList) {
+    	List<UserAuthorityDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        UserAuthorityDto dto = jsonNodeToDto(each);
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<UserAuthorityEntity> entityList = new ArrayList<>();
+		for(UserAuthorityDto dto : dtoList) {
+	        UserAuthorityEntity entity = create(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to create : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	UserAuthorityEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
         }
-        return "";
+        ret.append("]");
+        
+        return ret.toString();
     }
     
-    public boolean delete(JsonNode inputNode) {
-        UserAuthorityDto dto = jsonNodeToDto(inputNode);
-        if(dto == null) return false;
-        UserAuthorityEntity entity = get(dto);
-        return delete(entity);
+    public String update(JsonNode nodeList) {
+    	List<UserAuthorityDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        UserAuthorityDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<UserAuthorityEntity> entityList = new ArrayList<>();
+		for(UserAuthorityDto dto : dtoList) {
+	        UserAuthorityEntity entity = newEntity(dto);
+	        entityList.add(entity);
+		}
+		
+		boolean result = update(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to update");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	UserAuthorityEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
+    }
+    
+    public String delete(JsonNode nodeList) {
+    	List<UserAuthorityDto> dtoList = new ArrayList<>();
+		for(JsonNode each : nodeList) {
+	        UserAuthorityDto dto = jsonNodeToDto(each);
+	        System.out.println(ToString.toLine(dto));
+	        if(dto == null) return "";
+	        dtoList.add(dto);
+		}
+		
+    	List<UserAuthorityEntity> entityList = new ArrayList<>();
+		for(UserAuthorityDto dto : dtoList) {
+	        UserAuthorityEntity entity = get(dto);
+	        if(entity == null) Logger.error(TAG, "Failed to delete : " + ToString.toLine(dto));
+	        else entityList.add(entity);
+		}
+		
+		boolean result = delete(entityList);
+		if(result == false) {
+			Logger.error(TAG, "Failed to delete");
+			return "";
+		}
+		
+        StringBuffer ret = new StringBuffer();
+        ret.append("[");
+        for(int i = 0; i < entityList.size(); i++) {
+        	UserAuthorityEntity entity = entityList.get(i);
+            ret.append(skinize(entity));
+            if(i != entityList.size() - 1) ret.append(",");
+        }
+        ret.append("]");
+        
+        return ret.toString();
     }
     
     public String getSkinizedKids(JsonNode node, String kidSkinType) {
         UserAuthorityDto dto = jsonNodeToDto(node);
         if(dto == null) return "";
         UserAuthorityEntity entity = get(dto);
+        if(entity == null) return "";
 
         
         return "";
@@ -361,7 +433,7 @@ abstract public class AUserAuthorityRepository extends CacheableRepository<UserA
     protected void daoDeleted(List<UserAuthorityEntity> entities) {
         super.daoDeleted(entities);
         for(UserAuthorityEntity entity : entities) deletePublisher.publish(new DeleteEvent<UserAuthorityEntity>(cloneOf(entity)));
-
+		for(UserAuthorityEntity each : entities) userMapSet.remove(UserEntity.newMapKey(each.getUserId()), each);		for(UserAuthorityEntity each : entities) authorityMapSet.remove(AuthorityEntity.newMapKey(each.getAuthorityId()), each);
     }
     
     @Override

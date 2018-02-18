@@ -7,13 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.framework.ceasar.repository.Repos;
 import com.lge.framework.ceasar.util.DateStringUtil;
-import com.lge.framework.pacific.logger.Logger;
 import com.lge.sm.cr_data_store.dto.StartableDto;
 import com.lge.sm.cr_data_store.dto.StartableHistoryDto;
 import com.lge.sm.cr_data_store.entity.StartableEntity;
-import com.lge.sm.cr_data_store.repository.ScheduleRepository;
 import com.lge.sm.cr_data_store.repository.StartableHistoryRepository;
 import com.lge.sm.cr_data_store.repository.StartableRepository;
 

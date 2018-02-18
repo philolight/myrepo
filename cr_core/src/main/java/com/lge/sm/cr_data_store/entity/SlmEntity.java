@@ -4,11 +4,10 @@ package com.lge.sm.cr_data_store.entity;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.lge.framework.ceasar.logger.Logger;
 import com.lge.framework.ceasar.repository.Repos;
-import com.lge.framework.pacific.logger.Logger;
-import com.lge.sm.cr_data_store.common.Constants;
-
 import com.lge.sm.cr_data_store.anemics.aentity.ASlmEntity;
+import com.lge.sm.cr_data_store.common.Constants;
 import com.lge.sm.cr_data_store.dto.SlmDto;
 import com.lge.sm.cr_data_store.repository.SlmRepository;
 

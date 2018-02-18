@@ -1,13 +1,12 @@
 package com.lge.framework.ceasar.domain.service;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 
-import org.junit.After;
-import org.junit.Before;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -17,9 +16,7 @@ import com.lge.framework.ceasar.event.event_kind.CreateEvent;
 import com.lge.framework.ceasar.event.event_kind.DeleteEvent;
 import com.lge.framework.ceasar.event.event_kind.UpdateEvent;
 import com.lge.framework.ceasar.event.subscriber.EventSubscriber;
-import com.lge.framework.ceasar.util.ToString;
 import com.lge.sm.cr_data_store.UserDtos;
-import com.lge.sm.cr_data_store.dao.UserDao;
 import com.lge.sm.cr_data_store.entity.UserEntity;
 import com.lge.sm.cr_data_store.repository.UserRepository;
 

@@ -14,7 +14,9 @@ public class MapKey implements Serializable{
 	
 	private String key = "";
 	public MapKey(Object...objects) {
-		for(Object obj : objects) key += obj.toString() + SEPARATOR;
+		for(Object obj : objects) {
+			if(obj != null) key += obj.toString() + SEPARATOR;
+		}
 	}
 	
 	@Override
@@ -25,5 +27,10 @@ public class MapKey implements Serializable{
 	@Override
 	public int hashCode() {
 		return key.hashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return key;
 	}
 }
